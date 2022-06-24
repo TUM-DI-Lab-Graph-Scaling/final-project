@@ -1,0 +1,97 @@
+\input{preamble.tex}
+
+\begin{document}
+
+    \pagestyle{empty}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Title page
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \begin{titlepage}
+
+      \begin{center}
+        \includegraphics[width=40mm]{tum_logo.pdf}\\[20mm]
+        \sf
+        {\huge
+          TECHNICAL UNIVERSITY OF MUNICH\\[20mm]
+          TUM Data Innovation Lab\\[20mm]
+        }
+        \normalsize
+        \renewcommand{\baselinestretch}{2}\normalsize
+        {\Huge
+        Acceleration of Neural Network Training with Microsoft DeepSpeed
+        }
+        \renewcommand{\baselinestretch}{1}\normalsize
+        \bigskip
+      \end{center}
+
+      \vspace*{20mm}
+      \large
+
+      \begin{tabular}{ll}
+        Authors &  Yamei Chen, Daniel Herbst, Daniel Stoll  \\
+        Mentor(s) & Ludger P\"ahler \\
+        & TUM Chair of Aerodynamics and Fluid Mechanics \\
+        Project Lead & Dr. Ricardo Acevedo Cabra (Department of Mathematics)\\
+        Supervisor & Prof. Dr. Massimo Fornasier (Department of Mathematics)\\
+      \end{tabular}
+      \\
+
+      \begin{center}
+        \vspace*{10mm}
+        1 August 2022
+      \end{center}
+
+    \end{titlepage}
+
+    \newpage 
+    \pagestyle{headings}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Abstract
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \input{./content/abstract.tex}
+    \newpage
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Table of contents
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \tableofcontents
+
+    \newpage
+
+    \pagestyle{headings}
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Content
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \input{./content/chapter1.tex}
+    \input{./content/chapter2.tex}
+    \input{./content/chapter3.tex}
+
+    \clearpage
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Bibliography
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \pagestyle{plain}
+
+    \nocite{*}
+    \printbibliography
+
+    \clearpage
+
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Appendix
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \input{./content/appendix.tex}
+
+
+
+\end{document}
