@@ -22,9 +22,9 @@ done by minimizing a loss function (sometimes modeled as negative log-likelihood
 \[
     L(\mathcal{D}, \theta) \: \coloneqq \: \sum_{i=1}^n l(f_\theta(\xx_i), \yy_i)
 \]
-over the parameter space. Nowadays, neural networks have proven to work really well
-for implementing these functions $f_\theta$ and are usually trained by variants of 
-gradient descent.
+over the parameter space. Over the last decade, neural networks have proven to work 
+really well for implementing these functions $f_\theta$ and are usually trained by 
+variants of gradient descent.
 
 However, for many complex structured non-Euclidean types of data, this approach might 
 not be the best fit. For example, just consider the two following settings:
@@ -44,3 +44,28 @@ Surely, one could find some representation of the above input data and try to us
 conventional method (i.e. try to let a neural network learn these structures on its own),
 however this would not only be inefficient but also completely unfeasible for many large 
 modern datasets. 
+
+However, for simpler structured data like sequences or images there already exist neural
+network architectures that exploit these structures, like Recurrent Neural Networks (RNNs) and
+Convolutional Neural Networks (CNNs) respectively. Particularly the introduction of CNNs 
+in the early 2010s marked a huge step forwards for tasks like image classification 
+compared to dense fully-connected neural networks: CNNs leverage the spatial structure of
+images as rectangular grids by applying convolutional filters like sliding windows on small
+rectangular parts of the input image. 
+
+Even though the topological structure of sequences and images is quite simple and regular
+compared to some general graph, we can still see both of them as graphs themselves. Graph Neural 
+Networks (GNNs) can now be regarded as a generalization of CNNs and RNNs to general graph structures.
+More precisely, this means the following:
+\begin{itemize}
+    \item Both RNNs and CNNs can be formulated in the language of GNNs.
+    \item With GNNs one can express both of the above scenarios.
+    \item GNNs exploit the structure of the input graph(s) by incorporating very
+          reasonable assumptions about its predicting functions like equivariance
+          (in the case of node prediction tasks) or invariance (for example in 
+          the case of global predictions) with respect to permutations of the input
+          nodes.
+\end{itemize}
+
+\textcolor{red}{TODO: Add detailed description of GN/EGN framework, add figures, shorten text (maybe a bit less detailed/verbose?)
+}
