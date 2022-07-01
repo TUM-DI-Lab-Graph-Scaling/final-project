@@ -1,3 +1,46 @@
 \section{Preliminaries}
 
 \subsection{Graph Neural Networks}
+
+In most of the contemporary supervised machine learning tasks, we are usually given 
+datasets
+\[ 
+    \mathcal{D} \: \coloneqq \: 
+    \setcomp{(\xx_i, \yy_i)}{i=1, \dots, n}, 
+    \quad \text{with} \quad \xx_i \in \R^{d}, \: \yy_i \in \R^k 
+\]
+where the inputs $\xx_i$ are assumed to be independently and identically 
+distributed and we want to generally predict the labels $\yy$ from the $\xx$ using
+some parametric function
+\[
+    \fct{f_\theta}{\R^d}{\R^k}, \quad
+    \hat{\yy} \: \coloneqq \: f_\theta(\xx),
+\]
+i.e. we want to find some parameter $\theta$ in a parameter space $\Theta$ such that
+the predictions $\hat{\yy}$ are somewhat close to the targets $\yy$ which is usually
+done by minimizing a loss function (sometimes modeled as negative log-likelihood)
+\[
+    L(\mathcal{D}, \theta) \: \coloneqq \: \sum_{i=1}^n l(f_\theta(\xx_i), \yy_i)
+\]
+over the parameter space. Nowadays, neural networks have proven to work really well
+for implementing these functions $f_\theta$ and are usually trained by variants of 
+gradient descent.
+
+However, for many complex structured non-Euclidean types of data, this approach might 
+not be the best fit. For example, just consider the two following settings:
+\begin{itemize}
+    \item Suppose we are given molecule structures as input graphs $\xx_i$ and, as an 
+          outcome, we want to predict the energy $\yy_i$ of the respective structures. 
+          Clearly, there is no straightforward way to embed a graph into some $\R^d$.
+    \item Suppose our inputs $\xx_i$ are certain features of users in a social network
+          and we want to predict interaction with some newly uploaded content. In this 
+          case, the iid assumption of the inputs $\xx_i$ is unreasonable because users
+          themselves might interact with each other. Therefore it would be sensible to
+          incorporate the existing connections between the data points somehow---so 
+          essentially one would like models which operate on one giant input graph with 
+          interconnected and dependent data points as nodes.
+\end{itemize}
+Surely, one could find some representation of the above input data and try to use some
+conventional method (i.e. try to let a neural network learn these structures on its own),
+however this would not only be inefficient but also completely unfeasible for many large 
+modern datasets. 
