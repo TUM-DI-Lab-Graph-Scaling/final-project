@@ -18,13 +18,11 @@ In this way, the model is enabled to learn the angular potential energy. By enco
     \caption{Aggregation
     scheme for message
     embeddings. \cite*{DBLP:journals/corr/abs-2003-03123}}
-    \label{fig:one}
   \end{figure}
 The architecture of Dimenet can be illustrated in figure 2. The embedding block takes $\boldsymbol{e}_{\mathrm{RBF}}^{(j i)}$ and atomic numbers $z$ as input and outputs the initial message embeddings. The first interation block takes the initial message embedding $m_{ij}^{(1)}$ and $\boldsymbol{e}_{\mathrm{RBF}}^{(j i)}$, $\boldsymbol{a}_{\mathrm{SBF}}^{(k j, j i)}$ as input and outputs the updated message embeddings $m_{ij}^{(2)}$ for the next interation block. there are 6 interation blocks in total. Each layer including embedding block output the node embedding of their layer by aggregating message embedding coming into the atom. These node embedings are aggregated globally to output molecule level features like energy.\\
 \begin{figure}
     \includegraphics[width=180mm]{DimenetArch.png}
     \caption{The DimeNet architecture \cite*{DBLP:journals/corr/abs-2003-03123}}
-    \label{fig:one}
   \end{figure}
 Dimenet++ is an upgrated version of Dimenet that increases the efficiency of training without compensating the quality of results. These improvements includes: \\
 \begin{itemize}

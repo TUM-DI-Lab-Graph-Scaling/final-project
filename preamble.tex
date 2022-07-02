@@ -1,6 +1,6 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
-\documentclass[12pt, a4paper, oneside, fleqn, final]{article}
+\documentclass[12pt, a4paper, oneside, final]{article}
 \usepackage[english]{babel}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -22,6 +22,7 @@
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage{datetime}
+\usepackage{mathtools}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Custom packages
@@ -60,3 +61,21 @@
 % Custom definitions to be added here
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Set}[1]{\ensuremath{\left\{\, #1 \,\right\}}}
+\newcommand{\set}[1]{\ensuremath{\left\{#1\right\}}}
+\newcommand{\setcomp}[2]{\Set{#1 \; \middle| \; #2}}
+\newcommand{\fctmap}[5]{\ensuremath{#1 \colon #2 \to #3, \; #4 \mapsto #5 }}
+\newcommand{\fct}[3]{\ensuremath{#1 \colon #2 \to #3}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\absl}[1]{\left| \, #1 \,\right|}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\norml}[1]{\left\lVert \, #1\, \right\rVert}
+
+% bold variables
+\newcommand{\xx}{\boldsymbol{x}}
+\newcommand{\yy}{\boldsymbol{y}}
