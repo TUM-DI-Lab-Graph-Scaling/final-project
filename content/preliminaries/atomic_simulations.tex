@@ -1,4 +1,5 @@
 \subsection{GNNs for Atomic Simulations}
+\label{subsec:atomic-simulations}
 \subsubsection{General}
 \subsubsection{Dimenet and Dimenet++}
 Graph neural networks has been applied in the fields of molecular simulations. A molecule is uniquely defined by the atomic numbers $\boldsymbol{z}=\left\{z_{1}, \ldots, z_{N}\right\}$ and positions $ \boldsymbol{X}=\left\{\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{N}\right\}$. The prediction task can be written as $f_{\theta}:\{\boldsymbol{X}, \boldsymbol{z}\} \rightarrow \mathbb{R}$, where the model outputs for example energy of the molecule. However, vanilla graph neural networks only depend on pairwise distances while ignore directional information. In order to improve the expressiveness of model, Dimenet\cite*{DBLP:journals/corr/abs-2003-03123} encodes directional information in the message embedding while keeping the network invariant to translation, rotation, and inversion of the molecule\cite*{DBLP:journals/corr/abs-2003-03123}.\\

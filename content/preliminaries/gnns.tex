@@ -33,20 +33,23 @@ not be the best fit. For example, just consider the two following settings:
           outcome, we want to predict the energy $\yy_i$ of the respective structures. 
           Clearly, there is no straightforward way to embed a graph into some $\R^d$.
     \item Suppose our inputs $\xx_i$ are certain features of users in a social network
-          and we want to predict interaction with some newly uploaded content. In this 
-          case, the iid assumption of the inputs $\xx_i$ is unreasonable because users
-          themselves might interact with each other. Therefore it would be sensible to
-          incorporate the existing connections between the data points somehow---so 
-          essentially one would like models which operate on one giant input graph with 
-          interconnected and dependent data points as nodes.
+          and we want to predict interaction $\yy_i$ with some newly uploaded content. In this 
+          case, the iid assumption of the individual data points $(\xx_i, \yy_i)$ is 
+          completely unreasonable because users themselves might share common interest 
+          based on their interactions---or even interact with each other to make each 
+          other aware of the content. Therefore it would be sensible to incorporate the 
+          existing connections between the data points somehow---so essentially one would 
+          like models which operate on one giant input graph with interconnected and 
+          dependent data points as nodes.
 \end{itemize}
 Surely, one could find some representation of the above input data and try to use some
 conventional method (i.e. try to let a neural network learn these structures on its own),
 however this would not only be inefficient but also completely unfeasible for many large 
 modern datasets. 
 
-However, for simpler structured data like sequences or images there already exist neural
-network architectures that exploit these structures, like Recurrent Neural Networks (RNNs) and
+For simpler structured data like sequences or images, neural
+network architectures that exploit these structures have existed for quite some time, like 
+Recurrent Neural Networks (RNNs) and
 Convolutional Neural Networks (CNNs) respectively. Particularly the introduction of CNNs 
 in the early 2010s marked a huge step forwards for tasks like image classification 
 compared to dense fully-connected neural networks: CNNs leverage the spatial structure of
@@ -54,12 +57,18 @@ images as rectangular grids by applying convolutional filters like sliding windo
 rectangular parts of the input image. 
 
 Even though the topological structure of sequences and images is quite simple and regular
-compared to some general graph, we can still see both of them as graphs themselves. Graph Neural 
+compared to some general graph, we can still see both of them as graphs themselves. 
+
+\textcolor{red}{Add graph figure here!}
+
+Graph Neural 
 Networks (GNNs) can now be regarded as a generalization of CNNs and RNNs to general graph structures.
 More precisely, this means the following:
+
 \begin{itemize}
     \item Both RNNs and CNNs can be formulated in the language of GNNs.
-    \item With GNNs one can express both of the above scenarios.
+    \item With GNNs one can express both of the above scenarios in which conventional
+          methods are not applicable.
     \item GNNs exploit the structure of the input graph(s) by incorporating very
           reasonable assumptions about its predicting functions like equivariance
           (in the case of node prediction tasks) or invariance (for example in 
@@ -67,5 +76,17 @@ More precisely, this means the following:
           nodes.
 \end{itemize}
 
-\textcolor{red}{TODO: Add detailed description of GN/EGN framework, add figures, shorten text (maybe a bit less detailed/verbose?)
-}
+We introduce GNNs via the Graph Network/Extended Graph Network (GN/EGN) framework, which defines
+a common language for a quite general class of graph-input functions made out of 
+individual building blocks. These GNs then subsume GNNs---and GNNs can essentially just be 
+considered GNs whose individual building blocks are neural networks. 
+EGNs, which we will introduce afterwards, are even more expressive than normal 
+GNs as they also model higher-order interactions between graph vertices (i.e. interactions 
+between 3 or more vertices, or---alternatively---between two graph edges). Especially
+recent GNNs for atomic simulations that make use of such higher-order interactions, as the ones 
+we will describe in subsection~\ref{subsec:atomic-simulations}, can be formulated elegantly in the
+language of the EGN framework.
+
+Within the GN framework, a graph is modeled as a 3-tuple
+\[ G \: = \: (\uu, V, E) \text{.} \]
+with 
