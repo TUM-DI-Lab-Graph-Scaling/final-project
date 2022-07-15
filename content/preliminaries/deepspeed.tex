@@ -1,1 +1,16 @@
 \subsection{Microsoft DeepSpeed}
+For very large models, it is necessary to utilize multiple devices to speed up the training process. There are several parallelism paradigms, namely model parallelism, data parallelism, and pipeline parallelism. Model parallelism splits the model onto multiple devices, which makes training a large model that can not be fit into one device possible, but introduces significant overheads for communications between devices; data parallelism splits data onto different devices while keeping a whole copy of the model on all devices, MP suffers from the memory bottleneck of memory; pipeline parallelism partially resolves the communication bottleneck of MP by pipelining batches. but the design of this method is complicated.\\
+Therefore, all paradigms have their limits. ZeRO aims to improve data parallelism by decreasing its memory consumption. It identifies the following type of memory consumptions:\\
+\begin{itemize}
+    \item main memory consumption: model states which include the optimizer states(such as momentum and variances in Adam), gradients, and parameters.\cite*{https://doi.org/10.48550/arxiv.1910.02054}
+    \item residual memory consumption: activation, temporary buffers and unusable fragmented memory\cite*{https://doi.org/10.48550/arxiv.1910.02054}
+\end{itemize}
+ZeRO tries to tacle these 2 type of memory consumption respectively:\\
+\begin{itemize}
+    \item ZeRO-DP tacles main memory consumption: it adopts 3 stages of optization: 1) optimiser partitioning 2) gradient partitioning, 3) parameter partitioning, each stage succesively builds on the previous stage.\cite*{https://doi.org/10.48550/arxiv.1910.02054}
+    \item ZeRO-R tacles residual memory consumption: for activations, it optimizes activation
+    memory by identifying and removing activation replication in existing MP approaches through
+    activation partitioning. It also offloads activations to CPU when appropriate. For temporary buffers, ZeRO-R defines appropriate size. For fragmented memory, ZeRO-R proactively manages memory
+    based on the different lifetime of tensors, preventing memory fragmentation.\cite*{https://doi.org/10.48550/arxiv.1910.02054}
+\end{itemize}
+DP equipped with ZeRO significantly reduces momory consumption, making it suitable for traning large models. ZeRO can also be applied in MP to make it even more scalable.\\
