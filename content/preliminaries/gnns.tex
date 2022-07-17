@@ -112,7 +112,7 @@ The computations performed by a GN block can also be described in the following 
 
 \begin{enumerate}[align=left]
     \item[\textbf{Edge Update:}] The edges are updated individually based on their respective edge attribute, 
-    their source and receiver node attributes and the graph's global attribute using the
+    their source and receiver node attributes, and the graph's global attribute using the
     update function $\phi_e$.
     \item[\textbf{Edge Aggregation:}] The new edge attributes are aggregated on each node
     as well as the whole graph using the aggregation functions $\phi_{e \to v}$ and
@@ -133,3 +133,8 @@ the inputs.
 
 Now, a GN is just a sequence of such GN blocks which successively updates the input graph's
 attributes.
+
+% Figure that demonstrates the five update phases of an GN block.
+\input{figures/gnns/gn_block.tex}
+
+\textcolor{red}{TODO: Describe EGN model!}

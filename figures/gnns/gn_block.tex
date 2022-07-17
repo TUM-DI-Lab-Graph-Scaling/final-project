@@ -1,0 +1,163 @@
+\begin{figure}[H]
+    \centering
+    \tikzset{
+        n_inactive/.style={draw=tum-gray, fill=white, text=tum-gray, circle},
+        n_active/.style={draw=tum-gray, fill=tum-lighter-blue, text=tum-dark-blue, circle},
+        n_updated/.style={draw=tum-gray, fill=tum-light-orange, text=tum-orange, circle},
+        e_inactive/.style={draw=tum-gray},
+        e_active/.style={draw=tum-blue, thick},
+        e_updated/.style={draw=tum-orange, thick}
+    }
+
+    \makeatletter
+    \tikzset{circle split part fill/.style  args={#1,#2}{%
+    alias=tmp@name,
+    postaction={%
+        insert path={
+        \pgfextra{% 
+        \pgfpointdiff{\pgfpointanchor{\pgf@node@name}{center}}%
+                    {\pgfpointanchor{\pgf@node@name}{east}}%            
+        \pgfmathsetmacro\insiderad{\pgf@x}
+        \fill[#1] (\pgf@node@name.base) ([xshift=-\pgflinewidth]\pgf@node@name.east) arc
+                            (0:180:\insiderad-\pgflinewidth)--cycle;
+        \fill[#2] (\pgf@node@name.base) ([xshift=\pgflinewidth]\pgf@node@name.west)  arc
+                            (180:360:\insiderad-\pgflinewidth)--cycle;   
+            }}}}}  
+ \makeatother
+
+    \begin{subfigure}[t]{0.18\textwidth}
+        \centering
+        \begin{tikzpicture}
+            % Edge Update
+            \draw[draw=white] (-0.6,-3.25) rectangle (2,3.25) {};
+            \draw[rounded corners] (-0.6,-1.5) rectangle (2,1.5) {};
+            \node[text=tum-gray] (T) at (1.65,1.2) {\scriptsize $\uu$};
+    
+            \node[n_active, inner sep=1] (A) at (1,0) {\scriptsize $\vv_{r_k}$};
+            \node[n_active, inner sep=1] (B) at (0,0.6) {\scriptsize $\vv_{s_k}$};
+            \node[n_inactive] (C) at (0.3,-0.7) {};
+            \node[n_inactive] (D) at (1.4, -1) {};
+    
+            \draw[->, e_updated] (B) -- (A) node[text=tum-orange, near end, above] {\scriptsize $\ee_k'$};
+            \draw[->, e_inactive] (C) -- (A);
+            \draw[->, e_inactive] (D) -- (A);
+            \draw[<->, e_inactive] (C) -- (D);
+        \end{tikzpicture}
+        \vspace*{0.5em}
+        \caption*{\footnotesize Edge Update}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.18\textwidth}
+        \centering
+        \begin{tikzpicture}
+            %Edge Aggregation
+            \draw[rounded corners] (-0.6,-1.5) rectangle (2,1.5) {};
+            \node[text=tum-gray] (T) at (1.65,1.2) {\scriptsize $\uu$};
+    
+            \node[n_inactive, inner sep=1, circle split, circle split part fill={white,tum-light-orange}] (A) at (1,0) {\scriptsize $\vv_i$ \nodepart{lower} \textcolor{tum-orange}{\scriptsize $\overline{\ee}_i'$}};
+            \node[n_inactive] (B) at (0,0.6) {};
+            \node[n_inactive] (C) at (0.3,-0.7) {};
+            \node[n_inactive] (D) at (1.4, -1) {};
+    
+            \draw[->, e_active] (B) -- (A);
+            \draw[->, e_active] (C) -- (A);
+            \draw[->, e_active] (D) -- (A);
+            \draw[<->, e_inactive] (C) -- (D);
+
+            \draw[rounded corners] (-0.6,-5) rectangle (2,-2) {};
+            \node[text=tum-gray] (T) at (1.65,-2.3) {\scriptsize $\uu$};
+            \node[text=tum-orange] (T) at (1.7,-2.6) {\scriptsize $\overline{\ee}'$};
+    
+            \node[n_inactive] (A) at (1,-3.5) {};
+            \node[n_inactive] (B) at (0,-2.9) {};
+            \node[n_inactive] (C) at (0.3,-4.2) {};
+            \node[n_inactive] (D) at (1.4, -4.5) {};
+    
+            \draw[->, e_active] (B) -- (A);
+            \draw[->, e_active] (C) -- (A);
+            \draw[->, e_active] (D) -- (A);
+            \draw[<->, e_active] (C) -- (D);
+        \end{tikzpicture}
+        \vspace*{0.5em}
+        \caption*{\footnotesize Edge Aggregation}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.18\textwidth}
+        \centering
+        \begin{tikzpicture}
+            % Node Update
+            \draw[draw=white] (-0.6,-3.25) rectangle (2,3.25) {};
+            \draw[rounded corners] (-0.6,-1.5) rectangle (2,1.5) {};
+            \node[text=tum-dark-blue] (T) at (1.65,1.2) {\scriptsize $\uu$};
+            \node[text=tum-gray] (T) at (1.7,0.9) {\scriptsize $\overline{\ee}'$};
+    
+            \node[n_inactive, inner sep=1, circle split, circle split part fill={tum-light-orange,tum-lighter-blue}] (A) at (1,0) {\scriptsize \textcolor{tum-orange}{$\vv_i'$} \nodepart{lower} \textcolor{tum-dark-blue}{\scriptsize $\overline{\ee}_i'$}};
+            \node[n_inactive] (B) at (0,0.6) {};
+            \node[n_inactive] (C) at (0.3,-0.7) {};
+            \node[n_inactive] (D) at (1.4, -1) {};
+    
+            \draw[->, e_inactive] (B) -- (A);
+            \draw[->, e_inactive] (C) -- (A);
+            \draw[->, e_inactive] (D) -- (A);
+            \draw[<->, e_inactive] (C) -- (D);
+        \end{tikzpicture}
+        \vspace*{0.5em}
+        \caption*{\footnotesize Node Update}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.18\textwidth}
+        \centering
+        \begin{tikzpicture}
+            % Node Aggregation
+            \draw[draw=white] (-0.6,-3.25) rectangle (2,3.25) {};
+            \draw[rounded corners] (-0.6,-1.5) rectangle (2,1.5) {};
+            \node[text=tum-gray] (T) at (1.65,1.2) {\scriptsize $\uu$};
+            \node[text=tum-gray] (T) at (1.7,0.9) {\scriptsize $\overline{\ee}'$};
+            \node[text=tum-orange] (T) at (1.7,0.6) {\scriptsize $\overline{\vv}'$};
+
+            \node[n_active] (A) at (1,0) {};
+            \node[n_active] (B) at (0,0.6) {};
+            \node[n_active] (C) at (0.3,-0.7) {};
+            \node[n_active] (D) at (1.4, -1) {};
+    
+            \draw[->, e_inactive] (B) -- (A);
+            \draw[->, e_inactive] (C) -- (A);
+            \draw[->, e_inactive] (D) -- (A);
+            \draw[<->, e_inactive] (C) -- (D);
+        \end{tikzpicture}
+        \vspace*{0.5em}
+        \caption*{\footnotesize Node Aggregation}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.18\textwidth}
+        \centering
+        \begin{tikzpicture}
+            %Global Update
+            \draw[draw=white] (-0.6,-3.25) rectangle (2,3.25) {};
+            \draw[rounded corners] (-0.6,-1.5) rectangle (2,1.5) {};
+            \node[text=tum-orange] (T) at (1.65,1.2) {\scriptsize $\uu'$};
+            \node[text=tum-dark-blue] (T) at (1.7,0.9) {\scriptsize $\overline{\ee}'$};
+            \node[text=tum-dark-blue] (T) at (1.7,0.6) {\scriptsize $\overline{\vv}'$};
+
+
+            \node[n_inactive] (A) at (1,0) {};
+            \node[n_inactive] (B) at (0,0.6) {};
+            \node[n_inactive] (C) at (0.3,-0.7) {};
+            \node[n_inactive] (D) at (1.4, -1) {};
+    
+            \draw[->, e_inactive] (B) -- (A);
+            \draw[->, e_inactive] (C) -- (A);
+            \draw[->, e_inactive] (D) -- (A);
+            \draw[<->, e_inactive] (C) -- (D);
+        \end{tikzpicture}
+        \vspace*{0.5em}
+        \caption*{\footnotesize Global Update}
+    \end{subfigure}
+
+    \captionsetup{width=\dimexpr\textwidth-1.5cm\relax}
+    \caption{Schematic depiction of GN block computation phases. 
+    \textcolor{tum-orange}{Orange} attributes are updated or created 
+    while \textcolor{tum-dark-blue}{blue} ones contribute to the corresponding 
+    update.}
+
+\end{figure}
