@@ -69,15 +69,20 @@ tasks) or invariance (for example in the case of global predictions) with respec
 input nodes. Indeed, both of the above introductory examples in which conventional methods are not applicable
 can be modeled with GNNs.
 
-We introduce GNNs via the Graph Network/Extended Graph Network (GN/EGN) framework, which defines
+We express GNNs via the Graph Network/Extended Graph Network (GN/EGN) framework introduced in 
+\cite{https://doi.org/10.48550/arxiv.1806.01261}, which defines
 a common language for a quite general class of graph-input functions made out of 
-individual building blocks. EGNs, which we will introduce afterwards, are even more expressive than normal 
+individual building blocks. EGNs \cite{https://doi.org/10.48550/arxiv.2203.09697}, which we will 
+introduce afterwards, are even more expressive than normal 
 GNs as they also model higher-order interactions between graph vertices (i.e. interactions 
 between 3 or more vertices, or---alternatively---between two graph edges). Especially recent 
 GNNs for atomic simulations that make use of such higher-order interactions, as the ones we will describe 
-in subsection~\ref{subsec:atomic-simulations}, can be expressed elegantly in the language of the EGN framework.
+in subsection~\ref{subsec:atomic-simulations}, \cite*{DBLP:journals/corr/abs-2003-03123,https://doi.org/10.48550/arxiv.2106.08903}, 
+can be expressed elegantly in the language of the EGN framework.
 
-Within the GN framework, a graph is modeled as a 3-tuple
+\subsubsection*{Graph Networks}
+
+Most of this section is an outline of \cite[Section 3.2]{https://doi.org/10.48550/arxiv.1806.01261}. Within the GN framework, a graph is modeled as a 3-tuple
 \[ G \: = \: (\uu, V, E) \text{,} \]
 where $\uu \in \R^{d_u}$ is a global attribute of the graph. $V$ and $E$ are the set of nodes and
 set of edges respectively;
@@ -138,7 +143,9 @@ node prediction as well as edge prediction can be performed with a GNN as just
 the corresponding attribute of the GNN output graph can be regarded as the final 
 network output.
 
-The Extended Graph Network (EGN) framework is a generalization of GNs to graphs which 
+\subsubsection*{Extended Graph Networks}
+
+The Extended Graph Network (EGN) framework \cite[Section 2.1]{https://doi.org/10.48550/arxiv.2203.09697} is a generalization of GNs to graphs which 
 incorporate higher-order interactions: In the EGN framework, a graph is defined as
 \[ G \: \coloneqq \: (\uu, V, E, T) \]
 with $\uu$, $V$, and $E$ as before, as well as
