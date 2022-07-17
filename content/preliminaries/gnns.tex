@@ -72,14 +72,11 @@ can be modeled with GNNs.
 
 We introduce GNNs via the Graph Network/Extended Graph Network (GN/EGN) framework, which defines
 a common language for a quite general class of graph-input functions made out of 
-individual building blocks. These GNs then subsume GNNs---and GNNs can essentially just be 
-considered GNs whose individual building blocks are neural networks. 
-EGNs, which we will introduce afterwards, are even more expressive than normal 
+individual building blocks. EGNs, which we will introduce afterwards, are even more expressive than normal 
 GNs as they also model higher-order interactions between graph vertices (i.e. interactions 
-between 3 or more vertices, or---alternatively---between two graph edges). Especially
-recent GNNs for atomic simulations that make use of such higher-order interactions, as the ones 
-we will describe in subsection~\ref{subsec:atomic-simulations}, can be expressed elegantly in the
-language of the EGN framework.
+between 3 or more vertices, or---alternatively---between two graph edges). Especially recent 
+GNNs for atomic simulations that make use of such higher-order interactions, as the ones we will describe 
+in subsection~\ref{subsec:atomic-simulations}, can be expressed elegantly in the language of the EGN framework.
 
 Within the GN framework, a graph is modeled as a 3-tuple
 \[ G \: = \: (\uu, V, E) \text{,} \]
@@ -89,7 +86,7 @@ set of edges respectively,
     V \: &= \: \set{\vv_i}_{i=1}^{n_v},             &\quad \vv_i \in \R^{d_v}&; \\
     E \: &= \: \set{(\ee_k, r_k, s_k)}_{k=1}^{n_e}, &\quad \ee_k \in \R^{d_e}&, \; r_k, s_k \in \set{1, \dots, n_v};
 \end{align*}
-where $\vv_i$ represents the node attributes, and $\ee_k$ is the attribute of an edge
+where $\vv_i$ represents the node attributes and $\ee_k$ is the attribute of an edge
 going from $s_k$ to $r_k$.
 
 A GN block now consists of the update functions $\phi_e$, $\phi_v$ and $\phi_u$ for edges,
@@ -108,7 +105,7 @@ is the set of incoming edges at node $i$, $E' \coloneqq \set{(\ee_k', r_k, s_k)}
 contains all updated edges and $V' \coloneqq \set{\vv_i'}_{i=1}^{n_v}$ consists
 of the updated nodes of the graph. All in all, this results in the updated graph 
 $G' = (\uu', V', E')$ being the output of the GN block.
-The computations performed by a GN block can also be described in the following phases:
+The computations performed by a GN block can also be described by the following phases:
 
 \begin{enumerate}[align=left]
     \item[\textbf{Edge Update:}] The edges are updated individually based on their respective edge attribute, 
@@ -126,15 +123,41 @@ The computations performed by a GN block can also be described in the following 
     predecessor and the newly aggregated edge and node attributes.
 \end{enumerate}
 
-Furthermore, the aggregation functions have to be invariant w.r.t. permutations of the
-input node or edge attributes, i.e. do not depend reordering of the inputs. In many cases,
-these aggregation functions are kept simple and are just a sum or mean operation over
-the inputs.
-
-Now, a GN is just a sequence of such GN blocks which successively updates the input graph's
-attributes.
-
 % Figure that demonstrates the five update phases of an GN block.
 \input{figures/gnns/gn_block.tex}
 
-\textcolor{red}{TODO: Describe EGN model!}
+Furthermore, the aggregation functions have to be invariant w.r.t. permutations of the
+input nodes or edges, i.e. do not depend reordering of the inputs. In many cases,
+these aggregation functions are kept simple and are just a sum or mean operation over
+the inputs.
+
+A GN is just a sequence of such GN blocks which successively updates the input graph's
+attributes, i.e. over multiple such blocks, messages can be passed along the edges of
+a graph. Now, a GNN is simply a GN whose blocks use neural networks to implement the
+update functions $\phi_e$, $\phi_v$, $\phi_u$. Note that global graph prediction, 
+node prediction as well as edge prediction can be performed with a GNN as just
+the corresponding attribute of the GNN output graph can be regarded as the final 
+network output.
+
+The Extended Graph Network (EGN) framework is now a generalization of GNs to graphs which 
+incorporate higher-order interactions: In the EGN framework, a graph is defined as
+\[ G \: \coloneqq \: (\uu, V, E, T) \]
+with $\uu$, $V$, and $E$ as before, as well as
+\[ 
+    T \: \coloneqq \: \set{(\ttt_m, e_1^{(m)}, \dots, e_{l_m}^{(m)})}_{m=1}^{n_t}, 
+    \qquad \ttt_m \in \R^{d_t}, \; 
+    e_1^{(m)}, \dots, e_{l_m}^{(m)} \in \set{1, \dots, n_e} \text{,} 
+\]
+where $\ttt_m$ represents the attribute of an interaction between the $l_m$ edges indexed 
+by $e_1^{(m)}, \dots, e_{l_m}^{(m)}$. 
+
+In an EGN block, these higher-order interactions are now taken into account by 
+successively updating the interactions starting from the highest order: The interactions
+of a certain order $l$ are first updated individually and then aggregated at each
+interaction of order $l-1$, whereafter the same is carried out for the interactions
+of order $l-1$, and so on. In the special case of only $3$-order interactions, i.e.
+triplets of nodes or pairs of edges, this would mean that the usual GN computation 
+phases would be preceded by a \textbf{Triplet Update} and a \textbf{Triplet Aggregation}
+phase. In Subsection~\ref{subsec:atomic-simulations}, we will use this EGN framework
+to introduce some of the most recent and well-performing GNN architectures for atomic 
+simulations.
