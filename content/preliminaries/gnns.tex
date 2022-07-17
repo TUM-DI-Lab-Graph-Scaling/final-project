@@ -6,7 +6,7 @@ In most of the contemporary supervised machine learning tasks, we are usually gi
 datasets
 \[ 
     \mathcal{D} \: \coloneqq \: 
-    \setcomp{(\xx_i, \yy_i)}{i=1, \dots, n}, 
+    \set{(\xx_i, \yy_i)}_{i=1}^n 
     \quad \text{with} \quad \xx_i \in \R^{d}, \: \yy_i \in \R^k 
 \]
 where the inputs $\xx_i$ are assumed to be independently and identically 
@@ -64,18 +64,11 @@ compared to some general graph, we can still see both of them as graphs themselv
 
 Graph Neural 
 Networks (GNNs) can now be regarded as a generalization of CNNs and RNNs to general graph structures.
-More precisely, this means the following:
-
-\begin{itemize}
-    \item Both RNNs and CNNs can be formulated in the language of GNNs.
-    \item With GNNs one can express both of the above scenarios in which conventional
-          methods are not applicable.
-    \item GNNs exploit the structure of the input graph(s) by incorporating very
-          reasonable assumptions about its predicting functions like equivariance
-          (in the case of node prediction tasks) or invariance (for example in 
-          the case of global predictions) with respect to permutations of the input
-          nodes.
-\end{itemize}
+More precisely, we can say that GNNs exploit the structure of the input graph(s) by incorporating very
+reasonable assumptions about its predicting functions like equivariance (in the case of node prediction 
+tasks) or invariance (for example in the case of global predictions) with respect to permutations of the 
+input nodes. Indeed, both of the above introductory examples in which conventional methods are not applicable
+can be modeled with GNNs.
 
 We introduce GNNs via the Graph Network/Extended Graph Network (GN/EGN) framework, which defines
 a common language for a quite general class of graph-input functions made out of 
@@ -89,5 +82,54 @@ we will describe in subsection~\ref{subsec:atomic-simulations}, can be expressed
 language of the EGN framework.
 
 Within the GN framework, a graph is modeled as a 3-tuple
-\[ G \: = \: (\uu, V, E) \text{.} \]
-\textcolor{red}{TODO: Continue here!}
+\[ G \: = \: (\uu, V, E) \text{,} \]
+where $\uu \in \R^{d_u}$ is a global attribute of the graph. $V$ and $E$ are the set of nodes and
+set of edges respectively,
+\begin{align*}
+    V \: &= \: \set{\vv_i}_{i=1}^{n_v},             &\quad \vv_i \in \R^{d_v}&; \\
+    E \: &= \: \set{(\ee_k, r_k, s_k)}_{k=1}^{n_e}, &\quad \ee_k \in \R^{d_e}&, \; r_k, s_k \in \set{1, \dots, n_v};
+\end{align*}
+where $\vv_i$ represents the node attributes, and $\ee_k$ is the attribute of an edge
+going from $s_k$ to $r_k$.
+
+A GN block now consists of the update functions $\phi_e$, $\phi_v$ and $\phi_u$ for edges,
+nodes and attributes respectively, as well as aggregation functions $\rho_{e \to v}$,
+$\rho_{e \to u}$, and $\rho_{v \to u}$, with
+\begin{align*}
+    \ee_k' \: &\coloneqq \: \phi_e(\ee_k, \vv_{r_k}, \vv_{s_k}, \uu), 
+    &\overline{\ee}'_i \: &\coloneqq \rho_{e \to v}(E_i'), \\
+    \vv_i' \: &\coloneqq \: \phi_v(\overline{\ee}'_i, \vv_i, \uu), 
+    &\overline{\ee}' \: &\coloneqq \: \rho_{e \to u}(E'), \\
+    \uu' \: &\coloneqq \: \phi_u(\overline{\ee}', \overline{\vv}', \uu),
+    &\overline{\vv}' \: &\coloneqq \: \rho_{v \to u}(V');
+\end{align*}
+where $E_i' \coloneqq \setcomp{(\ee_k', r_k, s_k)}{k = 1, \dots, n_e, \; r_k = i}$
+is the set of incoming edges at node $i$, $E' \coloneqq \set{(\ee_k', r_k, s_k)}_{k=1}^{n_e}$
+contains all updated edges and $V' \coloneqq \set{\vv_i'}_{i=1}^{n_v}$ consists
+of the updated nodes of the graph. All in all, this results in the updated graph 
+$G' = (\uu', V', E')$ being the output of the GN block.
+The computations performed by a GN block can also be described in the following phases:
+
+\begin{enumerate}[align=left]
+    \item[\textbf{Edge Update:}] The edges are updated individually based on their respective edge attribute, 
+    their source and receiver node attributes and the graph's global attribute using the
+    update function $\phi_e$.
+    \item[\textbf{Edge Aggregation:}] The new edge attributes are aggregated on each node
+    as well as the whole graph using the aggregation functions $\phi_{e \to v}$ and
+    $\phi_{e \to u}$ respectively.
+    \item[\textbf{Node Update}:] The nodes are updated individually based on their respective
+    node attributes, the newly aggregated messages from the incoming edges, and the graph's
+    global attribute using the update function $\phi_v$.
+    \item[\textbf{Node Aggregation:}] The new node attributes are aggregated on the whole
+    graph via the aggregation function $\phi_{v \to u}$.
+    \item[\textbf{Global Update:}] The graph's global attribute is updated based on its
+    predecessor and the newly aggregated edge and node attributes.
+\end{enumerate}
+
+Furthermore, the aggregation functions have to be invariant w.r.t. permutations of the
+input node or edge attributes, i.e. do not depend reordering of the inputs. In many cases,
+these aggregation functions are kept simple and are just a sum or mean operation over
+the inputs.
+
+Now, a GN is just a sequence of such GN blocks which successively updates the input graph's
+attributes.
