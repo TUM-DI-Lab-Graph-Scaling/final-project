@@ -30,6 +30,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage{csquotes}
+\usepackage{enumitem}
+
+\usetikzlibrary{shapes,snakes}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -42,7 +45,7 @@
 \setlength{\evensidemargin}{25mm}
 \setlength{\textwidth}{160mm}
 
-\setlength{\parindent}{0pt}
+%\setlength{\parindent}{0pt}
 
 \setlength{\textheight}{235mm}
 \setlength{\footskip}{20mm}
@@ -51,7 +54,7 @@
 
 \usepackage[
     backend=biber,
-    style=numeric,
+    style=alphabetic,
   ]{biblatex}
   
 \addbibresource{bibliography.bib}
@@ -83,6 +86,7 @@
 \newcommand{\uu}{\boldsymbol{u}}
 \newcommand{\vv}{\boldsymbol{v}}
 \newcommand{\ee}{\boldsymbol{e}}
+\newcommand{\ttt}{\boldsymbol{t}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Official TUM colors
@@ -99,5 +103,6 @@
 
 % Emphasis
 \definecolor{tum-orange}{RGB}{227,114,34}
+\definecolor{tum-light-orange}{RGB}{252, 214, 184}
 \definecolor{tum-green}{RGB}{162,173,0}
 \definecolor{tum-light-gray}{RGB}{218,215,203}

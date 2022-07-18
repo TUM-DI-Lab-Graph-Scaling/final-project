@@ -6,36 +6,35 @@ In most of the contemporary supervised machine learning tasks, we are usually gi
 datasets
 \[ 
     \mathcal{D} \: \coloneqq \: 
-    \setcomp{(\xx_i, \yy_i)}{i=1, \dots, n}, 
+    \set{(\xx_i, \yy_i)}_{i=1}^n 
     \quad \text{with} \quad \xx_i \in \R^{d}, \: \yy_i \in \R^k 
 \]
 where the inputs $\xx_i$ are assumed to be independently and identically 
-distributed and we want to generally predict the labels $\yy$ from the $\xx$ using
+distributed and we want to generally predict the labels $\yy$ from $\xx$ using
 some parametric function
 \[
     \fct{f_\theta}{\R^d}{\R^k}, \quad
     \hat{\yy} \: \coloneqq \: f_\theta(\xx),
 \]
 i.e. we want to find some parameter $\theta$ in a parameter space $\Theta$ such that
-the predictions $\hat{\yy}$ are somewhat close to the targets $\yy$ which is usually
-done by minimizing a loss function (sometimes modeled as negative log-likelihood)
+the predictions $\hat{\yy}$ are somewhat close to the targets $\yy$. This is usually
+carried out by minimizing a loss function (sometimes modeled as negative log-likelihood)
 \[
     L(\mathcal{D}, \theta) \: \coloneqq \: \sum_{i=1}^n l(f_\theta(\xx_i), \yy_i)
 \]
-over the parameter space. Over the last decade, neural networks have proven to work 
-really well for implementing these functions $f_\theta$ and are usually trained by 
-variants of gradient descent.
+over the parameter space. Over the last decades, neural networks have proven to work 
+really well for implementing these functions $f_\theta$.
 
 However, for many complex structured non-Euclidean types of data, this approach might 
 not be the best fit. For example, just consider the two following settings:
 \begin{itemize}
     \item Suppose we are given molecule structures as input graphs $\xx_i$ and, as an 
           outcome, we want to predict the energy $\yy_i$ of the respective structures. 
-          Clearly, there is no straightforward way to embed a graph into some $\R^d$.
+          Clearly, there is no straightforward way to embed a molecule into some $\R^d$.
     \item Suppose our inputs $\xx_i$ are certain features of users in a social network
           and we want to predict interaction $\yy_i$ with some newly uploaded content. In this 
           case, the iid assumption of the individual data points $(\xx_i, \yy_i)$ is 
-          completely unreasonable because users themselves might share common interest 
+          completely unreasonable because users themselves might share common interests 
           based on their interactions---or even interact with each other to make each 
           other aware of the content. Therefore it would be sensible to incorporate the 
           existing connections between the data points somehow---so essentially one would 
@@ -48,46 +47,124 @@ however this would not only be inefficient but also completely unfeasible for ma
 modern datasets. 
 
 For simpler structured data like sequences or images, neural
-network architectures that exploit these structures have existed for quite some time, like 
-Recurrent Neural Networks (RNNs) and
+network architectures that exploit these structures have been successful for quite some time, the 
+most prominent examples including Recurrent Neural Networks (RNNs) and
 Convolutional Neural Networks (CNNs) respectively. Particularly the introduction of CNNs 
-in the early 2010s marked a huge step forwards for tasks like image classification 
+in the early 2010s marked a huge step forward for tasks like image classification 
 compared to dense fully-connected neural networks: CNNs leverage the spatial structure of
 images as rectangular grids by applying convolutional filters like sliding windows on small
 rectangular parts of the input image. 
 
 Even though the topological structure of sequences and images is quite simple and regular
-compared to some general graph, we can still see both of them as graphs themselves. 
+compared to some general graph, we can nevertheless see both of them as a special type of graphs themselves. 
 
 % Structured data figure that shows sequences and images as graphs.
 \input{figures/gnns/structured_data_figure.tex}
 
 Graph Neural 
 Networks (GNNs) can now be regarded as a generalization of CNNs and RNNs to general graph structures.
-More precisely, this means the following:
+More precisely, we can say that GNNs exploit the structure of the input graph(s) by incorporating very
+reasonable assumptions about its predicting functions like equivariance (in the case of node prediction 
+tasks) or invariance (for example in the case of global predictions) with respect to permutations of the 
+input nodes. Indeed, both of the above introductory examples in which conventional methods are not applicable
+can be modeled with GNNs.
 
-\begin{itemize}
-    \item Both RNNs and CNNs can be formulated in the language of GNNs.
-    \item With GNNs one can express both of the above scenarios in which conventional
-          methods are not applicable.
-    \item GNNs exploit the structure of the input graph(s) by incorporating very
-          reasonable assumptions about its predicting functions like equivariance
-          (in the case of node prediction tasks) or invariance (for example in 
-          the case of global predictions) with respect to permutations of the input
-          nodes.
-\end{itemize}
-
-We introduce GNNs via the Graph Network/Extended Graph Network (GN/EGN) framework, which defines
+We express GNNs via the Graph Network/Extended Graph Network (GN/EGN) framework introduced in 
+\cite{https://doi.org/10.48550/arxiv.1806.01261}, which defines
 a common language for a quite general class of graph-input functions made out of 
-individual building blocks. These GNs then subsume GNNs---and GNNs can essentially just be 
-considered GNs whose individual building blocks are neural networks. 
-EGNs, which we will introduce afterwards, are even more expressive than normal 
+individual building blocks. EGNs \cite{https://doi.org/10.48550/arxiv.2203.09697}, which we will 
+introduce afterwards, are even more expressive than normal 
 GNs as they also model higher-order interactions between graph vertices (i.e. interactions 
-between 3 or more vertices, or---alternatively---between two graph edges). Especially
-recent GNNs for atomic simulations that make use of such higher-order interactions, as the ones 
-we will describe in subsection~\ref{subsec:atomic-simulations}, can be formulated elegantly in the
-language of the EGN framework.
+between 3 or more vertices, or---alternatively---between two graph edges). Especially recent 
+GNNs for atomic simulations that make use of such higher-order interactions, as the ones we will describe 
+in subsection~\ref{subsec:atomic-simulations}, \cite*{DBLP:journals/corr/abs-2003-03123,https://doi.org/10.48550/arxiv.2106.08903}, 
+can be expressed elegantly in the language of the EGN framework.
 
-Within the GN framework, a graph is modeled as a 3-tuple
-\[ G \: = \: (\uu, V, E) \text{.} \]
-\textcolor{red}{TODO: Continue here!}
+\subsubsection*{Graph Networks}
+
+Most of this section is an outline of \cite[Section 3.2]{https://doi.org/10.48550/arxiv.1806.01261}. Within the GN framework, a graph is modeled as a 3-tuple
+\[ G \: = \: (\uu, V, E) \text{,} \]
+where $\uu \in \R^{d_u}$ is a global attribute of the graph. $V$ and $E$ are the set of nodes and
+set of edges respectively;
+\begin{align*}
+    V \: &= \: \set{\vv_i}_{i=1}^{n_v},             &\quad \vv_i \in \R^{d_v}&; \\
+    E \: &= \: \set{(\ee_k, r_k, s_k)}_{k=1}^{n_e}, &\quad \ee_k \in \R^{d_e}&, \; r_k, s_k \in \set{1, \dots, n_v};
+\end{align*}
+where $\vv_i$ represents the node attributes and $\ee_k$ is the attribute of an edge
+going from $s_k$ to $r_k$.
+
+A GN block now consists of the update functions $\phi_e$, $\phi_v$ and $\phi_u$ for edges,
+nodes, and attributes respectively, as well as aggregation functions $\rho_{e \to v}$,
+$\rho_{e \to u}$, and $\rho_{v \to u}$, with
+\begin{align*}
+    \ee_k' \: &\coloneqq \: \phi_e(\ee_k, \vv_{r_k}, \vv_{s_k}, \uu), 
+    &\overline{\ee}'_i \: &\coloneqq \: \rho_{e \to v}(E_i'), \\
+    \vv_i' \: &\coloneqq \: \phi_v(\overline{\ee}'_i, \vv_i, \uu), 
+    &\overline{\ee}' \: &\coloneqq \: \rho_{e \to u}(E'), \\
+    \uu' \: &\coloneqq \: \phi_u(\overline{\ee}', \overline{\vv}', \uu),
+    &\overline{\vv}' \: &\coloneqq \: \rho_{v \to u}(V');
+\end{align*}
+where $E_i' \coloneqq \setcomp{(\ee_k', r_k, s_k)}{k = 1, \dots, n_e, \; r_k = i}$
+is the set of incoming edges at node $i$, $E' \coloneqq \set{(\ee_k', r_k, s_k)}_{k=1}^{n_e}$
+contains all updated edges, and $V' \coloneqq \set{\vv_i'}_{i=1}^{n_v}$ consists
+of the updated nodes of the graph. All in all, this results in the updated graph 
+$G' = (\uu', V', E')$ being the output of the GN block.
+The computations performed by a GN block can also be described in terms of the following phases:
+
+\begin{enumerate}[align=left]
+    \item[\textbf{Edge Update:}] The edges are updated individually based on their respective edge attribute, 
+    their source and receiver node attributes, and the graph's global attribute using the
+    update function $\phi_e$.
+    \item[\textbf{Edge Aggregation:}] The new edge attributes are aggregated on each node
+    as well as the whole graph using the aggregation functions $\phi_{e \to v}$ and
+    $\phi_{e \to u}$ respectively.
+    \item[\textbf{Node Update}:] The nodes are updated individually based on their respective
+    node attributes, the newly aggregated messages from the incoming edges, and the graph's
+    global attribute using the update function $\phi_v$.
+    \item[\textbf{Node Aggregation:}] The new node attributes are aggregated on the whole
+    graph via the aggregation function $\phi_{v \to u}$.
+    \item[\textbf{Global Update:}] The graph's global attribute is updated based on its
+    predecessor and the newly aggregated edge and node attributes.
+\end{enumerate}
+
+% Figure that demonstrates the five update phases of an GN block.
+\input{figures/gnns/gn_block.tex}
+
+Furthermore, the aggregation functions have to be invariant w.r.t. permutations of the
+input nodes or edges, i.e. do not depend reordering of the inputs. In many cases,
+these aggregation functions are kept simple and are just a sum or mean operation over
+the inputs.
+
+A GN is just a sequence of such GN blocks which successively updates the input graph's
+attributes, i.e. over multiple such blocks, messages can be passed along the edges of
+a graph. Now, a GNN is simply a GN whose blocks use neural networks to implement the
+update functions $\phi_e$, $\phi_v$, $\phi_u$. Note that global graph prediction, 
+node prediction as well as edge prediction can be performed with a GNN as just
+the corresponding attribute of the GNN output graph can be regarded as the final 
+network output.
+
+\subsubsection*{Extended Graph Networks}
+
+The Extended Graph Network (EGN) framework \cite[Section 2.1]{https://doi.org/10.48550/arxiv.2203.09697} is a generalization of GNs to graphs which 
+incorporate higher-order interactions: In the EGN framework, a graph is defined as
+\[ G \: \coloneqq \: (\uu, V, E, T) \]
+with $\uu$, $V$, and $E$ as before, as well as
+\[ 
+    T \: \coloneqq \: \set{(\ttt_m, e_1^{(m)}, \dots, e_{l_m}^{(m)})}_{m=1}^{n_t}, 
+    \qquad \ttt_m \in \R^{d_t}, \; 
+    e_1^{(m)}, \dots, e_{l_m}^{(m)} \in \set{1, \dots, n_e} \text{,} 
+\]
+where $\ttt_m$ represents the attribute of an interaction between the $l_m$ edges indexed 
+by $e_1^{(m)}, \dots, e_{l_m}^{(m)}$. 
+
+In an EGN block, these higher-order interactions are now taken into account by 
+successively updating the interactions starting from the highest order: The interactions
+of a certain order $l$ are first updated individually and then aggregated at each
+interaction of order $l-1$, whereafter the same is carried out for the interactions
+of order $l-1$, and so on. In the special case of only $3$-order interactions, i.e.
+triplets of nodes or pairs of edges, this would mean that the usual GN computation 
+phases is preceded by a \textbf{Triplet Update} and a \textbf{Triplet Aggregation}
+phase. In Subsection~\ref{subsec:atomic-simulations}, we will use this EGN framework
+to introduce some of the most recent and well-performing GNN architectures for atomic 
+simulations---so, for example, think of edge attributes as the distance between two
+atoms in a molecule and of the triplets as the bond angle between two chemical bonds.
