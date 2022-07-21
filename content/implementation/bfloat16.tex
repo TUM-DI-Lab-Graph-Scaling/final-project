@@ -2,8 +2,19 @@
 
 \subsection{Mixed Precision Training}
 
+Mixed precision training uses lower bit floating point types for optimizer states, gradients and model parameters to 
+reduce the memory footprint during model training. 
+
+PyTorch offers out-of-the-box support for two types of mixed precision training: Floating point with 16 bits (FP16) and 
+brain floating point with 16 bits (BFloat16) which we will introduce in the next sections and explain our integration 
+into the OCP project.
+
 \subsubsection{FP16}
 
+FP16 is a floating-point number format which uses 5 bits for the exponent and 10 bits for the fraction. This halves the 
+used memory compared to the default single-precision floating-point format which uses 8 bits for the exponent and 24 bits 
+for the fraction. However, FP16 lowers the precision and reduces the range of numbers that can be represented, making 
+calculations less accurate and increasing the risk of overflows/underflows.
 
+\subsubsection{BFloat16}
 
-\subsubsection{BFLOAT16}
