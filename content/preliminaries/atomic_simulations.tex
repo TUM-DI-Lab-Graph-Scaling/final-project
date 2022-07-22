@@ -3,17 +3,19 @@
 
 \subsubsection{General}
 
-Say one has information about the chemical and spatial structure of a molecule 
+Suppose one has information about the chemical and spatial structure of a molecule 
 and would like to predict properties of this very molecule, e.g. its energy (at the 
 current point in time or after some evolution) or the forces acting on the 
 individual atoms. Some of these properties might be directly
-computable using quantum mechanical methods---like Density Functional Theory, inter alia
-to compute bond energies in molecules. However, some of these methods come
+computable using quantum mechanical methods---like Density Functional Theory (DFT) 
+\cite{doi:10.1021/ed5004788}, inter alia
+to compute bond energies in molecules. However, these methods often come
 with significant drawbacks as they might be extremely expensive from a computational 
 standpoint, imposing the necessity to either optimize these conventional methods 
 as far as possible or use completely different approaches.
 
-One alternative and very promising approach to compute or predict such molecules is to use supervised
+One alternative approach that is subject to current research is to compute or predict such molecule properties 
+is to use supervised
 machine learning in order to learn a function that maps molecule structures to their
 respective properties based on data of known molecules. For this task, Graph
 Neural Networks (GNNs) are very well suited not only because a molecule can naturally
@@ -40,7 +42,18 @@ complexity. One approach to achieve this is to compute pairwise distances $d_{ij
 between the atoms and use them instead of the individual atomic locations $\XX$, 
 so---in the GN language (see \ref{subsubsec:gns})---define an input graph with the atomic numbers $\zz$ as 
 node attributes and the interatomic distances as edge attributes (say, if a bond exists
-between two atoms or the distance is below some threshold).
+between two atoms or if the distance is below some threshold). However, this might
+not always be sufficient to completely characterize the spatial structure of a molecule:
+Since the interatomic distances are only kept for a part of the pairs of 
+nodes, there exist pairs of different molecules which cannot be
+distinguished with this approach \cite[Appendix A]{DBLP:journals/corr/abs-2003-03123}.
+Gasteiger et al. proposed multiple GNN architectures which overcome this
+problem: DimeNet \cite{DBLP:journals/corr/abs-2003-03123} and 
+DimeNet++ \cite{https://doi.org/10.48550/arxiv.2011.14115} achieve this
+by incorporating directional information as bond angles into the models
+(i.e. triplets of nodes), while in a more recent architecture, GemNet 
+\cite{https://doi.org/10.48550/arxiv.2106.08903}, even 4-way interactions are
+modeled.
 
 \input{./content/preliminaries/atomic_simulations/dimenet.tex}
 \input{./content/preliminaries/atomic_simulations/gemnet.tex}
