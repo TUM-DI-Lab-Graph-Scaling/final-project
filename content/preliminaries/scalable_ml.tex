@@ -29,7 +29,7 @@ In our work, we used a scaling out approach to scale the existing pipelines. Thr
  pass, ensuring that all models will be in the same state at optimizer updates. 
 
 When the model size exceeds the memory capacities of a single device, Model Parallelism 
-\cite*{https://doi.org/10.48550/arXiv.1811.02084, https://doi.org/10.48550/arXiv.1909.08053} can be used to split model 
+\cite*{10.48550/ARXIV.1811.02084, 10.48550/ARXIV.1909.08053} can be used to split model 
 parameters among multiple processes, devices or even machines. The model can be horizontally and vertically partitioned, 
 whereby in horizontal partitioning each device holds different layers of the model and in vertical partitioning layers 
 are cut internally and each device holds a part of each layer.
@@ -38,8 +38,8 @@ A disadvantage of the naiive implementation of model parallelism is the sequenti
 through the layers. All other machines are forced to wait when a single machine is performing computations, often referred to 
 as bubble overhead in literature. To avoid bubble overhead, a more advanced form of model parallelism known as Pipeline Parallelism
 was developed, in which the model is split horizontally and the communication between layers gets overlapped through micro-batches. 
-Popular implementations of Pipeline Parallelism include G-Pipe \cite*{https://doi.org/10.48550/arXiv.1811.06965} and 
-PipeDream \cite*{https://doi.org/10.48550/arXiv.1806.03377}. G-Pipe pipelines the execution of micro-batches accross machines, 
+Popular implementations of Pipeline Parallelism include G-Pipe \cite*{10.48550/ARXIV.1811.06965} and 
+PipeDream \cite*{10.48550/ARXIV.1806.03377}. G-Pipe pipelines the execution of micro-batches accross machines, 
 effectively overlapping executions of batches during forward and backward pass, while PipeDrean intersperses the execution of 
 forward and backward passes thorugh more complex scheduling algorithms. 
 
