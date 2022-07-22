@@ -69,10 +69,10 @@ tasks) or invariance (for example in the case of global predictions) with respec
 input nodes. Indeed, both of the above introductory examples in which conventional methods are not applicable
 can be modeled with GNNs.
 
-We express GNNs via the Graph Network/Extended Graph Network (GN/EGN) framework introduced in 
+We express GNNs via the Graph Network (GN) framework introduced in 
 \cite{https://doi.org/10.48550/arxiv.1806.01261}, which defines
 a common language for a quite general class of graph-input functions made out of 
-individual building blocks. EGNs \cite{https://doi.org/10.48550/arxiv.2203.09697}, which we will 
+individual building blocks. EGNs (Extended Graph Networks) \cite{https://doi.org/10.48550/arxiv.2203.09697}, which we will 
 introduce afterwards, are even more expressive than normal 
 GNs as they also model higher-order interactions between graph vertices (i.e. interactions 
 between 3 or more vertices, or---alternatively---between two graph edges). Especially recent 
@@ -93,7 +93,7 @@ set of edges respectively;
     E \: &= \: \set{(\ee_k, r_k, s_k)}_{k=1}^{n_e}, &\quad \ee_k \in \R^{d_e}&, \; r_k, s_k \in \set{1, \dots, n_v};
 \end{align*}
 where $\vv_i$ represents the node attributes and $\ee_k$ is the attribute of an edge
-going from $s_k$ to $r_k$.
+going from $s_k$ to $r_k$. Sometimes, these attributes are also called \textit{embeddings}.
 
 A GN block now consists of the update functions $\phi_e$, $\phi_v$ and $\phi_u$ for edges,
 nodes, and attributes respectively, as well as aggregation functions $\rho_{e \to v}$,
@@ -146,17 +146,19 @@ the corresponding attribute of the GNN output graph can be regarded as the final
 network output.
 
 \subsubsection{Extended Graph Networks}
+\label{subsubsec:egns}
 
 The Extended Graph Network (EGN) framework \cite[Section 2.1]{https://doi.org/10.48550/arxiv.2203.09697}
  is a generalization of GNs to graphs which 
 incorporate higher-order interactions: In the EGN framework, a graph is defined as
 \[ G \: \coloneqq \: (\uu, V, E, T) \]
 with $\uu$, $V$, and $E$ as before, as well as
-\[ 
+\begin{equation} 
     T \: \coloneqq \: \set{(\ttt_m, e_1^{(m)}, \dots, e_{l_m}^{(m)})}_{m=1}^{n_t}, 
     \qquad \ttt_m \in \R^{d_t}, \; 
     e_1^{(m)}, \dots, e_{l_m}^{(m)} \in \set{1, \dots, n_e} \text{,} 
-\]
+    \label{eq:higher_order_interact}
+\end{equation}
 where $\ttt_m$ represents the attribute of an interaction between the $l_m$ edges indexed 
 by $e_1^{(m)}, \dots, e_{l_m}^{(m)}$. 
 
