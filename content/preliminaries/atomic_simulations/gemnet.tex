@@ -16,6 +16,10 @@ $a, b \in \set{1, \dots, n}$ write
     \vec{\xx}_{ab} \: \coloneqq \xx_b - \xx_a
 \]
 for the distance and relative direction from $\xx_a$ to $\xx_b$ respectively.
+\begin{wrapfigure}{r}{0.3\textwidth}
+    \centering
+    \includegraphics[]{atomic_simulations/gemnet_message_passing.pdf}
+\end{wrapfigure}
 In GemNet, there are two graphs considered: an interaction graph and an embedding graph.
 The molecule's interaction graph does not change during the forward pass of the network and 
 two atoms \textit{interact} if their distance is below some 
@@ -41,13 +45,6 @@ as well as
 \]
 where $\boldsymbol{\Pi}$ is the orthogonal projection onto the orthogonal
 complement of $\vec{\xx}_{ab}$.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[]{atomic_simulations/gemnet_message_passing.pdf}
-    \caption{Interaction scheme for GemNet as depicted in 
-    \cite{https://doi.org/10.48550/arxiv.2106.08903}.}
-\end{figure}
 
 Similarly to DimeNet, this relative directional information is then represented 
 by spherical Fourier-Bessel bases

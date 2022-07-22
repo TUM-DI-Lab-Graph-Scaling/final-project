@@ -38,14 +38,10 @@ i. The scheme is illustrated in figure 1 and by the following equation:
 In this way, the model is enabled to learn the angular potential energy. By encoding angular information 
 into model, they also made the model more expressive.\\
 
-\begin{figure}[H]
+\begin{wrapfigure}{r}{0.25\textwidth}
     \centering
     \includegraphics[]{atomic_simulations/dimenet_message_passing.pdf}
-    \caption{Aggregation
-    scheme for message
-    embeddings \cite*{DBLP:journals/corr/abs-2003-03123}.}
-  \end{figure}
-
+  \end{wrapfigure}
 The architecture of Dimenet can be illustrated in figure 2. 
 The embedding block takes $\boldsymbol{e}_{\mathrm{RBF}}^{(j i)}$ and 
 atomic numbers $z$ as input and outputs the initial message embeddings. 
@@ -60,7 +56,7 @@ These node embedings are aggregated globally to output molecule level features l
     \centering
     \includegraphics[]{atomic_simulations/dimenet.pdf}
     \caption{The DimeNet architecture \cite*{DBLP:journals/corr/abs-2003-03123}.}
-  \end{figure}
+\end{figure}
 
 Dimenet++ is an upgrated version of Dimenet that increases the efficiency of training 
 without compensating the quality of results. These improvements includes: \\
