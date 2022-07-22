@@ -1,0 +1,24 @@
+\subsection{Zero Redundancy Optimizer (ZeRO)}
+
+The Zero Redundancy Optimizer (ZeRO) is a scaling engine on top of data-parallel training for 
+machine learning models. In short, ZeRO removes memory redundancies by partitioning states which 
+are used accross all processes such as the optimizer states, gradients and model parameters. 
+Since all processes only have to maintain a shard of states, ZeRO should use less memory while 
+retaining computational granularity and communication overhead compared to traditional Data 
+Parallelism.
+
+Deepspeed allows developers to integrate ZeRO into arbitrary models which are trained using an 
+DP pipeline. Using the Deepspeed configuration file, the 
+
+\subsubsection{Stage 1 (OS)}
+
+Stage 1 of ZeRO enables Optimizer State Partitioning. 
+
+\subsubsection{Stage 2 (OS+G)}
+
+Stage 2 of ZeRO partitions both optimizer states and gradients.
+
+\subsubsection{Stage 3 (OS+G+P)}
+
+Stage 3 of ZeRO partitions optimizer states, gradients and model parameters, thus merging the 
+traditional Data Parallelism approach with Model parallelism.
