@@ -3,77 +3,45 @@
 
 \subsubsection{General}
 
-\subsubsection{Dimenet and Dimenet++}
+Say one has information about the chemical and spatial structure of a molecule 
+and would like to predict properties of this very molecule, e.g. its energy (at the 
+current point in time or after some evolution) or the forces acting on the 
+individual atoms. Some of these properties might be directly
+computable using quantum mechanical methods---like Density Functional Theory, inter alia
+to compute bond energies in molecules. However, some of these methods come
+with significant drawbacks as they might be extremely expensive from a computational 
+standpoint, imposing the necessity to either optimize these conventional methods 
+as far as possible or use completely different approaches.
 
-Graph neural networks has been applied in the fields of molecular simulations. 
-A molecule is uniquely defined by the atomic numbers 
-$\boldsymbol{z}=\left\{z_{1}, \ldots, z_{N}\right\}$ and positions 
-$ \boldsymbol{X}=\left\{\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{N}\right\}$. 
-The prediction task can be written as 
-$f_{\theta}:\{\boldsymbol{X}, \boldsymbol{z}\} \rightarrow \mathbb{R}$, 
-where the model outputs for example energy of the molecule. However, vanilla graph 
-neural networks only depend on pairwise distances while ignore directional information. 
-In order to improve the expressiveness of model, Dimenet\cite*{DBLP:journals/corr/abs-2003-03123} 
-encodes directional information in the message embedding while keeping the network invariant to 
-translation, rotation, and inversion of the molecule\cite*{DBLP:journals/corr/abs-2003-03123}. \\
-The central idea of Dimenet is directional message embedding. For general GNNs, the atom 
-embeddings $h_i$ are updated in each layer in the following way:\\
-\begin{equation}
-    \boldsymbol{h}_{i}^{(l+1)}=f_{\text {update }}\left(\boldsymbol{h}_{i}^{(l)}, \sum_{j \in \mathcal{N}_{i}} f_{\text {int }}\left(\boldsymbol{h}_{j}^{(l)}, \boldsymbol{e}_{(i j)}^{(l)}\right)\right)
-\end{equation}
-Where the edge embedding $\boldsymbol{e}_{(i j)}^{(l)}$ usually only depend on 
-distance $d_{ij}$ between atom i and atom j, which limits their ability to model 
-energy that is linked to bond angles.\\
-Dimenet encodes the angle 
-$\alpha_{(k j, j i)}=\angle \boldsymbol{x}_{k} \boldsymbol{x}_{j} \boldsymbol{x}_{i}$ 
-and interatomic distance $d_{kj}$ in 
-$\boldsymbol{a}_{\mathrm{SBF}}^{(k j, j i)} \in \mathbb{R}^{N_{\mathrm{SHBF}} \cdot N_{\mathrm{SRBF}}}$ 
-which is based on spherical Bessel functions and spherical harmonics. 
-It also encodes $d_{ji}$ solely in $\boldsymbol{e}_{\mathrm{RBF}}^{(j i)}$ which is radial 
-basis function.  The edge embedding is replaced by directional message embeddings $m_{ij}$. 
-That is to say, the message passed from atom i to atom j is different from that from atom j to atom i. 
-Dimenet updates $m_{ji}$ by aggregating all incoming edges from neighbors of atom j except for from atom 
-i. The scheme is illustrated in figure 1 and by the following equation:
-\begin{equation}
-    \boldsymbol{m}_{j i}^{(l+1)}=f_{\text {update }}\left(\boldsymbol{m}_{j i}^{(l)}, \sum_{k \in \mathcal{N}_{j} \backslash\{i\}} f_{\text {int }}\left(\boldsymbol{m}_{k j}^{(l)}, \boldsymbol{e}_{\mathrm{RBF}}^{(j i)}, \boldsymbol{a}_{\mathrm{SBF}}^{(k j, j i)}\right)\right)
-\end{equation}
-In this way, the model is enabled to learn the angular potential energy. By encoding angular information 
-into model, they also made the model more expressive.\\
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=50mm]{atomic_simulations/dimenet_message_passing.pdf}
-    \caption{Aggregation
-    scheme for message
-    embeddings. \cite*{DBLP:journals/corr/abs-2003-03123}}
-  \end{figure}
-The architecture of Dimenet can be illustrated in figure 2. 
-The embedding block takes $\boldsymbol{e}_{\mathrm{RBF}}^{(j i)}$ and 
-atomic numbers $z$ as input and outputs the initial message embeddings. 
-The first interation block takes the initial message embedding $m_{ij}^{(1)}$ 
-and $\boldsymbol{e}_{\mathrm{RBF}}^{(j i)}$, $\boldsymbol{a}_{\mathrm{SBF}}^{(k j, j i)}$ 
-as input and outputs the updated message embeddings $m_{ij}^{(2)}$ for the next interation 
-block. there are 6 interation blocks in total. Each layer including embedding block output 
-the node embedding of their layer by aggregating message embedding coming into the atom. 
-These node embedings are aggregated globally to output molecule level features like energy.\\
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=150mm]{atomic_simulations/dimenet.pdf}
-    \caption{The DimeNet architecture \cite*{DBLP:journals/corr/abs-2003-03123}}
-  \end{figure}
-Dimenet++ is an upgrated version of Dimenet that increases the efficiency of training 
-without compensating the quality of results. These improvements includes: \\
-\begin{itemize}
-    \item replaced a bilinear layer in directional message passing block by a 
-    simplier Hadamard product and added multilayer perceptrons for the basis representations.
-    \item downproject the embeddings into lower dimensions in computation-intensive 
-    parts of the model and upproject them back to the original dimensions after those layers.
-    \item used 4 interation layers instead of 6. 
-\end{itemize}
+One alternative and very promising approach to compute or predict such molecules is to use supervised
+machine learning in order to learn a function that maps molecule structures to their
+respective properties based on data of known molecules. For this task, Graph
+Neural Networks (GNNs) are very well suited not only because a molecule can naturally
+be expressed as a graph (e.g. using its structural formula with atom numbers and
+interatomic distances as node and edge attributes), but also because in this case, the 
+assumption of invariance w.r.t. permutations of the atoms or the assumption that 
+the update rules do not differ between nodes or edges and that one is hence
+learning somewhat universal functions, seem very reasonable.
 
-\begin{figure}[H]
-  \centering
-\includegraphics[width=150mm]{atomic_simulations/dimenet_plus_plus.pdf}
-\caption{The DimeNet++ architecture \cite*{https://doi.org/10.48550/arxiv.2203.09697}}
-\label{fig:one}
-\end{figure}
+From now on, we define a molecule consisting of $n$ atoms by its atomic numbers 
+$\zz$ and its positions $\XX$, where
+\[
+    \XX \: \coloneqq \: \set{\xx_1, \dots, \xx_n}, \; \xx_i \in \R^3
+    \qquad \text{and} \qquad 
+    \zz \: \coloneqq \: \set{z_1, \dots, z_n}, \; z_i \in \N \text{.}
+\]
+Nonetheless, in many cases there is still some arbitrariness in the choice of the 
+exact positions $\XX$: Energies of molecule structures might be invariant w.r.t. 
+translations and rotations, or forces might be invariant w.r.t. 
+translations and equivariant w.r.t. rotations. Rather than letting the model figure out
+these fundamental invariants of its predicting function learn on its own (e.g. by 
+data augmentation), they are often directly incorporated into the model to reduce 
+complexity. One approach to achieve this is to compute pairwise distances $d_{ij}$ 
+between the atoms and use them instead of the individual atomic locations $\XX$, 
+so---in the GN language---define an input graph with the atomic numbers $\zz$ as 
+node attributes and the interatomic distances as edge attributes (say, if a bond exists
+between two atoms or the distance is below some threshold).
+
+\input{./content/preliminaries/atomic_simulations/dimenet.tex}
+\input{./content/preliminaries/atomic_simulations/gemnet.tex}
 
