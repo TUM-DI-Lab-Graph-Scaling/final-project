@@ -1,0 +1,186 @@
+\begin{figure}[H]
+    \centering
+
+    \tikzset{
+        gpu/.style={
+            shape=rectangle, 
+            draw, 
+            minimum width=1.8cm,
+            minimum height=2.5cm
+        },
+        data/.style={
+            preaction={fill,tum-light-gray},
+            shape=rectangle, 
+            draw, 
+            minimum width=1.8cm, 
+            minimum height=0.7cm,
+            pattern color=tum-gray,
+            pattern=grid
+        },
+        model/.style={
+            preaction={fill,tum-lighter-blue},
+            shape=rectangle,
+            draw,
+            minimum height=0.5cm,
+            pattern color=tum-light-blue,
+            pattern=grid
+        },
+        gradient/.style={
+            preaction={fill,tum-light-green},
+            shape=rectangle,
+            draw,
+            minimum height=0.5cm,
+            pattern color=tum-green,
+            pattern=grid
+        },
+        optimizer/.style={
+            preaction={fill,tum-light-orange},
+            shape=rectangle,
+            draw,
+            minimum height=1.5cm,
+            pattern color=tum-orange,
+            pattern=grid
+        },
+        empty/.style={
+            preaction={fill,tum-lighter-gray},
+            shape=rectangle,
+            draw,
+            minimum width=1.8cm,
+            pattern color=tum-light-gray,
+            pattern=grid
+        }
+    }
+
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \begin{tikzpicture}
+
+            \node[gpu, label={\scriptsize GPU $0$}] (0) at (0,0) {};
+            \node[gpu, label={\scriptsize GPU $1$}] (1) at (2,0) {};
+            \node[gpu, label={\scriptsize GPU $m\!-\!1$}] (n-1) at (4.5,0) {};
+            \node[data, label=left:\tiny Data] (0d) at (0,-1.7) {\scriptsize $\mathcal{D}_0$};
+            \node[data] (1d) at (2,-1.7) {\scriptsize $\mathcal{D}_1$};
+            \node[data] (n-1d) at (4.5,-1.7) {\scriptsize $\mathcal{D}_{m-1}$};
+            \draw[dotted, thick] (3,0) -- (3.51,0);
+            \draw[dotted, thick] (3,-1.7) -- (3.51,-1.7);
+    
+            \node[model, minimum width=1.8cm, label=left:\tiny \textcolor{tum-dark-blue}{Model}] (0m) at (0,1) {};
+            \node[gradient, minimum width=1.8cm, label=left:\tiny \textcolor{tum-dark-green}{Gradient}] (0g) at (0,0.5) {};
+            \node[optimizer, minimum width=1.8cm, label=left:\tiny \textcolor{tum-orange}{Optimizer}] (0o) at (0,-0.5) {};
+    
+            \node[model, minimum width=1.8cm] (0m) at (2,1) {};
+            \node[gradient, minimum width=1.8cm] (0g) at (2,0.5) {};
+            \node[optimizer, minimum width=1.8cm] (0o) at (2,-0.5) {};
+    
+            \node[model, minimum width=1.8cm] (0m) at (4.5,1) {};
+            \node[gradient, minimum width=1.8cm] (0g) at (4.5,0.5) {};
+            \node[optimizer, minimum width=1.8cm] (0o) at (4.5,-0.5) {};
+
+        \end{tikzpicture}
+        \caption*{$\qquad \qquad$\scriptsize \textbf{Stage 0: Standard data parallelism}}
+    \end{subfigure}\hspace*{1.4em}%
+    ~
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \begin{tikzpicture}
+
+            \node[gpu, label={\scriptsize GPU $0$}] (0) at (0,0) {};
+            \node[gpu, label={\scriptsize GPU $1$}] (1) at (2,0) {};
+            \node[gpu, label={\scriptsize GPU $m\!-\!1$}] (n-1) at (4.5,0) {};
+            \node[data] (0d) at (0,-1.7) {\scriptsize $\mathcal{D}_0$};
+            \node[data] (1d) at (2,-1.7) {\scriptsize $\mathcal{D}_1$};
+            \node[data] (n-1d) at (4.5,-1.7) {\scriptsize $\mathcal{D}_{m-1}$};
+            \draw[dotted, thick] (3,0) -- (3.51,0);
+            \draw[dotted, thick] (3,-1.7) -- (3.51,-1.7);
+    
+            \node[model, minimum width=1.8cm] (0m) at (0,1) {};
+            \node[gradient, minimum width=1.8cm] (0g) at (0,0.5) {};
+            \node[empty, minimum height=1.5cm] (0e) at (0,-0.5) {};
+            \node[optimizer, minimum width=0.4cm] (0o) at (-0.7,-0.5) {};
+    
+            \node[model, minimum width=1.8cm] (0m) at (2,1) {};
+            \node[gradient, minimum width=1.8cm] (0g) at (2,0.5) {};
+            \node[empty, minimum height=1.5cm] (0e) at (2,-0.5) {};
+            \node[optimizer, minimum width=0.4cm] (0o) at (1.7,-0.5) {};
+    
+            \node[model, minimum width=1.8cm] (0m) at (4.5,1) {};
+            \node[gradient, minimum width=1.8cm] (0g) at (4.5,0.5) {};
+            \node[empty, minimum height=1.5cm] (0e) at (4.5,-0.5) {};
+            \node[optimizer, minimum width=0.4cm] (0o) at (5.2,-0.5) {};
+
+        \end{tikzpicture}
+        \caption*{\scriptsize \textbf{ZeRO stage 1}}
+    \end{subfigure}
+
+    \vspace*{0.5em}
+
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \begin{tikzpicture}
+
+            \node[gpu, label={\scriptsize GPU $0$}] (0) at (0,0) {};
+            \node[gpu, label={\scriptsize GPU $1$}] (1) at (2,0) {};
+            \node[gpu, label={\scriptsize GPU $m\!-\!1$}] (n-1) at (4.5,0) {};
+            \node[data, label=left:\tiny Data] (0d) at (0,-1.7) {\scriptsize $\mathcal{D}_0$};
+            \node[data] (1d) at (2,-1.7) {\scriptsize $\mathcal{D}_1$};
+            \node[data] (n-1d) at (4.5,-1.7) {\scriptsize $\mathcal{D}_{m-1}$};
+            \draw[dotted, thick] (3,0) -- (3.51,0);
+            \draw[dotted, thick] (3,-1.7) -- (3.51,-1.7);
+    
+            \node[model, minimum width=1.8cm, label=left:\tiny \textcolor{tum-dark-blue}{Model}] (0m) at (0,1) {};
+            \node[empty, minimum height=2cm] (0e) at (0,-0.25) {};
+            \node[gradient, minimum width=0.4cm, label=left:\tiny \textcolor{tum-dark-green}{Gradient}] (0g) at (-0.7,0.5) {};
+            \node[optimizer, minimum width=0.4cm, label=left:\tiny \textcolor{tum-orange}{Optimizer}] (0o) at (-0.7,-0.5) {};
+    
+            \node[model, minimum width=1.8cm] (0m) at (2,1) {};
+            \node[empty, minimum height=2cm] (0e) at (2,-0.25) {};
+            \node[gradient, minimum width=0.4cm] (0g) at (1.7,0.5) {};
+            \node[optimizer, minimum width=0.4cm] (0o) at (1.7,-0.5) {};
+    
+            \node[model, minimum width=1.8cm] (0m) at (4.5,1) {};
+            \node[empty, minimum height=2cm] (0e) at (4.5,-0.25) {};
+            \node[gradient, minimum width=0.4cm] (0g) at (5.2,0.5) {};
+            \node[optimizer, minimum width=0.4cm] (0o) at (5.2,-0.5) {};
+
+        \end{tikzpicture}
+        \caption*{$\qquad \qquad$\scriptsize \textbf{ZeRO stage 2}}
+    \end{subfigure}\hspace*{1.4em}%
+    ~
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \begin{tikzpicture}
+
+            \node[gpu, label={\scriptsize GPU $0$}] (0) at (0,0) {};
+            \node[gpu, label={\scriptsize GPU $1$}] (1) at (2,0) {};
+            \node[gpu, label={\scriptsize GPU $m\!-\!1$}] (n-1) at (4.5,0) {};
+            \node[data] (0d) at (0,-1.7) {\scriptsize $\mathcal{D}_0$};
+            \node[data] (1d) at (2,-1.7) {\scriptsize $\mathcal{D}_1$};
+            \node[data] (n-1d) at (4.5,-1.7) {\scriptsize $\mathcal{D}_{m-1}$};
+            \draw[dotted, thick] (3,0) -- (3.51,0);
+            \draw[dotted, thick] (3,-1.7) -- (3.51,-1.7);
+    
+            \node[empty, minimum height=2.5cm] (0e) at (0,0) {};
+            \node[model, minimum width=0.4cm] (0m) at (-0.7,1) {};
+            \node[gradient, minimum width=0.4cm] (0g) at (-0.7,0.5) {};
+            \node[optimizer, minimum width=0.4cm] (0o) at (-0.7,-0.5) {};
+    
+            \node[empty, minimum height=2.5cm] (0e) at (2,0) {};
+            \node[model, minimum width=0.4cm] (0m) at (1.7,1) {};
+            \node[gradient, minimum width=0.4cm] (0g) at (1.7,0.5) {};
+            \node[optimizer, minimum width=0.4cm] (0o) at (1.7,-0.5) {};
+    
+            \node[empty, minimum height=2.5cm] (0e) at (4.5,0) {};
+            \node[model, minimum width=0.4cm] (0m) at (5.2,1) {};
+            \node[gradient, minimum width=0.4cm] (0g) at (5.2,0.5) {};
+            \node[optimizer, minimum width=0.4cm] (0o) at (5.2,-0.5) {};
+
+        \end{tikzpicture}
+        \caption*{\scriptsize \textbf{ZeRO stage 3}}
+    \end{subfigure}
+    \vspace*{0.5em}
+
+    \captionsetup{width=\dimexpr\textwidth-1.5cm\relax}
+    \caption{GPU memory utilization with different stages of ZeRO activated.
+    The data $\mathcal{D}$ is distributed evenly among the $m$ GPUs into 
+    $\mathcal{D}_0, \dots, \mathcal{D}_{m-1}$.}
+\end{figure}
