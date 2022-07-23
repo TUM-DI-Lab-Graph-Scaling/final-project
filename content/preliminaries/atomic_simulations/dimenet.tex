@@ -1,76 +1,103 @@
 \subsubsection{Dimenet and Dimenet++}
 \label{subsubsec:dimenet}
 
-\textcolor{red}{Embed into the rest of the chapter!}
+DimeNet (\enquote{Directional Message Passing Neural Network}) 
+\cite{DBLP:journals/corr/abs-2003-03123}, which was proposed by Gasteiger et al. 
+in 2020, is a GNN architecture for predicting quantum mechanical properties
+of molecules that does not only take pairwise distances between atoms into
+account, but also takes advantage of directional information. In the EGN 
+language (see \ref{subsubsec:egns} and \cite{https://doi.org/10.48550/arxiv.2203.09697}),
+3-way interactions between nodes are modeled. DimeNet is mainly designed for 
+predicting the energy of a molecule structure.
 
-Graph neural networks have been applied in the fields of molecular simulations. 
-A molecule is uniquely defined by the atomic numbers 
-$\boldsymbol{z}=\left\{z_{1}, \ldots, z_{N}\right\}$ and positions 
-$ \boldsymbol{X}=\left\{\boldsymbol{x}_{1}, \ldots, \boldsymbol{x}_{N}\right\}$. 
-The prediction task can be written as 
-$f_{\theta}:\{\boldsymbol{X}, \boldsymbol{z}\} \rightarrow \mathbb{R}$, 
-where the model outputs for example energy of the molecule. However, vanilla graph 
-neural networks only depend on pairwise distances while ignore directional information. 
-In order to improve the expressiveness of model, Dimenet\cite*{DBLP:journals/corr/abs-2003-03123} 
-encodes directional information in the message embedding while keeping the network invariant to 
-translation, rotation, and inversion of the molecule\cite*{DBLP:journals/corr/abs-2003-03123}. \\
-The central idea of Dimenet is directional message embedding. For general GNNs, the atom 
-embeddings $h_i$ are updated in each layer in the following way:\\
+Just as in \eqref{eq:molecule_setup}, the network receives the positions $\XX$
+and atomic numbers $\zz$ of a molecule as inputs. 
+At first, define the pairwise distances and relative direction vectors
 \[
-    \boldsymbol{h}_{i}^{(l+1)}=f_{\text {update }}\left(\boldsymbol{h}_{i}^{(l)}, \sum_{j \in \mathcal{N}_{i}} f_{\text {int }}\left(\boldsymbol{h}_{j}^{(l)}, \boldsymbol{e}_{(i j)}^{(l)}\right)\right)
+    d_{ij} \: \coloneqq \: \norm{\xx_i - \xx_j}_2, 
+    \qquad \vec{\xx}_{ij} \: \coloneqq \xx_j - \xx_i \text{.}
 \]
-Where the edge embedding $\boldsymbol{e}_{(i j)}^{(l)}$ usually only depend on 
-distance $d_{ij}$ between atom i and atom j, which limits their ability to model 
-energy that is linked to bond angles.\\
-Dimenet encodes the angle 
-$\alpha_{(k j, j i)}=\angle \boldsymbol{x}_{k} \boldsymbol{x}_{j} \boldsymbol{x}_{i}$ 
-and interatomic distance $d_{kj}$ in 
-$\boldsymbol{a}_{\mathrm{SBF}}^{(k j, j i)} \in \mathbb{R}^{N_{\mathrm{SHBF}} \cdot N_{\mathrm{SRBF}}}$ 
-which is based on spherical Bessel functions and spherical harmonics. 
-It also encodes $d_{ji}$ solely in $\boldsymbol{e}_{\mathrm{RBF}}^{(j i)}$ which is radial 
-basis function.  The edge embedding is replaced by directional message embeddings $m_{ij}$. 
-That is to say, the message passed from atom i to atom j is different from that from atom j to atom i. 
-Dimenet updates $m_{ji}$ by aggregating all incoming edges from neighbors of atom j except for from atom 
-i. The scheme is illustrated in figure 1 and by the following equation:
+A molecular graph is given or it is defined by connecting the atoms with distance 
+below some threshold $c$. Denote by $\mathcal{N}_i \subseteq \set{1, \dots, n}$ the 
+neighborhood of the atom $i$.
+Directional information is now leveraged by also 
+taking the angle
 \[
-    \boldsymbol{m}_{j i}^{(l+1)}=f_{\text {update }}\left(\boldsymbol{m}_{j i}^{(l)}, \sum_{k \in \mathcal{N}_{j} \backslash\{i\}} f_{\text {int }}\left(\boldsymbol{m}_{k j}^{(l)}, \boldsymbol{e}_{\mathrm{RBF}}^{(j i)}, \boldsymbol{a}_{\mathrm{SBF}}^{(k j, j i)}\right)\right)
+    \alpha_{kji} \: \coloneqq \: \measuredangle\left( \vec{\xx}_{jk}, \vec{\xx}_{ji} \right)
 \]
-In this way, the model is enabled to learn the angular potential energy. By encoding angular information 
-into model, they also made the model more expressive.\\
+between neighboring edges $(\_,k,j)$ and $(\_,j,i)$ into account. 
+The distances and angles are then transformed to a representation which is related
+to DFT calculations \cite[Section 5]{DBLP:journals/corr/abs-2003-03123}
+by using radial and spherical Bessel functions:
+\[
+    \ee_{\text{RBF}}^{(ji)} \: \coloneqq \: \ee_{\text{RBF}}(d_{ji}), 
+    \qquad \aaa_{\text{SBF}}^{(kji)} \: \coloneqq \: \aaa_{\text{SBF}}(d_{kj}, \alpha_{kji})
+    \text{.}
+\]
+In an embedding phase, edge embeddings $\mm_{ji}^{(1)}$ and outputs
+$t_{i}^{(1)}$ or a global attribute $t^{(1)} = \sum_{i=1}^n t_i^{(1)}$ are initialized based
+on the atomic numbers $\zz$ and $\ee_{\text{RBF}}^{(ji)}$. Both node embedings 
+$\hh_i \coloneqq \sum_{j \in \mathcal{N}_i} \mm_{ji}$ and triplet embeddings are handled
+implicitly (i.e. the \textbf{Triplet Update} and \textbf{Node Update} outputs from 
+\ref{subsubsec:gns}, \ref{subsubsec:egns}) do not depend on their respective predecessors).
+From now on, this will be denoted by \enquote{$\_$}.
 
-\begin{wrapfigure}{r}{0.25\textwidth}
-    \centering
-    \includegraphics[]{atomic_simulations/dimenet_message_passing.pdf}
-  \end{wrapfigure}
-The architecture of Dimenet can be illustrated in figure 2. 
-The embedding block takes $\boldsymbol{e}_{\mathrm{RBF}}^{(j i)}$ and 
-atomic numbers $z$ as input and outputs the initial message embeddings. 
-The first interation block takes the initial message embedding $m_{ij}^{(1)}$ 
-and $\boldsymbol{e}_{\mathrm{RBF}}^{(j i)}$, $\boldsymbol{a}_{\mathrm{SBF}}^{(k j, j i)}$ 
-as input and outputs the updated message embeddings $m_{ij}^{(2)}$ for the next interation 
-block. there are 6 interation blocks in total. Each layer including embedding block output 
-the node embedding of their layer by aggregating message embedding coming into the atom. 
-These node embedings are aggregated globally to output molecule level features like energy.\\
+In the EGN language, the initial graph is defined as follows:
+\[
+    G \: = \: (t^{(1)}, V^{(1)}, E^{(1)}, T^{(1)})
+\]
+with nodes, edges and triplets
+\begin{align*}
+    V^{(1)} \: &\coloneqq \: \setcomp{\hh_i^{(1)}}{i \in \set{1, \dots, n}}, \\
+    E^{(1)} \: &\coloneqq \: \setcomp{(\mm_{ji}^{(1)}, i, j)}{i, j \in \set{1, \dots, n}, d_{ji} \leq c}, \\
+    T^{(1)} \: &\coloneqq \: \setcomp{(\_,(\mm_{kj}^{(1)}, j, k), (\mm_{ji}^{(1)}, i, j))}{i, j, k \in \set{1, \dots, n}, \; d_{ji}, d_{kj} \leq c} \text{;}
+\end{align*}
+i.e. the triplets are all possible paths of length two on the edges of $G$.
+
+After this initial graph embedding has been computed, a series of EGN blocks,
+here called \textit{interaction} blocks, are applied to the graph.
+
+Within such an interaction block, the edge embeddings 
+are updated as follows (i.e. corresponds to \textbf{Edge Update}):
+\[
+    \mm_{ji}^{(l+1)} \: = \: 
+    f_{\text{update}}\Bigg(\mm_{ji}^{(l)}, 
+    \underbrace{\sum_{k \in \mathcal{N}_{j} \backslash\{i\}}}_{\textbf{Triplet Aggr.}} 
+    \underbrace{ \vphantom{\sum_{\mathcal{N}_j}} 
+    f_{\text {int }}\left(\mm_{k j}^{(l)}, \ee_{\text{RBF}}^{(ji)}, 
+    \aaa_{\text{SBF}}^{(kj, ji)}\right)}
+    _{\textbf{Triplet Update}}\Bigg) \text{,}
+\]
+where $f_{\text{int}}$ and $f_{\text{update}}$ are implemented by neural networks.
+These edge embeddings are then directly aggregated to the new node embeddings
+\[
+    \hh_i^{(l+1)} \: = \: \sum_{j \in \mathcal{N}_i} \mm_{ji}^{(l+1)}
+\]
+and the outputs $t^{(l+1)}_i$ as well as the global attribute $t^{(l+1)}$ are
+updated (based on another \textbf{Edge Aggregation} step).
+Finally, the global output $t$ that represents the molecule's energy is 
+aggregated over all interaction block outputs.
+The whole DimeNet architecture as depicted in its original paper 
+\cite{DBLP:journals/corr/abs-2003-03123} can be seen in Figure~\ref{fig:dimenet}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[]{atomic_simulations/dimenet.pdf}
     \caption{The DimeNet architecture \cite*{DBLP:journals/corr/abs-2003-03123}.}
+    \label{fig:dimenet}
 \end{figure}
 
-Dimenet++ is an upgrated version of Dimenet that increases the efficiency of training 
-without compensating the quality of results. These improvements includes: \\
-\begin{itemize}
-    \item replaced a bilinear layer in directional message passing block by a 
-    simplier Hadamard product and added multilayer perceptrons for the basis representations.
-    \item downproject the embeddings into lower dimensions in computation-intensive 
-    parts of the model and upproject them back to the original dimensions after those layers.
-    \item used 4 interation layers instead of 6. 
-\end{itemize}
+DimeNet++ \cite{https://doi.org/10.48550/arxiv.2011.14115} is an upgraded version of 
+DimeNet that increases the efficiency of training without impacting the quality of results. 
+These improvements include replacing the bilinear layer in the directional message passing 
+step by a simpler Hadamard product, downprojecting the embeddings into lower dimensions in
+computation-intensive parts of the model and upproject them back to the original dimensions 
+after these layers, and using less interaction layers.
 
 \begin{figure}[H]
   \centering
 \includegraphics[]{atomic_simulations/dimenet_plus_plus.pdf}
-\caption{The DimeNet++ architecture \cite*{https://doi.org/10.48550/arxiv.2203.09697}.}
-\label{fig:one}
+\caption{The DimeNet++ architecture as depicted in
+\cite{https://doi.org/10.48550/arxiv.2203.09697}.}
+\label{fig:dimenet_plus_plus}
 \end{figure}

@@ -48,8 +48,7 @@ as well as
 where $\boldsymbol{\Pi}$ is the orthogonal projection onto the orthogonal
 complement of $\vec{\xx}_{ab}$.
 
-Similarly to DimeNet, this relative directional information is then represented 
-by spherical Fourier-Bessel bases
+Similarly to DimeNet, this relative directional information is then transformed to
 \[
     \eee_{\text{RBF}}^{(ca)} \: = \: \eee_{\text{RBF}}(x_{ca}), 
     \quad \eee_{\text{CBF}}^{(cab)} \: = \: \eee_{\text{CBF}}(x_{ca}, \varphi_{cab}),
@@ -83,7 +82,7 @@ as well as 3- and 4-way interactions
     \: x_{ca} \leq c_{\text{emb}}, \: x_{ab} \leq c_{\text{int}}, 
     \: x_{db} \leq c_{\text{emb}}};
 \end{align*}
-where the higher-order attributes are handled implicitly (denoted by \enquote{$\_$}) 
+where the higher-order attributes are handled implicitly 
 based on the node and edge embeddings, are indexed by the involved nodes (contrary 
 to \eqref{eq:higher_order_interact}), and all appearing $a, b, c, d$ are assumed to be 
 pairwise different.
