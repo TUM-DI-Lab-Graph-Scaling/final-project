@@ -49,8 +49,10 @@ In the EGN language, the initial graph is defined as follows:
 with nodes, edges and triplets
 \begin{align*}
     V^{(1)} \: &\coloneqq \: \setcomp{\hh_i^{(1)}}{i \in \set{1, \dots, n}}, \\
-    E^{(1)} \: &\coloneqq \: \setcomp{(\mm_{ji}^{(1)}, i, j)}{i, j \in \set{1, \dots, n}, d_{ji} \leq c}, \\
-    T^{(1)} \: &\coloneqq \: \setcomp{(\_,(\mm_{kj}^{(1)}, j, k), (\mm_{ji}^{(1)}, i, j))}{i, j, k \in \set{1, \dots, n}, \; d_{ji}, d_{kj} \leq c} \text{;}
+    E^{(1)} \: &\coloneqq \: \setcomp{(\mm_{ji}^{(1)}, i, j)}
+    {i, j \in \set{1, \dots, n}, d_{ji} \leq c}, \\
+    T^{(1)} \: &\coloneqq \: \setcomp{(\_,(\mm_{kj}^{(1)}, j, k), (\mm_{ji}^{(1)}, i, j))}
+    {i, j, k \in \set{1, \dots, n}, \; d_{ji}, d_{kj} \leq c} \text{;}
 \end{align*}
 i.e. the triplets are all possible paths of length two on the edges of $G$.
 
