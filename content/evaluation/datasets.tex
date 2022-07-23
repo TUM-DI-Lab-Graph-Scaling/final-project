@@ -1,11 +1,23 @@
 \section{Evaluation}
+\label{section:evaluation}
 
 \subsection{Datasets}
 
+The OC20 dataset contains training and evluation data using DFT approximation and 
+structure relaxation. 
+
 \subsubsection{Initial Structure to Relaxed Energy (IS2RE)}
 
+Initial Structure to Relaxed Energy (IS2RE) takes an initial structure as input and 
+predicts the relaxed energy \cite*{Chanussot_2021, https://doi.org/10.48550/arxiv.2206.08917}.
 
+OC20 provides three dataset scaling factors for the IS2RE task: 10k, 100k and 
+all structures + relaxations.
 
 \subsubsection{Structure to Energy and Forces (S2EF)}
 
+Structure to Energy and Forces (S2EF) takes a structure and predicts energy and 
+per-atom forces \cite*{Chanussot_2021, https://doi.org/10.48550/arxiv.2206.08917}. 
 
+OC20 provides three dataset scaling factors for the S2EF task: 200k, 2M 20M,  
+all structures + relaxations.

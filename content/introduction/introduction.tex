@@ -4,15 +4,36 @@
 
 Some story about how GNNs have transformed social network analysis, recommender systems, drug discovery and of course atomic simulations.
 
+Graphs offer a powerful way to structure connected data and explore relationships between data. With data represented as graphs, various 
+methods and algorithms can be used to perform analysis and gain insights. Graphs are most-commonly used in the medical domain by e.g. 
+modeling population graph for disease prediction or drug discovery.
+
+In recent years, geometric deep learning has transformed the graph domain by introducing deep neural models to graph structured data 
+archieving significant performance gains in nodel-level, edge-level as well as graph prediciton tasks. 
+
+
 \subsection{Problem definition}
 
 Here we describe our problem and the general goals of the project. (Can be repetitive with parts of the preleminaries)
 
 \subsection{Contributions}
 
-The main contributions of our project (integration of Deepspeed into OCP project to scale and speed up atomic simulations). 
-Can be repetetive with later parts of our final report.
+Our main contributions are:
+
+\begin{enumerate}
+    \item We scaled force and energy predictions in atomic simulations of Catalyst with Graph Neural Networks 
+    by integrating Microsoft Deepspeed into the Open Catalyst Project.
+    \item We evaluated the effectiveness of Deepspeed features, in particular the Zero Redundancy Optimizer, on 
+    real-world graph models in contrast to only applying it to large-scale transformer models.
+    \item We developed a profiling module for the OCP codebase to allow deeper investigations of CPU/GPU memory 
+    usage and model runtimes.
+\end{enumerate}
 
 \subsection{Structure}
 
-The structure of our final report.
+Our final report is structured as follows: Section \ref*{section:preleminaries} follows with a overview over 
+important preliminary background topics of our work. Section \ref*{section:implementation} describes important 
+scaling techniques from Deepspeed and our work to integrate them into the OCP repository. In Section 
+\ref*{section:evaluation}, we provide benchmark data for our changes and evaluate them in detail. Section 
+\ref*{section:project_organization} gives a brief review of our project organization. Finally, Section 
+\ref*{section:conclusion} wraps up the report with a conclusion.
