@@ -11,7 +11,7 @@ Just like DimeNet and DimeNet++, GemNet (\enquote{Geometric Message Passing Neur
 takes the positions $\XX$ and atomic numbers $\zz$ of a molecule 
 (defined in \eqref{eq:molecule_setup}) as inputs. For $a, b \in \set{1, \dots, n}$ write
 \[
-    x_{ab} \: \coloneqq \: \norm{\xx_a - \xx_b}_2 
+    d_{ab} \: \coloneqq \: \norm{\xx_b - \xx_a}_2 
     \qquad \text{and} \qquad 
     \vec{\xx}_{ab} \: \coloneqq \xx_b - \xx_a
 \]
@@ -29,7 +29,7 @@ edges of the embedding graph.
 
 In contrast to DimeNet, quadruplets of nodes are now taken into account for message passing: 
 Consider pairwise different $a, b, c, d \in \set{1, \dots, n}$,
-where $(x_{ab}, a, b)$ are interacting and $(\_, c, a)$, $(\_, d, b)$ are
+where $(d_{ab}, a, b)$ are interacting and $(\_, c, a)$, $(\_, d, b)$ are
 embedded. Set
 \[
     \varphi_{cab} \: \coloneqq \: 
@@ -50,9 +50,9 @@ complement of $\vec{\xx}_{ab}$.
 
 Similarly to DimeNet, this relative directional information is then transformed to
 \[
-    \eee_{\text{RBF}}^{(ca)} \: = \: \eee_{\text{RBF}}(x_{ca}), 
-    \quad \eee_{\text{CBF}}^{(cab)} \: = \: \eee_{\text{CBF}}(x_{ca}, \varphi_{cab}),
-    \quad \eee_{\text{SBF}}^{(cabd)} \: = \: \eee_{\text{SBF}}(x_{ca}, \varphi_{cab}, \phi_{cabd}) 
+    \eee_{\text{RBF}}^{(ca)} \: = \: \eee_{\text{RBF}}(d_{ca}), 
+    \quad \eee_{\text{CBF}}^{(cab)} \: = \: \eee_{\text{CBF}}(d_{ca}, \varphi_{cab}),
+    \quad \eee_{\text{SBF}}^{(cabd)} \: = \: \eee_{\text{SBF}}(d_{ca}, \varphi_{cab}, \phi_{cabd}) 
     \text{.}
 \]
 After this setup phase, initial node embeddings $\hh_{a}^{(1)}$, edge embeddings 
@@ -71,21 +71,21 @@ with nodes and edges
     V^{(1)} \: &\coloneqq \: 
     \setcomp{\hh_{a}^{(1)}}{a \in \set{1, \dots, n}}, \\
     E^{(1)} \: &\coloneqq \: 
-    \setcomp{(\mm_{ca}^{(1)}, c, a)}{c, a \in \set{1, \dots, n}, \: x_{ca} \leq c_{\text{emb}}}
+    \setcomp{(\mm_{ca}^{(1)}, c, a)}{c, a \in \set{1, \dots, n}, \: d_{ca} \leq c_{\text{emb}}}
 \end{align*}
 as well as 3- and 4-way interactions
 \begin{align*}
     T^{(1)} \: &\coloneqq \quad 
     \setcomp{(\_, c, a, b)}{c, a, b \in \set{1, \dots, n}, 
-    \: x_{ca} \leq c_{\text{emb}}, \: x_{ab} \leq c_{\text{int}}} \\
+    \: d_{ca} \leq c_{\text{emb}}, \: d_{ab} \leq c_{\text{int}}} \\
     &\qquad \cup  \setcomp{(\_, c, a, b, d)}{c, a, b, d \in \set{1, \dots, n}, 
-    \: x_{ca} \leq c_{\text{emb}}, \: x_{ab} \leq c_{\text{int}}, 
-    \: x_{db} \leq c_{\text{emb}}};
+    \: d_{ca} \leq c_{\text{emb}}, \: d_{ab} \leq c_{\text{int}}, 
+    \: d_{db} \leq c_{\text{emb}}};
 \end{align*}
 where the higher-order attributes are handled implicitly 
 based on the node and edge embeddings, are indexed by the involved nodes (contrary 
-to \eqref{eq:higher_order_interact}), and all appearing $a, b, c, d$ are assumed to be 
-pairwise different.
+to the definition in \eqref{eq:higher_order_interact}), and all appearing $a, b, c, d$ 
+are assumed to be pairwise different.
 
 This input graph is now successively updated in the GN/EGN scheme using a sequence of 
 complex interaction blocks in which the relative directional information 
