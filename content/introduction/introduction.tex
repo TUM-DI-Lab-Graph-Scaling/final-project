@@ -2,19 +2,36 @@
 
 \subsection{Motivation}
 
-Some story about how GNNs have transformed social network analysis, recommender systems, drug discovery and of course atomic simulations.
+Some story about how GNNs have transformed social network analysis, recommender systems, drug discovery and of course 
+atomic simulations.
 
-Graphs offer a powerful way to structure connected data and explore relationships between data. With data represented as graphs, various 
-methods and algorithms can be used to perform analysis and gain insights. Graphs are most-commonly used in the medical domain by e.g. 
-modeling population graph for disease prediction or drug discovery.
+Graphs offer a powerful way to structure connected data and explore relationships between data. With data represented 
+as graphs, various methods and algorithms can be used to perform analysis and gain insights. Graphs are most-commonly 
+used in the medical domain by e.g. modeling population graph for disease prediction or drug discovery.
 
-In recent years, geometric deep learning has transformed the graph domain by introducing deep neural models to graph structured data 
-archieving significant performance gains in nodel-level, edge-level as well as graph prediciton tasks. 
+In recent years, geometric deep learning has transformed the graph domain by introducing deep neural models to graph 
+structured data archieving significant performance gains in nodel-level, edge-level as well as graph prediciton tasks. 
 
 
 \subsection{Problem definition}
 
-Here we describe our problem and the general goals of the project. (Can be repetitive with parts of the preleminaries)
+Molecular simulations are known to be very computationally intensive. The use of machine learning models, in particular 
+Graph Neural Networks, has been very successful and lead to a shift in predicting such simulations instead of 
+fully computing them. However, although ML models have been very successful, the problem remains that training, 
+even on high-end hardware and multiple GPUs, takes a long time and has extremely high memory requirements. In 
+addition, using hyper-optimization requires many iterations with different parameters to find the optimal model. 
+Any memory and runtime savings will result in days to weeks of less training time and significantly reduced costs.
+
+Microsoft is developing since 2020 the project Deepspeed, which is designed to reduce computing costs and memory 
+requirements of large distributed models through better parallelization and minimal state replication. Deepspeed 
+runs on top of PyTorch and thus integrates into existing model training pipelines. However, Deepspeed was developed 
+for large transformer models and to our knowledge never applied to large-scale training of Graph Neural Network.
+
+In our work, we forked the OCP project to integrate Deepspeed into the training pipeline of the most widely-used 
+and successful models in energy and force prediciton of catalysts. 
+We benchmarks our approach by evaluating the epoch runtime and memory usage of Gemnet, Gemnet-OC, DimeNet and 
+CGCNN using different configurations of DeepSpeed on the OC20 dataset.
+
 
 \subsection{Contributions}
 
@@ -35,5 +52,6 @@ Our final report is structured as follows: Section \ref*{section:preleminaries} 
 important preliminary background topics of our work. Section \ref*{section:implementation} describes important 
 scaling techniques from Deepspeed and our work to integrate them into the OCP repository. In Section 
 \ref*{section:evaluation}, we provide benchmark data for our changes and evaluate them in detail. Section 
-\ref*{section:project_organization} gives a brief review of our project organization. Finally, Section 
-\ref*{section:conclusion} wraps up the report with a conclusion.
+\ref*{section:related_work} presents similiar literature to our work. Section \ref*{section:project_organization} 
+gives a brief review of our project organization. Finally, Section \ref*{section:conclusion} wraps up the 
+report with a conclusion.
