@@ -23,10 +23,10 @@ For more general porpose Graph Neural Network architectures like Graph Attention
 \cite*{10.48550/ARXIV.1710.10903} or GraphSAGE \cite*{10.48550/ARXIV.1706.02216}, sampling 
 is mostly used to avoid neighborhood explosions when building the Message Flow Graphs. To also 
 allow training on large-scale graphs, both popular Geometric Deep Learning frameworks PyTorch 
-Geomtric (PyG) \cite*{Fey2019} and Deep Graph Library (DGL) \cite*{10.48550/ARXIV.1909.01315} 
-offer support for scale-out strategies. For PyG, there is Torch Quiver
-\footnote{\url{https://github.com/quiver-team/torch-quiver}}, which optimizes and scales 
-single-node multi-GPU training. In DGL, multi-GPU training and optimizations are directly 
+Geomtric (PyG) \cite*{10.48550/ARXIV.1903.02428} and Deep Graph Library (DGL) 
+\cite*{10.48550/ARXIV.1909.01315} offer support for scale-out strategies. For PyG, there is 
+Torch Quiver\footnote{\url{https://github.com/quiver-team/torch-quiver}}, which optimizes and 
+scales single-node multi-GPU training. In DGL, multi-GPU training and optimizations are directly 
 integrated into the codebase. In first iterations of our project, we evaluated both Quiver 
 on Pytorch Geometric and DGL. In short, Torch Quiver is unfortunately very poorly maintained 
 and currently not useable from our point of view. DGL offers great support for multi-GPU and 
