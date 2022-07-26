@@ -2,15 +2,15 @@
 
 \subsection{Motivation}
 
-Some story about how GNNs have transformed social network analysis, recommender systems, drug discovery and of course 
-atomic simulations.
+\textcolor{red}{Some story about how GNNs have transformed social network analysis, recommender systems, drug discovery and of course 
+atomic simulations.}
 
 Graphs offer a powerful way to structure connected data and explore relationships between data. With data represented 
-as graphs, various methods and algorithms can be used to perform analysis and gain insights. Graphs are most-commonly 
-used in the medical domain by e.g. modeling population graph for disease prediction or drug discovery.
+as graphs, various methods and algorithms can be used to perform analysis and gain insights. Graphs are most commonly 
+used in the medical domain by e.g. modeling population graphs for disease prediction or drug discovery.
 
 In recent years, geometric deep learning has transformed the graph domain by introducing deep neural models to graph 
-structured data archieving significant performance gains in nodel-level, edge-level as well as graph prediciton tasks. 
+structured data achieving significant performance gains in nodel-level, edge-level as well as graph predicition tasks. 
 
 
 \subsection{Problem definition}
@@ -22,15 +22,15 @@ even on high-end hardware and multiple GPUs, takes a long time and has extremely
 addition, using hyper-optimization requires many iterations with different parameters to find the optimal model. 
 Any memory and runtime savings will result in days to weeks of less training time and significantly reduced costs.
 
-Microsoft is developing since 2020 the project Deepspeed, which is designed to reduce computing costs and memory 
+Since 2020, Microsoft is developing the project Deepspeed, which is designed to reduce computing costs and memory 
 requirements of large distributed models through better parallelization and minimal state replication. Deepspeed 
 runs on top of PyTorch and thus integrates into existing model training pipelines. However, Deepspeed was developed 
-for large transformer models and to our knowledge never applied to large-scale training of Graph Neural Network.
+for large transformer models and, to the best of our knowledge, never applied to large-scale training of Graph Neural Networks.
 
 In our work, we forked the OCP project to integrate Deepspeed into the training pipeline of the most widely-used 
-and successful models in energy and force prediciton of catalysts. 
-We benchmarks our approach by evaluating the epoch runtime and memory usage of Gemnet, Gemnet-OC, DimeNet and 
-CGCNN using different configurations of DeepSpeed on the OC20 dataset.
+and successful models in energy and force predicition of catalysts. 
+We benchmark our approach by evaluating the epoch runtime and memory usage of the GNN architectures Gemnet, Gemnet-OC, 
+DimeNet and CGCNN using different configurations of DeepSpeed on the OC20 dataset.
 
 
 \subsection{Contributions}
@@ -38,7 +38,7 @@ CGCNN using different configurations of DeepSpeed on the OC20 dataset.
 Our main contributions are:
 
 \begin{enumerate}
-    \item We scaled force and energy predictions in atomic simulations of Catalyst with Graph Neural Networks 
+    \item We scaled force and energy predictions in atomic simulations of catalysts with Graph Neural Networks 
     by integrating Microsoft Deepspeed into the Open Catalyst Project.
     \item We evaluated the effectiveness of Deepspeed features, in particular the Zero Redundancy Optimizer, on 
     real-world graph models in contrast to only applying it to large-scale transformer models.

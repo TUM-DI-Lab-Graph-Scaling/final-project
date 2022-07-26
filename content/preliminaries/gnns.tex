@@ -10,8 +10,8 @@ datasets
     \set{(\xx_i, \yy_i)}_{i=1}^n 
     \quad \text{with} \quad \xx_i \in \R^{d}, \: \yy_i \in \R^k 
 \]
-where the inputs $\xx_i$ are assumed to be independently and identically 
-distributed and we want to generally predict the labels $\yy$ from $\xx$ using
+where the inputs $\xx_i$ are assumed to be drawn independently from an identical 
+distribution and we want to generally predict the labels $\yy$ from $\xx$ using
 some parametric function
 \[
     \fct{f_\theta}{\R^d}{\R^k}, \quad
@@ -36,7 +36,7 @@ not be the best fit. For example, just consider the two following settings:
           and we want to predict interaction $\yy_i$ with some newly uploaded content. In this 
           case, the iid assumption of the individual data points $(\xx_i, \yy_i)$ is 
           completely unreasonable because users themselves might share common interests 
-          based on their interactions---or even interact with each other to make each 
+          based on their interactions---or even interact to make each 
           other aware of the content. Therefore it would be sensible to incorporate the 
           existing connections between the data points somehow---so essentially one would 
           like models which operate on one giant input graph with interconnected and 
@@ -76,10 +76,10 @@ a common language for a quite general class of graph-input functions made out of
 individual building blocks. EGNs (Extended Graph Networks) \cite{https://doi.org/10.48550/arxiv.2203.09697}, which we will 
 introduce afterwards, are even more expressive than normal 
 GNs as they also model higher-order interactions between graph vertices (i.e. interactions 
-between 3 or more vertices, or---alternatively---between two graph edges). Especially recent 
+between 3 or more vertices, or---alternatively---between two graph edges). Particularly recent 
 GNNs for atomic simulations that make use of such higher-order interactions, as the ones we will describe 
 in subsection~\ref{subsec:atomic-simulations}, \cite*{DBLP:journals/corr/abs-2003-03123,https://doi.org/10.48550/arxiv.2106.08903}, 
-can be expressed elegantly in the language of the EGN framework.
+can be expressed in the language of the EGN framework.
 
 \subsubsection{Graph Networks}
 \label{subsubsec:gns}
@@ -94,7 +94,7 @@ set of edges respectively;
     E \: &= \: \set{(\ee_k, r_k, s_k)}_{k=1}^{n_e}, &\quad \ee_k \in \R^{d_e}&, \; r_k, s_k \in \set{1, \dots, n_v};
 \end{align*}
 where $\vv_i$ represents the node attributes and $\ee_k$ is the attribute of an edge
-going from $s_k$ to $r_k$. Sometimes, these attributes are also called \textit{embeddings}.
+going from $s_k$ to $r_k$. In many cases, these attributes are also called \textit{embeddings}.
 
 A GN block now consists of the update functions $\phi_e$, $\phi_v$ and $\phi_u$ for edges,
 nodes, and attributes respectively, as well as aggregation functions $\rho_{e \to v}$,
@@ -169,8 +169,8 @@ of a certain order $l$ are first updated individually and then aggregated at eac
 interaction of order $l-1$, whereafter the same is carried out for the interactions
 of order $l-1$, and so on. In the special case of only $3$-order interactions, i.e.
 triplets of nodes or pairs of edges, this would mean that the usual GN computation 
-phases is preceded by a \textbf{Triplet Update} and a \textbf{Triplet Aggregation}
+phases are preceded by a \textbf{Triplet Update} and a \textbf{Triplet Aggregation}
 phase. In Subsection~\ref{subsec:atomic-simulations}, we will use this EGN framework
 to introduce some of the most recent and well-performing GNN architectures for atomic 
-simulations---so, for example, think of edge attributes as the distance between two
+simulations---so, for now, think of edge attributes as the distance between two
 atoms in a molecule and of the triplets as the bond angle between two chemical bonds.

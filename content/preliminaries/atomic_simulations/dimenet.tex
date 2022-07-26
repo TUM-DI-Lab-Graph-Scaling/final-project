@@ -17,11 +17,11 @@ At first, define the pairwise distances and relative direction vectors
     d_{ij} \: \coloneqq \: \norm{\xx_j - \xx_i}_2, 
     \qquad \vec{\xx}_{ij} \: \coloneqq \xx_j - \xx_i \text{.}
 \]
-A molecular graph is given or it is defined by connecting the atoms with distance 
+In the beginning, a molecular graph is given or it is defined by connecting the atoms with distance 
 below some threshold $c$. Denote by $\mathcal{N}_i \subseteq \set{1, \dots, n}$ the 
 neighborhood of the atom $i$.
 Directional information is now leveraged by also 
-taking the angle
+taking the angles
 \[
     \alpha_{kji} \: \coloneqq \: \measuredangle\left( \vec{\xx}_{jk}, \vec{\xx}_{ji} \right)
 \]
@@ -57,7 +57,7 @@ with nodes, edges and triplets
 i.e. the triplets are all possible paths of length two on the edges of $G$.
 
 After this initial graph embedding has been computed, a series of EGN blocks,
-here called \textit{interaction} blocks, are applied to the graph.
+here called \textit{interaction blocks}, are applied to the graph.
 
 Within such an interaction block, the edge embeddings 
 are updated as follows (i.e. corresponds to \textbf{Edge Update}):
@@ -95,11 +95,3 @@ These improvements include replacing the bilinear layer in the directional messa
 step by a simpler Hadamard product, downprojecting the embeddings into lower dimensions in
 computation-intensive parts of the model and upproject them back to the original dimensions 
 after these layers, and using less interaction layers.
-
-\begin{figure}[H]
-  \centering
-\includegraphics[]{atomic_simulations/dimenet_plus_plus.pdf}
-\caption{The DimeNet++ architecture as depicted in
-\cite{https://doi.org/10.48550/arxiv.2203.09697}.}
-\label{fig:dimenet_plus_plus}
-\end{figure}

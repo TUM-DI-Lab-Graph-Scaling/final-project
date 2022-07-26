@@ -2,6 +2,7 @@
 \label{subsec:atomic-simulations}
 
 \subsubsection{General}
+\label{subsubsec:atomic-simulations-general}
 
 Suppose one has information about the chemical and spatial structure of a molecule 
 and would like to predict properties of this very molecule, e.g. its energy (at the 
@@ -19,7 +20,7 @@ predict such molecule properties using supervised
 machine learning in order to learn a function that maps molecule structures to their
 respective properties based on data of known molecules. For this task, Graph
 Neural Networks (GNNs) are very well suited not only because a molecule can naturally
-be expressed as a graph (e.g. using its structural formula with atom numbers and
+be expressed as a graph (e.g. using its structural formula with atomic numbers and
 interatomic distances as node and edge attributes), but also because in this case, the 
 assumption of invariance w.r.t. permutations of the atoms or the assumption that 
 the update rules do not differ between nodes or edges and that one is hence
@@ -37,7 +38,7 @@ Nonetheless, in many cases there is still some arbitrariness in the choice of th
 exact positions $\XX$: Energies of molecule structures might be invariant w.r.t. 
 translations and rotations, or forces might be invariant w.r.t. 
 translations and equivariant w.r.t. rotations. Rather than letting the model figure out
-these fundamental invariants of its predicting function learn on its own (e.g. by 
+these fundamental invariants of its predicting functions on its own (e.g. by 
 data augmentation), they are often directly incorporated into the model to reduce 
 complexity. One approach to achieve this is to compute pairwise distances $d_{ij}$ 
 between the atoms and use them instead of the individual atomic locations $\XX$, 
