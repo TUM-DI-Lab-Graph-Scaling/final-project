@@ -1,6 +1,3 @@
-\section{Implementation}
-\label{section:implementation}
-
 \subsection{Mixed Precision Training}
 
 Mixed precision training uses lower bit floating point types for optimizer states, gradients and model parameters to 
@@ -17,7 +14,7 @@ sign. This halves the used memory compared to the default single-precision float
 for the exponent and 24 bits for the fraction. However, FP16 lowers the precision and reduces the range of numbers 
 that can be represented, making calculations less accurate and increasing the risk of overflows/underflows.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics{figures/mixed_precision/float16.pdf}
     \caption{FP16 floating-point number format}
@@ -33,7 +30,7 @@ manager. Our solution was to manually cast parameters to half precision when Dee
 As mentioned before, the use of FP16 leads to a higher risk of overflows/underflows. We experienced many overflows 
 of gradients when using FP16 with Deepspeed. 
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics{figures/mixed_precision/bfloat16.pdf}
     \caption{Bfloat16 floating-point number format}

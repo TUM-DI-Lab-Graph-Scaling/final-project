@@ -22,15 +22,15 @@ even on high-end hardware and multiple GPUs, takes a long time and has extremely
 addition, using hyper-optimization requires many iterations with different parameters to find the optimal model. 
 Any memory and runtime savings will result in days to weeks of less training time and significantly reduced costs.
 
-Since 2020, Microsoft is developing the project Deepspeed, which is designed to reduce computing costs and memory 
-requirements of large distributed models through better parallelization and minimal state replication. Deepspeed 
-runs on top of PyTorch and thus integrates into existing model training pipelines. However, Deepspeed was developed 
+Since 2020, Microsoft is developing DeepSpeed, which is designed to reduce computing costs and memory 
+requirements of large distributed models through better parallelization and minimal state replication. DeepSpeed 
+runs on top of PyTorch and thus integrates into existing model training pipelines. However, DeepSpeed was developed 
 for large transformer models and, to the best of our knowledge, never applied to large-scale training of Graph Neural Networks.
 
-In our work, we forked the OCP project to integrate Deepspeed into the training pipeline of the most widely-used 
+In our work, we forked the OCP project to integrate DeepSpeed into the training pipeline of the most widely-used 
 and successful models in energy and force predicition of catalysts. 
 We benchmark our approach by evaluating the epoch runtime and memory usage of the GNN architectures Gemnet, Gemnet-OC, 
-DimeNet and CGCNN using different configurations of DeepSpeed on the OC20 dataset.
+DimeNet++ and CGCNN using different configurations of DeepSpeed on the OC20 dataset.
 
 
 \subsection{Contributions}
@@ -39,9 +39,9 @@ Our main contributions are:
 
 \begin{enumerate}
     \item We scaled force and energy predictions in atomic simulations of catalysts with Graph Neural Networks 
-    by integrating Microsoft Deepspeed into the Open Catalyst Project.
+    by integrating Microsoft DeepSpeed into the Open Catalyst Project.
     \footnote{\url{https://github.com/TUM-DI-Lab-Graph-Scaling/ocp}}
-    \item We evaluated the effectiveness of Deepspeed features, in particular the Zero Redundancy Optimizer, on 
+    \item We evaluated the effectiveness of DeepSpeed features, in particular the Zero Redundancy Optimizer, on 
     real-world graph models in contrast to only applying it to large-scale transformer models.
     \item We developed a profiling module for the OCP codebase to allow deeper investigations of CPU/GPU memory 
     usage and model runtimes.
@@ -49,10 +49,10 @@ Our main contributions are:
 
 \subsection{Structure}
 
-Our final report is structured as follows: Section \ref*{section:preleminaries} follows with a overview over 
-important preliminary background topics of our work. Section \ref*{section:implementation} describes important 
-scaling techniques from Deepspeed and our work to integrate them into the OCP repository. In Section 
-\ref*{section:evaluation}, we provide benchmark data for our changes and evaluate them in detail. Section 
-\ref*{section:related_work} presents similiar literature to our work. Section \ref*{section:project_organization} 
-gives a brief review of our project organization. Finally, Section \ref*{section:conclusion} wraps up the 
+Our final report is structured as follows: Section~\ref{section:preleminaries} follows with an overview of 
+important preliminary background topics of our work. Section~\ref{section:implementation} describes important 
+scaling techniques from DeepSpeed and our work to integrate them into the OCP repository. In 
+section~\ref{section:evaluation}, we provide benchmark data for our changes and evaluate them in detail. 
+Section~\ref{section:related_work} presents similiar literature to our work, while section~\ref{section:project_organization} 
+gives a brief review of our project organization. Finally, section~\ref{section:conclusion} wraps up the 
 report with a conclusion.
