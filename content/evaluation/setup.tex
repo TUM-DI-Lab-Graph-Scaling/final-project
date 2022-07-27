@@ -6,7 +6,7 @@ P2P communication through PCI. Practically speaking, this means that we set \tex
 "PIX".
 
 \begin{enumerate}[align=left]
-    \item[\textbf{GemNet}] The first model we evaluated with our Deepspeed enhancements was GemNet-T 
+    \item[\textbf{GemNet}] The first model we evaluated with our DeepSpeed enhancements was GemNet-T 
     scaled up to roughly 292 million parameters corresponding to Gemnet-XL\cite*{https://doi.org/10.48550/arxiv.2203.09697}
     in size. The model consists of 6 interactions blocks, an atom embedding size of 128, an edge 
     embedding size of 1536, and triplet embedding size of 384. All other hyperparameters are equal 
@@ -19,6 +19,16 @@ P2P communication through PCI. Practically speaking, this means that we set \tex
     for the OCP benchmark evaluation.
 \end{enumerate}
 
+For detailed analysis we gathered metrices from all our experiment runs regarding epoch runtimes, 
+CPU memory usage, GPU memory usage, as well as GPU memory reserved or allocated by PyTorch directly.
+We collected the data with a custom profling framework for PyTorch which tracks each individual phase 
+of computations, in specific the dataloading, forward pass and backward pass, to further investigate 
+internal behaviour of our applied optimizations. 
+In addition we used integrated the PyTorch profiler\footnote{\url{https://pytorch.org/docs/stable/profiler.html}}
+to collect step-by-step performance metrics, including information about communcation collectives and 
+volume or breakdown of calls to CUDA operations. PyTorch profiler also includes plugins to 
+load and visualize the profiling data in Tensorboard, which allowed us to do ad-hoc profiling 
+even when the experiment was still running.
 
 
 
