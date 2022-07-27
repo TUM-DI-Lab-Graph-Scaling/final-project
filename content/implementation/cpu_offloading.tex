@@ -1,2 +1,61 @@
-\subsection{ZeRO-Infinity: CPU Offloading}
+\subsection{Offloading Optimizations}
 
+To further reduce GPU memory usage, Deepspeed contains optimizations to offload 
+data and compute from the GPU to CPU or even Non-Volatile Memory express (NVMe) 
+memory. 
+
+Offloading optimizations in Deepspeed were introduced in ZeRO-Offload 
+\cite*{DBLP:journals/corr/abs-2101-06840}. ZeRO-Offload builds on top of 
+the ZeRO Stage 2 optimizer which partitions gradients and optimizer states. 
+With offloading is enabled, each GPU offloads part of its partition to the CPU. 
+The offload engine automatically determines gradients and optimizer states 
+which can be computed on the CPU while minimizing communications between CPU 
+and GPU and maximize memory savings on the GPU.
+
+ZeRO-Offload for Zero Stage 2 is enabled by specifing the offload optimizer 
+configuration inside of the ZeRO configuration:
+
+\begin{json}
+{
+    "zero_optimization": {
+        "stage": 2,
+        "offload_optimizer": {
+            "device": "[cpu|nvme]"
+        }
+    }
+}
+\end{json}
+
+Offloading optimizations in Deepspeed were introduced in ZeRO-Offload 
+\cite*{DBLP:journals/corr/abs-2101-06840}. ZeRO-Infinity 
+\cite*{DBLP:journals/corr/abs-2104-07857}
+further enhances in ZeRO-Offload by building on top of ZeRO-3 (Stage 3).
+
+ZeRO-Infinity brings a novel offload engine for model states to select 
+parts of the model which can be offloaded to CPU or NVMe memory. 
+The engine autodetects which parts of the model should be swapped out most 
+efficiently by displaying the computations of the model as a computation 
+graph and detecting parts of the graph that would not fit into the available 
+GPU memory or that are faster executed when executed in parallel on the CPU. 
+Thus, ZeRO-Infinity also allows models that are significantly larger than 
+the GPU memory to be trained as long as enough CPU or NVMe is available. 
+
+After our integration of ZeRO-3 into the OCP code base, offloading worked 
+out-of-the-box. ZeRO-Infinity's offload engine can be enabled in Stage 3 
+using the two ZeRO configurations \textit{offload\_optimizer} and 
+\textit{offload\_param} to offload either optimizer states or entire 
+parts of the model:
+
+\begin{json}
+{
+    "zero_optimization": {
+        "stage": 3,
+        "offload_optimizer": {
+            "device": "[cpu|nvme]"
+        },
+        "offload_param": {
+            "device": "[cpu|nvme]"
+        }
+    }
+}
+\end{json}

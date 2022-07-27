@@ -34,4 +34,19 @@ our tests were very positive, however most atomic simulations models are impleme
 of Pytorch Geomtric. Consequently, we decided against DGL because the effort to reimplement 
 Dimenet, Gemnet, and Gemnet-OC in DGL would have been too costly. 
 
+Moving away from atomic simulation and Graph Neural Network specific optimizations, several 
+toolkits several toolkits for more memory-efficient training of large models have developed 
+in recent years, either complementary or as alternatives to Deepspeed. Fairseq \cite*{ott2019fairseq}, 
+developed by Meta AI, was originally developed to allow smaller labs and developers to 
+fine-tune pre-trained language models. Nowadays the toolkit also includes support for mixed 
+precisiont training, parameter offloading to CPU and multi-GPU optimizations such as parameter and 
+optimizer state sharding. A direct competitor to Deepspeed is FairScale \cite*{FairScale2021}. 
+FairScale is also developed by Meta AI and contains optimizations similar to Zero-1, Zero-2 and 
+Zero-3, combined with features for CPU offloading, FP16, and activation checkpointing. Another 
+alternative to Deepspeed is the Fully Sharded Data Parallel (FSDP)\footnote{\url{https://pytorch.org/blog/introducing-pytorch-fully-sharded-data-parallel-api/}} 
+module newly introduced in PyTorch 1.11. FSDP is a native integration of a subset of Deepspeed 
+and FairScale features directly into PyTorch without the need to install external modules. 
+The implementation of FSDP heavily borrows from FairScale while bringing a more intuitive and 
+streamlined API for developers.
+
 

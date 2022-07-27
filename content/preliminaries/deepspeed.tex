@@ -2,7 +2,7 @@
 
 Microsoft DeepSpeed\footnote{\url{https://github.com/microsoft/DeepSpeed}} is
 a deep learning training optimization library built on top of PyTorch enabling
-large scale distributed neural network training and making training on multiple devices 
+large-scale distributed neural network training and making training on multiple devices 
 (or machines) more memory- and time-efficient. Particularly for large-scale training of
 transformer models like Megatron-LM \cite{10.48550/ARXIV.1909.08053}, DeepSpeed has
 already been used extensively and proven very 
@@ -15,7 +15,7 @@ DeepSpeed offers.
 At the heart of DeepSpeed lies the \textit{Zero Redundancy Optimizer} 
 \cite{https://doi.org/10.48550/arxiv.1910.02054,DBLP:journals/corr/abs-2101-06840,DBLP:journals/corr/abs-2104-07857},
 or short \textit{ZeRO}, which is a sophisticated and broad parallelization strategy 
-combining---among other things---data and model parallelism paradigms.
+combining data, model and pipeline parallelism paradigms.
 As it was already implied in the previous section~\ref{subsubsec:data-model-pipeline},
 both model and data parallelism separately have their own flaws: While data parallelism
 is memory inefficient as there is a lot of redundancy in storing a copy of the whole 
@@ -34,7 +34,7 @@ following ways:
 
 \begin{itemize}
     \item \textit{ZeRO-DP} (\enquote{data parallelism}) is based on standard
-          data parallelism and is designed for large models which significant
+          data parallelism and is designed for large models with significant
           memory footprints. ZeRO-DP can be seen as a combination of data and model
           parallelism in which (parts of) the model states are partitioned
           among the data-parallel processes, while a dynamic communication
@@ -55,7 +55,7 @@ following ways:
 \end{itemize}
 
 \textit{ZeRO-Offload} \cite{DBLP:journals/corr/abs-2101-06840} and 
-\textit{ZeRO-Infinity} \cite{DBLP:journals/corr/abs-2104-07857} are features of ZeRO
+\textit{ZeRO-Infinity} \cite{DBLP:journals/corr/abs-2104-07857} are feature extensions of ZeRO
 that were added at a later point in time to enable offloading of model states to CPU memory 
 for very large models in order to further increase GPU memory savings. While ZeRO-Offload 
 enables offloading of optimizer states in stage 2 of ZeRO-DP, ZeRO-Infinity
