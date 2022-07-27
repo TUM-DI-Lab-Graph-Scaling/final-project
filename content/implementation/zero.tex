@@ -16,7 +16,12 @@ Stage 1 of ZeRO enables Optimizer State Partitioning.
 
 \subsubsection{Stage 2 (OS+G)}
 
-Stage 2 of ZeRO partitions both optimizer states and gradients.
+Stage 2 of ZeRO partitions both optimizer states and gradients. ZeRO-2 generally follows the following 
+execution path for each step: Each GPU holds a replica of the entire model (all parameters), however 
+only a mutually exlusive portion of the parameters are updated on each of the devices. The GPUs only store 
+the shard of gradients and optimizer states, which they need for their particular portion of parameters 
+during the forward and backward pass. After doing the optimizer step, the GPUs update each other through 
+an \textit{all-gather} nccl communication collective. 
 
 \subsubsection{Stage 3 (OS+G+P)}
 
@@ -24,3 +29,19 @@ Stage 3 of ZeRO partitions optimizer states, gradients and model parameters, thu
 traditional Data Parallelism approach with Model parallelism.
 
 \input{figures/deepspeed/zero.tex}
+
+After our integration, the ZeRO optimization can be enabled for all OCP models in the Deepspeed configuration 
+file. The specification is as follows:
+
+\begin{json}
+{
+    "bf16": {
+        "enabled": "true"
+    }
+    "zero_optimization": {
+        "stage": [1|2|3]
+    }
+}
+\end{json}
+
+Note that the current Deepspeed implementation requires bfloat16 floating point precision to be enabled. 
