@@ -34,7 +34,19 @@ $\zz$ and its positions $\XX$, where
     \zz \: \coloneqq \: \set{z_1, \dots, z_n}, \; z_i \in \N \text{.}
     \label{eq:molecule_setup}
 \end{equation}
-Nonetheless, in many cases there is still some arbitrariness in the choice of the 
+Suppose $E(\XX, \zz)$ is the energy of the whole molecule structure, then one can immediately
+obtain the forces acting on the individual atoms indexed by $i \in \set{1, \dots, n}$ as
+\[
+    \FF_i \: \coloneqq \: \frac{\partial E(\XX, \zz)}{\partial \xx_i} \: \in \: \R^3 \text{.}
+\]
+If we now want to simultaneously predict the energy $E$ and forces $\FF_i$
+of a molecule structure, there are two options: In so-called 
+\textit{energy-centric models}, just a global graph feature which models molecule energy
+is regarded as the GNN output and the forces are obtained by differentiating w.r.t.
+the atom locations. In contrast, \textit{force-centric models} predict both energy and forces
+directly as a global attribute and node embeddings respectively.
+
+In many cases there is still some arbitrariness in the choice of the 
 exact positions $\XX$: Energies of molecule structures might be invariant w.r.t. 
 translations and rotations, or forces might be invariant w.r.t. 
 translations and equivariant w.r.t. rotations. Rather than letting the model figure out
