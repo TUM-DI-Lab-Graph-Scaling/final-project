@@ -86,3 +86,38 @@ For each experiment, we performed one epoch of training
 \end{figure}
 
 \subsubsection{DimeNet++}
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/cuda_memory/memory_comparison.pdf}
+        \label{fig:dimenet-is2re-memory-results}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/runtimes/runtimes_comparison.pdf}
+        \label{dimenet-is2re-runtimes-results}
+    \end{subfigure}
+    
+    \vspace*{-1em}
+
+    \resizebox{0.95\textwidth}{!}{%
+    \begin{tabular}{ll|l|l|l|l|l|l|l|l|}
+    \cline{3-10}
+    & & \scriptsize \textbf{S0}    & \scriptsize \textbf{S0}+fp16 & \scriptsize \textbf{S1}             & \scriptsize \textbf{S1}+OC          & \scriptsize \textbf{S2}+OC & \begin{tabular}{@{}c@{}}\scriptsize\textbf{S2}+OO \vspace*{-0.5em} \\ \scriptsize+OC\end{tabular}      & \scriptsize \textbf{S3}+OC & \scriptsize \begin{tabular}{@{}c@{}}\scriptsize\textbf{S3}+PO \\ \scriptsize+OO+OC\end{tabular} \\ \hline \hline
+    \multicolumn{1}{|l|}{\multirow{2}{*}{memory}}   & allocated   & 3.46     & 3.47              & 0.76              & 0.76     & 0.76           & \textbf{0.46} & 1.44              & 1.0         \\ \cline{2-10} 
+    \multicolumn{1}{|l|}{}                          & reserved    & 26.92    & 26.25             & 21.08             & 21.08    & \textbf{16.07} & 16.2          & 26.68             & 26.82       \\ \hline \hline
+    \multicolumn{1}{|l|}{\multirow{5}{*}{runtimes}} & epoch       & 01:11:14 & \textbf{00:42:37} & 01:42:24          & 01:45:05 & 01:46:43       & 02:12:14      & 01:01:56          & 01:31:00    \\ \cline{2-10} 
+    \multicolumn{1}{|l|}{}                          & dataloading & 00:00:10 & 00:00:12          & 00:00:50          & 00:00:52 & 00:00:47       & 00:00:43      & \textbf{00:00:06} & 00:00:08    \\ \cline{2-10} 
+    \multicolumn{1}{|l|}{}                          & forward     & 00:07:47 & \textbf{00:05:32} & 00:06:42          & 00:06:47 & 00:06:43       & 00:06:46      & 00:17:29          & 00:17:31    \\ \cline{2-10} 
+    \multicolumn{1}{|l|}{}                          & backward    & 00:58:40 & 00:32:46          & \textbf{00:30:28} & 00:30:38 & 00:34:37       & 00:58:13      & 00:42:07          & 01:11:02    \\ \cline{2-10} 
+    \multicolumn{1}{|l|}{}                          & rest        & 00:04:34 & 00:04:05          & 01:04:22          & 01:06:46 & 01:04:35       & 01:06:31      & \textbf{00:02:12} & 00:02:18    \\ \hline
+    \end{tabular}}
+
+    \captionsetup{width=\dimexpr\textwidth-1.5cm\relax}
+    \caption{Memory consumption and runtimes on the IS2RE task. Memory is in GB, runtimes in the \textit{h:m:s} format.}
+    
+\end{figure}
