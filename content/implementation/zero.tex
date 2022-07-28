@@ -45,13 +45,11 @@ After our integration, the ZeRO optimization can be enabled for all OCP models i
 file. The specification is as follows:
 
 \begin{json}
-{
-    "bf16": {
-        "enabled": "true"
-    }
-    "zero_optimization": {
-        "stage": [1|2|3]
-    }
+"bf16": {
+    "enabled": "true"
+}
+"zero_optimization": {
+    "stage": [1|2|3]
 }
 \end{json}
 
