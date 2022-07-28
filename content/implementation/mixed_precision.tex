@@ -27,10 +27,8 @@ both PyTorch and Deepspeed failed to detect parameters and gradients in the OCP 
 manager. Our solution was to manually cast parameters to half precision when Deepspeed is used. 
 
 \begin{json}
-{
-    "fp16": {
-        "enabled": true
-    }
+"fp16": {
+    "enabled": true
 }
 \end{json}
 
@@ -46,14 +44,8 @@ of gradients when using FP16 with Deepspeed.
 \end{figure}
 
 \begin{json}[language=json,firstnumber=1]
-{
-    "bf16": {
-        "enabled": true
-    }
+"bf16": {
+    "enabled": true
 }
 \end{json}
-
-
-
-
 
