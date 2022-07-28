@@ -2,8 +2,8 @@
 
 We evaluated all models on a single machine with an AMD Epyc 7542 (128 CPU-Cores), 528 GB memory, 
 and 8 Nvidia RTX A6000 with 48 GB GDDR6-memory. The GPUs were not connected by NVLink, so we used 
-P2P communication through PCI. Practically speaking, this means that we set \texttt{NCCL\_P2P\_LEVEL} to 
-"PIX".
+P2P communication through PCI for NCCL communication collectives. Practically speaking, this 
+means that we set \texttt{NCCL\_P2P\_LEVEL} to \texttt{PIX}.
 
 \begin{enumerate}[align=left]
     \item[\textbf{GemNet}] The first model we evaluated with our DeepSpeed enhancements was 

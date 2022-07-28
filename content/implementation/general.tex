@@ -2,3 +2,75 @@
 \label{section:implementation}
 
 \subsection{Usage of DeepSpeed}
+
+Our goal for this project was to use the Deepspeed engine to speed up and scale 
+large-scale Graph Neural Networks. The Open Catalyst Project presents the ideal 
+benchmark for our acceleration approaches since it contains several model definitions 
+for GNNs in the context of molecular simulations. Previous research has shown 
+that scaling OCP models to multiple hundreds of millions of parameters or even 
+billions of parameters leads to better accuracies. Therefore we want to utilize 
+Deepspeed to scale beyond standard Data Parallelism and enable training of billion 
+parameter models.
+
+We took multiple steps to integrate Deepspeed into the OCP project, which we will 
+descript in the following section. All of our changes are available on Github in our 
+organization fork of OCP\footnote{\url{https://github.com/TUM-DI-Lab-Graph-Scaling/ocp}}.
+
+To start off, we initialized the Deepspeed engine. 
+The initialization in our code looks roughly like this:
+
+\begin{python}
+self.model, self.optimizer, _, _ = deepspeed.initialize(
+                    config=self.config["deepspeed_config"],
+                    model=self.model,
+                    model_parameters=self.model.parameters(),
+                    optimizer=self.optimizer,
+                )
+\end{python}
+
+Deepspeed provides a model and optimizer wrapper to offer the same PyTorch API as 
+before, but performs optimizations under the hood when forward, backward and step 
+functions are invoked. Furthermore, we had to replace the original distributed 
+environment setup with Deepspeeds distributed setup, which particulary useful for 
+Deepspeed to spawn CPU worker processes for optimizer or parameter offloading. We 
+will dive deeper into this optimization in Section~\ref{subsection:offloading}.
+
+To enable or disable specific feature of the optimizer engine, Deepspeed is 
+configured using an extra JSON file. We extended the previous OCP configuration 
+code to handle the deepspeed config as additional argument and pass it through 
+to the Deepspeed engine at the beginning of training. This also allows us to 
+make feature specific changes to codebase, since we also parse the config and 
+make it available at runtime.
+
+An example Deepspeed configuration file looks like this:
+
+\begin{json}
+{
+    "train_batch_size": 16,
+    "train_micro_batch_size_per_gpu": 2,
+    "gradient_accumulation_steps": 1,
+    "fp16": {
+        "enabled": false
+    },
+    "bf16": {
+        "enabled": true
+    },
+    "zero_optimization": {
+        "stage": 3,
+        "contiguous_gradients": true
+    }
+}
+\end{json}
+
+In this configuration, \textit{train\_micro\_batch\_size\_per\_gpu} refers to the 
+batch size processing by one GPU in one step. \textit{gradient\_accumulation\_steps} 
+refers to the number of steps to accumulate gradients before averaging and applying 
+them. \textit{train\_batch\_size} is the effective batch size per accumulation step, 
+so total number of GPUs $\times$ \textit{train\_micro\_batch\_size\_per\_gpu} $\times$ 
+\textit{gradient\_accumulation\_steps}. 
+
+We introduce the other configurations in later sections. \textit{fp16} and 
+\textit{bf16} are mixed-precision configurations and are explained in Section~
+\ref{subsection:mixedprecision}. All configurations in \textit{zero\_optimization} 
+are introduced in Section~\ref{subsection:zero} and amended in Section~
+\ref{subsection:offloading} by offload features.
