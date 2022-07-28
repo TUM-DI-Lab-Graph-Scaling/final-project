@@ -20,17 +20,36 @@ For each experiment, we performed one epoch of training
 
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{evaluation/memory_comparison.pdf}
-        \label{fig:gemnet-memory-results}
+        \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/cuda_memory/memory_comparison.pdf}
+        \label{fig:gemnet-s2ef-memory-results}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{evaluation/runtimes_comparison.pdf}
-        \label{gemnet-runtimes-results}
+        \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/runtimes/runtimes_comparison.pdf}
+        \label{gemnet-s2ef-runtimes-results}
     \end{subfigure}
     \vspace*{-1.5em}
     \caption{Memory consumption and runtimes on the S2EF task.}
+    
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/cuda_memory/memory_comparison.pdf}
+        \label{fig:gemnet-is2re-memory-results}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/runtimes/runtimes_comparison.pdf}
+        \label{gemnet-is2re-runtimes-results}
+    \end{subfigure}
+    \vspace*{-1.5em}
+    \caption{Memory consumption and runtimes on the IS2RE task.}
     
 \end{figure}
 
