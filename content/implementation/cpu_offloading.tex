@@ -7,12 +7,22 @@ memory.
 Offloading optimizations in Deepspeed were introduced in ZeRO-Offload 
 \cite*{DBLP:journals/corr/abs-2101-06840}. ZeRO-Offload builds on top of 
 the ZeRO Stage 2 optimizer which partitions gradients and optimizer states. 
-With offloading is enabled, each GPU offloads part of its partition to the CPU. 
+With offloading enabled, each GPU offloads part of its partition to the CPU. 
 The offload engine automatically determines gradients and optimizer states 
 which can be computed on the CPU while minimizing communications between CPU 
 and GPU and maximize memory savings on the GPU.
 
-The determination which gradient ZeRO-Offload engine 
+To determine the offload strategy, the offload engine represents the model as 
+data-flow graph with nodes are model states (parameters, gradients and 
+optimiter states) and edges are communication volume between that flows through 
+the model during training. ZeRO-Offload uses a two-way partitioning scheme to 
+split the graph into CPU and GPU partitionings while trying to optimize CPU 
+CPU computation overhead, communication overhead and memory savings. 
+
+Generally speaking, offloading is an scale-up approach to utilize as much 
+resources on each machine as possible, including CPU cores and memory. 
+Offloading should reduce GPU memory consuption at the cost of CPU memory and 
+core utilization, while the overall runtime increases.
 
 ZeRO-Offload for Zero Stage 2 is enabled by specifing the offload optimizer 
 configuration inside of the ZeRO configuration:
@@ -28,25 +38,28 @@ configuration inside of the ZeRO configuration:
 }
 \end{json}
 
-Offloading optimizations in Deepspeed were introduced in ZeRO-Offload 
-\cite*{DBLP:journals/corr/abs-2101-06840}. ZeRO-Infinity 
-\cite*{DBLP:journals/corr/abs-2104-07857}
-further enhances in ZeRO-Offload by building on top of ZeRO-3 (Stage 3).
+ZeRO-Infinity \cite*{DBLP:journals/corr/abs-2104-07857} further features of 
+ZeRO-Offload by building on top of ZeRO-3 (Stage 3) and also introducing NVMe 
+offloading.
 
-ZeRO-Infinity brings a novel offload engine for model states to select 
-parts of the model which can be offloaded to CPU or NVMe memory. 
-The engine autodetects which parts of the model should be swapped out most 
-efficiently by displaying the computations of the model as a computation 
-graph and detecting parts of the graph that would not fit into the available 
-GPU memory or that are faster executed when executed in parallel on the CPU. 
-Thus, ZeRO-Infinity also allows models that are significantly larger than 
-the GPU memory to be trained as long as enough CPU or NVMe is available. 
+ZeRO-Infinity builds on top of the offload engine of ZeRO-Offload by also 
+mapping the model to a data-flow graph as described above. However, the 
+novel infinity offload engine also allows assigning data-flow partitions 
+to NVMe memory and extends the graph by including activation memory hence 
+also allowing offloading activiation checkpoints to CPU memory or NVMe. 
+ZeRO-Infinity also introduces the concept of memory-centric tiling for 
+working memory to split larger layers in the model into smaller tiles, 
+allowing the offload engine to further improve the partitioning scheme and 
+prevent GPU memory overflows with single large layers which often occured 
+before in large language models.   To sum it up, ZeRO-Infinity allows 
+models that are significantly larger than the GPU memory to be trained as 
+long as enough CPU or NVMe is available. 
 
-After our integration of ZeRO-3 into the OCP code base, offloading worked 
-out-of-the-box. ZeRO-Infinity's offload engine can be enabled in Stage 3 
-using the two ZeRO configurations \textit{offload\_optimizer} and 
-\textit{offload\_param} to offload either optimizer states or entire 
-parts of the model:
+Similiar to ZeRO-Offload, after our integration of ZeRO-3 into the OCP 
+code base, infinity offloading worked out-of-the-box. ZeRO-Infinity's
+offload engine can be enabled in Stage 3 using the two ZeRO configurations 
+\textit{offload\_optimizer} and \textit{offload\_param} to offload 
+either optimizer states or entire parts of the model:
 
 \begin{json}
 {
