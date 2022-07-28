@@ -2,18 +2,52 @@
 
 \subsubsection{GemNet}
 
-\begin{itemize}
-    \item s2ef (batch size 2), is2re(batch size 2)
-    \item configurations (8 times): baseline stage 0 (all deepspeed features deactivated), 
-    stage 0 fp16: memory savings from deepspeed, not only from fp16. 
-    \item big drop from stage 0 to stage 1: Optimizer states have huge influence on
-    memory consumption, memory-wise, stage 2 with optimizer offloading best
-    \item optimizer offloading saves memory, but increases runtime
-    \item stage 3 seems ineffective
-    \item communication overlapping (pipeline parallelism) seems ineffective.
-\end{itemize}
+We evaluated the GemNet model on the S2EF task with the 200k dataset and
+the IS2RE task with the 100k dataset. For both tasks, we trained for one epoch
+using a batch size of 16 (since data parallelism was activated in all of the 
+runs, this implies that each of the 8 GPUs received 2 molecules per forward pass). 
 
-For each experiment, we performed one epoch of training
+We evaluated the GPU memory consumed by CUDA tensors and runtimes for GemNet training with 8 different 
+configurations of DeepSpeed:
+The so-called DeepSpeed ZeRO stage 0 served as baseline for evaluations, in which 
+all DeepSpeed optimizations are deactivated---i.e. stage 0 corresponds to basic 
+data-parallel training. As a second configuration, we trained GemNet 
+in half precision without any ZeRO optimizations in order to make sure that
+potential memory savings by ZeRO are actually caused by the model state partitioning and
+not merely by reducing the model parameters' precision.
+
+Apart from this, we evaluated two configurations of each stage of ZeRO-DP to benchmark 
+them against the two baselines. More precisely, for stage 1, we did one run with and 
+without overlapping communication each, while overlapping communication
+was activated throughout stage 2 and stage 3. In order to investigate potential 
+memory savings by CPU offloading, we conducted standard stage 2 and stage 3 runs as well
+as runs in which the respective maximal CPU offloading capacity was exploited.
+The exact configurations and results can be seen in Figure~\ref{fig:gemnet-s2ef}
+and Figure~\ref{fig:gemnet-is2re}, where \enquote{OC} stands for overlapping communication,
+\enquote{OO} for optimizer offloading and \enquote{PO} for parameter offloading.
+
+When comparing stage 0 with half precision to standard stage 1, a significant decrease
+both in allocated GPU memory and reserved GPU memory can be observed for both S2EF and IS2RE
+(S2EF: -67\% allocated, -23\% reserved; IS2RE: -78\% allocated, -12\% reserved).
+This drop in memory consumption has to be caused by optimizer state partitioning among
+the GPUs since this is the only difference between the configurations. 
+Both for the S2EF task and the IS2RE task, forward and backward pass---excluding communication
+---are marginally faster with stage 1 activated. 
+
+However, especially for the S2EF task, it is also clearly visible that communication overhead 
+between the GPUs rises for stage 1: The part of the total epoch runtime which
+neither belongs to one of the tracked stages (calles \enquote{rest} in 
+Figure~\ref{fig:gemnet-s2ef} and Figure~\ref{fig:gemnet-is2re}) and thus mainly 
+encompass communication, increases by 219\% (S2EF) and 58\% (IS2RE).
+
+Additionally, CPU offloading saves memory---most notable is a 58\% decrease of allocated GPU 
+memory with IS2RE when optimizer offloading is activated in stage 2. Nevertheless,
+in all of the observed cases this came at the cost of increased runtime.
+
+Stage 3 seems to be ineffective for GemNet as neither memory footprints nor 
+runtime are improved. Likewise, communication overlapping (which we had hoped would
+reduce runtime) did not have the desired effect as can be seen from the comparison 
+between the two stage 1 runtimes.
 
 \begin{figure}[H]
     \centering
@@ -21,16 +55,14 @@ For each experiment, we performed one epoch of training
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/cuda_memory/memory_comparison.pdf}
-        \label{fig:gemnet-s2ef-memory-results}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/runtimes/runtimes_comparison.pdf}
-        \label{gemnet-s2ef-runtimes-results}
     \end{subfigure}
 
-    \vspace*{-1em}
+    \vspace*{-0.5em}
 
     \resizebox{0.95\textwidth}{!}{%
     \begin{tabular}{ll|l|l|l|l|l|l|l|l|}
@@ -46,7 +78,9 @@ For each experiment, we performed one epoch of training
     \end{tabular}}
 
     \captionsetup{width=\dimexpr\textwidth-1.5cm\relax}
-    \caption{Memory consumption and runtimes on the S2EF task. Memory is in GB, runtimes in the \textit{h:m:s} format.}
+    \caption{Memory consumption and runtimes on the S2EF task. 
+    Memory is in GB, runtimes in the \textit{h:m:s} format.}
+    \label{fig:gemnet-s2ef}
     
 \end{figure}
 
@@ -56,16 +90,12 @@ For each experiment, we performed one epoch of training
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/cuda_memory/memory_comparison.pdf}
-        \label{fig:gemnet-is2re-memory-results}
     \end{subfigure}%
     ~
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/runtimes/runtimes_comparison.pdf}
-        \label{gemnet-is2re-runtimes-results}
     \end{subfigure}
-    
-    \vspace*{-1em}
 
     \resizebox{0.95\textwidth}{!}{%
     \begin{tabular}{ll|l|l|l|l|l|l|l|l|}
@@ -81,7 +111,9 @@ For each experiment, we performed one epoch of training
     \end{tabular}}
 
     \captionsetup{width=\dimexpr\textwidth-1.5cm\relax}
-    \caption{Memory consumption and runtimes on the IS2RE task. Memory is in GB, runtimes in the \textit{h:m:s} format.}
+    \caption{Memory consumption and runtimes on the IS2RE task. 
+    Memory is in GB, runtimes in the \textit{h:m:s} format.}
+    \label{fig:gemnet-is2re}
     
 \end{figure}
 
@@ -101,8 +133,6 @@ For each experiment, we performed one epoch of training
         \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/runtimes/runtimes_comparison.pdf}
         \label{dimenet-is2re-runtimes-results}
     \end{subfigure}
-    
-    \vspace*{-1em}
 
     \resizebox{0.95\textwidth}{!}{%
     \begin{tabular}{ll|l|l|l|l|l|l|l|l|}
