@@ -33,19 +33,15 @@ For simpler structured data like sequences or images, neural
 network architectures that exploit these structures have been successful for quite some time, the 
 most prominent examples including Recurrent Neural Networks (RNNs) and
 Convolutional Neural Networks (CNNs) respectively. 
-Even though the topological structure of sequences and images is much more regular
-compared to some general graph, we can nevertheless see both of them as a special type of graphs themselves. 
 
 % Structured data figure that shows sequences and images as graphs.
 \input{figures/gnns/structured_data_figure.tex}
 
 Graph Neural 
 Networks (GNNs) can now be regarded as a generalization of CNNs and RNNs to general graph structures.
-More precisely, we can say that GNNs exploit the structure of the input graph(s) by incorporating very
-reasonable assumptions about its predicting functions like equivariance (in the case of node prediction 
-tasks) or invariance (for example in the case of global predictions) with respect to permutations of the 
-input nodes. Indeed, both of the above introductory examples in which conventional methods are not applicable
-can be modeled with GNNs.
+More precisely, we can say that GNNs exploit the structure of the input graph(s) by incorporating
+reasonable assumptions about its predicting functions like equivariance (in the case of node prediction) or invariance (for example in the case of global predictions) with respect to permutations of the 
+input nodes.
 
 We express GNNs via the Graph Network (GN) framework introduced in 
 \cite{https://doi.org/10.48550/arxiv.1806.01261}, which defines

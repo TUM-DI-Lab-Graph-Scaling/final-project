@@ -9,19 +9,18 @@ and would like to predict properties of this very molecule, e.g. its energy (at 
 current point in time or after some evolution) or the forces acting on the 
 individual atoms. Some of these properties might be directly
 computable using quantum mechanical methods---like Density Functional Theory (DFT) 
-\cite{doi:10.1021/ed5004788}, inter alia
-to compute bond energies in molecules. However, these methods often come
+\cite{doi:10.1021/ed5004788}. However, these methods often come
 with significant drawbacks as they might be extremely expensive from a computational 
 standpoint, imposing the necessity to either optimize these conventional methods 
 as far as possible or use completely different approaches.
 
-One alternative approach that is subject to current research is to compute or 
+One alternative approach is to compute or 
 predict such molecule properties using supervised
 machine learning in order to learn a function that maps molecule structures to their
-respective properties based on data of known molecules. For this task, Graph
+respective properties. For this task, Graph
 Neural Networks (GNNs) are very well suited not only because a molecule can naturally
-be expressed as a graph (e.g. using its structural formula with atomic numbers and
-interatomic distances as node and edge attributes), but also because in this case, the 
+be expressed as a graph (e.g. using its structural formula and
+interatomic distances), but also because in this case, the 
 assumption of invariance w.r.t. permutations of the atoms or the assumption that 
 the update rules do not differ between nodes or edges and that one is hence
 learning somewhat universal functions, seem very reasonable.
@@ -53,21 +52,14 @@ translations and equivariant w.r.t. rotations. Rather than letting the model fig
 these fundamental invariants of its predicting functions on its own (e.g. by 
 data augmentation), they are often directly incorporated into the model to reduce 
 complexity. One approach to achieve this is to compute pairwise distances $d_{ij}$ 
-between the atoms and use them instead of the individual atomic locations $\XX$, 
-so---in the GN language (see \ref{subsubsec:gns})---define an input graph with the atomic numbers $\zz$ as 
-node attributes and the interatomic distances as edge attributes (say, if a bond exists
-between two atoms or if the distance is below some threshold). However, this might
+between the atoms and use them instead of the individual atomic locations $\XX$. 
+However, this might
 not always be sufficient to completely characterize the spatial structure of a molecule:
 Since the interatomic distances are only kept for a part of the pairs of 
 nodes, there exist pairs of different molecules which cannot be
 distinguished with this approach \cite[Appendix A]{DBLP:journals/corr/abs-2003-03123}.
-Gasteiger et al. proposed multiple GNN architectures which overcome this
-problem: DimeNet \cite{DBLP:journals/corr/abs-2003-03123} and 
-DimeNet++ \cite{https://doi.org/10.48550/arxiv.2011.14115} achieve this
-by incorporating directional information as bond angles into the models
-(i.e. triplets of nodes), while in a more recent architecture, GemNet 
-\cite{https://doi.org/10.48550/arxiv.2106.08903}, even 4-way interactions are
-modeled.
+In the following subchapters, we will introduce two GNN architectures that were initially
+proposed by Gasteiger et al. and overcome this problem.
 
 \input{./content/preliminaries/atomic_simulations/dimenet.tex}
 \input{./content/preliminaries/atomic_simulations/gemnet.tex}
