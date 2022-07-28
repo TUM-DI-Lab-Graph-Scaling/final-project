@@ -28,6 +28,14 @@ an \textit{all-gather} nccl communication collective.
 Stage 3 of ZeRO partitions optimizer states, gradients and model parameters, thus merging the 
 traditional Data Parallelism approach with Model parallelism.
 
+\begin{python}
+for param in self.model.parameters():
+    deepspeed.zero.register_external_parameter(
+        self.model, param
+    )
+\end{python}
+
+
 \input{figures/deepspeed/zero.tex}
 
 After our integration, the ZeRO optimization can be enabled for all OCP models in the Deepspeed configuration 
