@@ -11,9 +11,14 @@ Parallelism.
 Deepspeed allows developers to integrate ZeRO into arbitrary models which are trained using an 
 DP pipeline. Using the Deepspeed configuration file, the 
 
+\input{figures/deepspeed/zero.tex}
+
 \subsubsection{Stage 1 (OS)}
 
-Stage 1 of ZeRO enables Optimizer State Partitioning. 
+Stage 1 of ZeRO enables Optimizer State Partitioning. Each GPU only holds a shard of optimizer states 
+During the optimizer step, each GPU only updates and stores optimizer states in its shard. After the 
+update, all GPUs synchronize by an all-gather communication collective to update parameters accross 
+all devices.
 
 \subsubsection{Stage 2 (OS+G)}
 
@@ -35,9 +40,6 @@ for param in self.model.parameters():
         self.model, param
     )
 \end{python}
-
-
-\input{figures/deepspeed/zero.tex}
 
 After our integration, the ZeRO optimization can be enabled for all OCP models in the Deepspeed configuration 
 file. The specification is as follows:
