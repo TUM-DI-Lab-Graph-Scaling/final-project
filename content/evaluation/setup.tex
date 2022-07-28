@@ -6,14 +6,15 @@ P2P communication through PCI. Practically speaking, this means that we set \tex
 "PIX".
 
 \begin{enumerate}[align=left]
-    \item[\textbf{GemNet}] The first model we evaluated with our DeepSpeed enhancements was GemNet-T 
-    scaled up to roughly 292 million parameters corresponding to Gemnet-XL\cite*{https://doi.org/10.48550/arxiv.2203.09697}
-    in size. The model consists of 6 interactions blocks, an atom embedding size of 128, an edge 
+    \item[\textbf{GemNet}] The first model we evaluated with our DeepSpeed enhancements was 
+    the force-centric GemNet-dT scaled up to roughly 292 million parameters corresponding to 
+    Gemnet-XL \cite*{https://doi.org/10.48550/arxiv.2203.09697}. 
+    The model consists of 6 interactions blocks, an atom embedding size of 128, an edge 
     embedding size of 1536, and triplet embedding size of 384. All other hyperparameters are equal 
-    to Gemnet-T as it was configured for the OCP benchmark evaluation.
+    to Gemnet-dT as it was configured for the OCP benchmark evaluation.
 
-    \item[\textbf{DimeNet}] Furthermore we evaluated DimeNet++ with the configuration defined in 
-    \cite*{https://doi.org/10.48550/arxiv.2203.09697}. The model has 4 interaction blocks, a hidden 
+    \item[\textbf{DimeNet}] Furthermore we evaluated the energy-centric DimeNet++ with the configuration 
+    defined in \cite*{https://doi.org/10.48550/arxiv.2203.09697}. The model has 4 interaction blocks, a hidden 
     dimension of 2048, an output block of 1536, and triplet dimension of 256, amounting to approximately 
     240 million parameters. Again, all other hyperparameters are equal to DimeNet++ as it was configured 
     for the OCP benchmark evaluation.
