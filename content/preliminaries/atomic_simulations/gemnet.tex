@@ -1,13 +1,14 @@
 \subsubsection{GemNet}
 \label{subsubsec:gemnet}
 
-Gasteiger et al. proposed GemNet \cite{https://doi.org/10.48550/arxiv.2106.08903} 
+Gasteiger et al. $\!\!$ created GemNet (\enquote{Geometric Message Passing Neural Network}) 
+\cite{https://doi.org/10.48550/arxiv.2106.08903} 
 as an improvement over DimeNet and DimeNet++ (see 
 \cite{DBLP:journals/corr/abs-2003-03123, https://doi.org/10.48550/arxiv.2011.14115} 
-and \ref{subsubsec:dimenet}) in which essentially also quadruplets of nodes are
-taken into account. 
+and \ref{subsubsec:dimenet}) that offers the flexibility for both energy-centric 
+and force-centric predictions as well as 3-way or 4-way message passing.
 
-Just like DimeNet and DimeNet++, GemNet (\enquote{Geometric Message Passing Neural Network}) 
+Just like DimeNet and DimeNet++, GemNet 
 takes the positions $\XX$ and atomic numbers $\zz$ of a molecule 
 (defined in \eqref{eq:molecule_setup}) as inputs. For $a, b \in \set{1, \dots, n}$ write
 \[
@@ -15,11 +16,14 @@ takes the positions $\XX$ and atomic numbers $\zz$ of a molecule
     \qquad \text{and} \qquad 
     \vec{\xx}_{ab} \: \coloneqq \xx_b - \xx_a
 \]
-for the distance and relative direction from $\xx_a$ to $\xx_b$ respectively.
 \begin{wrapfigure}{r}{0.3\textwidth}
     \centering
+    \vspace*{-0.75em}
     \includegraphics[]{atomic_simulations/gemnet_message_passing.pdf}
+    \caption{\cite{https://doi.org/10.48550/arxiv.2106.08903}}
+    \label{fig:gemnet-mp}
 \end{wrapfigure}
+for the distance and relative direction from $\xx_a$ to $\xx_b$ respectively.
 In GemNet, there are two graphs considered: an interaction graph and an embedding graph.
 The molecule's interaction graph does not change during the forward pass of the network and 
 two atoms \textit{interact} if their distance is below some 
@@ -27,9 +31,10 @@ cutoff $c_{\text{int}}$. In addition to this interaction graph, all atom pairs
 whose distance is below some threshold $c_{\text{emb}}$ are \textit{embedded}---and, thus, 
 edges of the embedding graph.
 
-In contrast to DimeNet, quadruplets of nodes are now taken into account for message passing: 
+In contrast to DimeNet, the 3- or 4-way interactions for message passing are now used 
+in a slightly different way:
 Consider pairwise different $a, b, c, d \in \set{1, \dots, n}$,
-where $(d_{ab}, a, b)$ are interacting and $(\_, c, a)$, $(\_, d, b)$ are
+where $(\_, a, b)$ are interacting and $(\_, c, a)$, $(\_, d, b)$ are
 embedded. Set
 \[
     \varphi_{cab} \: \coloneqq \: 
@@ -45,53 +50,48 @@ as well as
     \qquad \boldsymbol{\Pi} \: \coloneqq \: 
     \boldsymbol{I}_3 - \vec{\xx}_{ab} \vec{\xx}_{ab}^\top \text{,}
 \]
-where $\boldsymbol{\Pi}$ is the orthogonal projection onto the orthogonal
-complement of $\vec{\xx}_{ab}$.
+where $\boldsymbol{\Pi}$ is the orthogonal projection on the orthogonal
+complement of $\vec{\xx}_{ab}$ (see Figure~\ref{fig:gemnet-mp}).
 
-Similarly to DimeNet, this relative directional information is then transformed to
+Similarly to DimeNet, this relative directional information is then encoded by the
+transformations
 \[
     \eee_{\text{RBF}}^{(ca)} \: = \: \eee_{\text{RBF}}(d_{ca}), 
     \quad \eee_{\text{CBF}}^{(cab)} \: = \: \eee_{\text{CBF}}(d_{ca}, \varphi_{cab}),
     \quad \eee_{\text{SBF}}^{(cabd)} \: = \: \eee_{\text{SBF}}(d_{ca}, \varphi_{cab}, \phi_{cabd}) 
-    \text{.}
 \]
-After this setup phase, initial node embeddings $\hh_{a}^{(1)}$, edge embeddings 
-$\mm_{ca}^{(1)}$ (for each pair $(c, a)$ of nodes that is embedded) and outputs
-$t_{a}^{(1)}$ or a global attribute $t^{(1)} = \sum_{a=1}^n t_a^{(1)}$
-are computed based on $\zz$ and $\eee_{\text{RBF}}^{(ca)}$. 
-
-The initial input graph can now also be roughly expressed in the
-EGN framework (see \ref{subsubsec:egns} and 
-\cite{https://doi.org/10.48550/arxiv.2203.09697}) as follows:
-\[
-    G \: = \: (t^{(1)}, V^{(1)}, E^{(1)}, T^{(1)})
-\]
-with nodes and edges
-\begin{align*}
-    V^{(1)} \: &\coloneqq \: 
-    \setcomp{\hh_{a}^{(1)}}{a \in \set{1, \dots, n}}, \\
-    E^{(1)} \: &\coloneqq \: 
-    \setcomp{(\mm_{ca}^{(1)}, c, a)}{c, a \in \set{1, \dots, n}, \: d_{ca} \leq c_{\text{emb}}}
-\end{align*}
-as well as 3- and 4-way interactions
-\begin{align*}
-    T^{(1)} \: &\coloneqq \quad 
+which are related to DFT calculations.
+These three quantity types $\eee_{\text{RBF}}^{(ca)}$, $\eee_{\text{CBF}}^{(cab)}$, $\eee_{\text{SBF}}^{(cabd)}$ 
+can now be regarded as the (constant) features of the
+molecule that are used by GemNet for updating the input graph.
+In GemNet, the higher-order interactions are
+\begin{align}
+    T \: &\coloneqq \quad 
     \setcomp{(\_, c, a, b)}{c, a, b \in \set{1, \dots, n}, 
-    \: d_{ca} \leq c_{\text{emb}}, \: d_{ab} \leq c_{\text{int}}} \\
+    \: d_{ca} \leq c_{\text{emb}}, \: d_{ab} \leq c_{\text{int}}} \label{eq:gemnet-triplets} \\
     &\qquad \cup  \setcomp{(\_, c, a, b, d)}{c, a, b, d \in \set{1, \dots, n}, 
     \: d_{ca} \leq c_{\text{emb}}, \: d_{ab} \leq c_{\text{int}}, 
-    \: d_{db} \leq c_{\text{emb}}};
-\end{align*}
-where the higher-order attributes are handled implicitly 
-based on the node and edge embeddings, are indexed by the involved nodes (contrary 
+    \: d_{db} \leq c_{\text{emb}}}; \label{eq:gemnet-quadruplets}
+\end{align}
+where the higher-order attributes are indexed by the involved nodes (contrary 
 to the definition in \eqref{eq:higher_order_interact}), and all appearing $a, b, c, d$ 
 are assumed to be pairwise different.
 
-This input graph is now successively updated in the GN/EGN scheme using a sequence of 
-complex interaction blocks in which the relative directional information 
-$\eee_{\text{RBF}}^{(ca)}$, $\eee_{\text{CBF}}^{(cab)}$, $\eee_{\text{SBF}}^{(cabd)}$ 
-is put to use. The complete GemNet architecture as depicted in 
-\cite{https://doi.org/10.48550/arxiv.2106.08903} can be seen in Figure~\ref{fig:gemnet}.
+GemNet admits the following variants:
+\begin{itemize}
+    \item \textit{GemNet-T} is an energy-centric variant of GemNet that only uses the 3-way 
+          interactions from \eqref{eq:gemnet-triplets}, which are updated 
+          using $\eee_{\text{RBF}}^{(ca)}$ and $\eee_{\text{CBF}}^{(cab)}$.
+          In Figure~\ref{fig:gemnet}, this is indicated by the 
+          \textbf{\textcolor{tum-orange}{T}-MP} block.
+    \item In contrast, \textit{GemNet-Q} is an energy-centric version of GemNet
+          that also successively updates the 4-way interactions \eqref{eq:gemnet-quadruplets},
+          taking the entirety of $\eee_{\text{RBF}}^{(ca)}$, $\eee_{\text{CBF}}^{(cab)}$
+          and $\eee_{\text{SBF}}^{(cabd)}$ into account. In Figure~\ref{fig:gemnet}, this 
+          is represented by the \textbf{\textcolor{tum-green}{Q}-MP} block.
+\end{itemize}
+Force-centric versions of GemNet-T and GemNet-Q are called \textit{GemNet-dT}
+and \textit{GemNet-dQ} respectively.
 
 \begin{figure}[H]
     \centering

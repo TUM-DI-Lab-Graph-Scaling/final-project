@@ -3,12 +3,11 @@
 
 DimeNet (\enquote{Directional Message Passing Neural Network}) 
 \cite{DBLP:journals/corr/abs-2003-03123}, which was proposed by Gasteiger et al. 
-in 2020, is a GNN architecture for predicting quantum mechanical properties
-of molecules that does not only take pairwise distances between atoms into
-account, but also takes advantage of directional information. In the EGN 
+in 2020, is an energy-centric GNN architecture for predicting energies and forces 
+of molecule structures. DimeNet does not only consider pairwise distances between atoms, 
+but also takes advantage of directional information. In the EGN 
 language (see \ref{subsubsec:egns} and \cite{https://doi.org/10.48550/arxiv.2203.09697}),
-3-way interactions between nodes are modeled. DimeNet is mainly designed for 
-predicting the energy of a molecule structure.
+3-way interactions between nodes are modeled.
 
 Just as in \eqref{eq:molecule_setup}, the network receives the positions $\XX$
 and atomic numbers $\zz$ of a molecule as inputs. 
@@ -40,7 +39,7 @@ on the atomic numbers $\zz$ and $\ee_{\text{RBF}}^{(ji)}$. Both node embedings
 $\hh_i \coloneqq \sum_{j \in \mathcal{N}_i} \mm_{ji}$ and triplet embeddings are handled
 implicitly (i.e. the \textbf{Triplet Update} and \textbf{Node Update} outputs from 
 \ref{subsubsec:gns}, \ref{subsubsec:egns} do not depend on their respective predecessors).
-From now on, this will be denoted by \enquote{$\_$}.
+From now on, we denote implicit or irrelevant embeddings by \enquote{$\_$}.
 
 In the EGN language, the initial graph is defined as follows:
 \[

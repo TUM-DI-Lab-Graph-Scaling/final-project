@@ -5,28 +5,14 @@
 
 In most of the contemporary supervised machine learning tasks, we are usually given 
 datasets
-\[ 
-    \mathcal{D} \: \coloneqq \: 
-    \set{(\xx_i, \yy_i)}_{i=1}^n 
-    \quad \text{with} \quad \xx_i \in \R^{d}, \: \yy_i \in \R^k 
-\]
+$\mathcal{D} \coloneqq \set{(\xx_i, \yy_i)}_{i=1}^n$ with $\xx_i \in \R^{d}$, $\yy_i \in \R^k$,
 where the inputs $\xx_i$ are assumed to be drawn independently from an identical 
-distribution and we want to generally predict the labels $\yy$ from $\xx$ using
-some parametric function
-\[
-    \fct{f_\theta}{\R^d}{\R^k}, \quad
-    \hat{\yy} \: \coloneqq \: f_\theta(\xx),
-\]
-i.e. we want to find some parameter $\theta$ in a parameter space $\Theta$ such that
-the predictions $\hat{\yy}$ are somewhat close to the targets $\yy$. This is usually
-carried out by minimizing a loss function (sometimes modeled as negative log-likelihood)
-\[
-    L(\mathcal{D}, \theta) \: \coloneqq \: \sum_{i=1}^n l(f_\theta(\xx_i), \yy_i)
-\]
-over the parameter space. Over the last decades, neural networks have proven to work 
-really well for implementing these functions $f_\theta$.
+distribution. We want to generally predict the labels $\yy$ from $\xx$ using
+some parametric function $\fct{f_\theta}{\R^d}{\R^k}$ whose parameter $\theta$ is chosen
+by minimization of a suitable loss function. This function $f_{\theta}$ is often implemented 
+by neural networks.
 
-However, for many complex structured non-Euclidean types of data, this approach might 
+However, for many complex structured non-Euclidean types of data, these assumptions might 
 not be the best fit. For example, just consider the two following settings:
 \begin{itemize}
     \item Suppose we are given molecule structures as input graphs $\xx_i$ and, as an 
@@ -36,27 +22,18 @@ not be the best fit. For example, just consider the two following settings:
           and we want to predict interaction $\yy_i$ with some newly uploaded content. In this 
           case, the iid assumption of the individual data points $(\xx_i, \yy_i)$ is 
           completely unreasonable because users themselves might share common interests 
-          based on their interactions---or even interact to make each 
-          other aware of the content. Therefore it would be sensible to incorporate the 
-          existing connections between the data points somehow---so essentially one would 
-          like models which operate on one giant input graph with interconnected and 
-          dependent data points as nodes.
+          or make each other aware of the content. Therefore it would be sensible to incorporate the 
+          existing connections between the data points somehow.
 \end{itemize}
 Surely, one could find some representation of the above input data and try to use some
 conventional method (i.e. try to let a neural network learn these structures on its own),
-however this would not only be inefficient but also completely unfeasible for many large 
-modern datasets. 
+however this would be very inefficient or even unfeasible for many large datasets. 
 
 For simpler structured data like sequences or images, neural
 network architectures that exploit these structures have been successful for quite some time, the 
 most prominent examples including Recurrent Neural Networks (RNNs) and
-Convolutional Neural Networks (CNNs) respectively. Particularly the introduction of CNNs 
-in the early 2010s marked a huge step forward for tasks like image classification 
-compared to dense fully-connected neural networks: CNNs leverage the spatial structure of
-images as rectangular grids by applying convolutional filters like sliding windows on small
-rectangular parts of the input image. 
-
-Even though the topological structure of sequences and images is quite simple and regular
+Convolutional Neural Networks (CNNs) respectively. 
+Even though the topological structure of sequences and images is much more regular
 compared to some general graph, we can nevertheless see both of them as a special type of graphs themselves. 
 
 % Structured data figure that shows sequences and images as graphs.
@@ -135,16 +112,15 @@ The computations performed by a GN block can also be described in terms of the f
 
 Furthermore, the aggregation functions have to be invariant w.r.t. permutations of the
 input nodes or edges, i.e. do not depend reordering of the inputs. In many cases,
-these aggregation functions are kept simple and are just a sum or mean operation over
-the inputs.
+these aggregation functions are kept simple and are just a sum or mean operation.
 
 A GN is just a sequence of such GN blocks which successively updates the input graph's
 attributes, i.e. over multiple such blocks, messages can be passed along the edges of
 a graph. Now, a GNN is simply a GN whose blocks use neural networks to implement the
 update functions $\phi_e$, $\phi_v$, $\phi_u$. Note that global graph prediction, 
 node prediction as well as edge prediction can be performed with a GNN as just
-the corresponding attribute of the GNN output graph (or some transformation of it) can 
-be regarded as the final network output.
+the corresponding attribute of the GNN output graph (or some final transformation of it) can 
+be regarded as the network output.
 
 \subsubsection{Extended Graph Networks}
 \label{subsubsec:egns}
