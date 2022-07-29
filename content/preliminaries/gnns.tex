@@ -103,9 +103,6 @@ The computations performed by a GN block can also be described in terms of the f
     predecessor and the newly aggregated edge and node attributes.
 \end{enumerate}
 
-% Figure that demonstrates the five update phases of an GN block.
-\input{figures/gnns/gn_block.tex}
-
 Furthermore, the aggregation functions have to be invariant w.r.t. permutations of the
 input nodes or edges, i.e. do not depend reordering of the inputs. In many cases,
 these aggregation functions are kept simple and are just a sum or mean operation.
@@ -117,6 +114,9 @@ update functions $\phi_e$, $\phi_v$, $\phi_u$. Note that global graph prediction
 node prediction as well as edge prediction can be performed with a GNN as just
 the corresponding attribute of the GNN output graph (or some final transformation of it) can 
 be regarded as the network output.
+
+% Figure that demonstrates the five update phases of an GN block.
+\input{figures/gnns/gn_block.tex}
 
 \subsubsection{Extended Graph Networks}
 \label{subsubsec:egns}
