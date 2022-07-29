@@ -24,7 +24,8 @@ that can be represented, making calculations less accurate and increasing the ri
 PyTorch and Deepspeed offer automatic mixed precision for gradients. Developers can regions with context managers 
 to allow PyTorch to automatically choose the precision for GPU operations. Unfortunately both autocast modules from 
 both PyTorch and Deepspeed failed to detect parameters and gradients in the OCP models when we applied the context 
-manager. Our solution was to manually cast parameters to half precision when Deepspeed is used. 
+manager. Our solution was to manually cast parameters to half precision when Deepspeed is used. After our adaptions 
+FP16 can be used by just setting one flag in the Deepspeed configuration:
 
 \begin{json}
 "fp16": {
@@ -35,13 +36,18 @@ manager. Our solution was to manually cast parameters to half precision when Dee
 \subsubsection{BFloat16}
 
 As mentioned before, the use of FP16 leads to a higher risk of overflows/underflows. We experienced many overflows 
-of gradients when using FP16 with Deepspeed. 
+of gradients when using FP16 with Deepspeed. To avoid overflows Deepspeed offers support for the Bfloat16 number 
+format which allocates more bits to the exponent to extent the range of representable numbers while lowering 
+precision.
 
 \begin{figure}[H]
     \centering
     \includegraphics{figures/mixed_precision/bfloat16.pdf}
     \caption{Bfloat16 floating-point number format}
 \end{figure}
+
+As with FP16, we had to include manual type cast in the OCP codebase to integrate Bfloat16 support. 
+Bfloat16 can also be enabled from the Deepspeed configuration
 
 \begin{json}[language=json,firstnumber=1]
 "bf16": {

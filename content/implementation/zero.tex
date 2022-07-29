@@ -8,17 +8,21 @@ Since all processes only have to maintain a shard of states, ZeRO should use les
 retaining computational granularity and communication overhead compared to traditional Data 
 Parallelism.
 
-Deepspeed allows developers to integrate ZeRO into arbitrary models which are trained using an 
-DP pipeline. Using the Deepspeed configuration file, the 
+Deepspeed contains three levels of ZeRO that progressively partition and distribute more and 
+more states of the model. We will go through all stages, explain them and shortly explain our 
+integration into OCP.
 
 \input{figures/deepspeed/zero.tex}
 
 \subsubsection{Stage 1 (OS)}
 
-Stage 1 of ZeRO enables Optimizer State Partitioning. Each GPU only holds a shard of optimizer states 
-During the optimizer step, each GPU only updates and stores optimizer states in its shard. After the 
-update, all GPUs synchronize by an all-gather communication collective to update parameters accross 
-all devices.
+Stage 1 of ZeRO enables Optimizer State Partitioning. Each GPU only holds a shard of optimizer states.
+All GPUs do a normal training step over their data subset, however during the optimizer step, each 
+GPU only updates and stores optimizer states of its own shard. After the update, all GPUs synchronize 
+by an all-gather communication collective to update parameters accross all devices.
+
+Stage 1 required FP16 or Bfloat16 intergation for the OCP codebase. As mentioned in the previous 
+section, we encountered overflow problems with FP16, so we mainly used Bfloat16 to enable ZeRO-1.
 
 \subsubsection{Stage 2 (OS+G)}
 
@@ -27,19 +31,32 @@ execution path for each step: Each GPU holds a replica of the entire model (all 
 only a mutually exlusive portion of the parameters are updated on each of the devices. The GPUs only store 
 the shard of gradients and optimizer states, which they need for their particular portion of parameters 
 during the forward and backward pass. After doing the optimizer step, the GPUs update each other through 
-an \textit{all-gather} nccl communication collective. 
+an \textit{all-gather} NCCL communication collective. 
+
+Stage 2 is very tighly connected to Stage 1 regarding its implementation in Deepspeed. Fortunately 
+for us, this meant that after integrating Stage 1, Stage 2 worked out-of-the-box without any problems.
 
 \subsubsection{Stage 3 (OS+G+P)}
 
 Stage 3 of ZeRO partitions optimizer states, gradients and model parameters, thus merging the 
-traditional Data Parallelism approach with Model parallelism.
+traditional Data Parallelism approach with Model parallelism. Optimizer states and gradients 
+are partitioned and synchronized as mentioned in Stage 1 and 2. The model parameter partitioning 
+works with the following principles: Each GPU is assigned a shard of parameters. When model 
+parameters outside the shard are required for the forward or backward pass, the GPU that owns 
+the shard containing the parameters shares them via broadcast. This leads to fat more communication 
+overhead, however further reduces GPU memory requirements of the overall model.
 
-\begin{python}
-for param in self.model.parameters():
-    deepspeed.zero.register_external_parameter(
-        self.model, param
-    )
-\end{python}
+The integration of ZeRO-3 was fraught with many problems. Gemnet, for example, accesses the 
+parameters of the layers directly in the model definition, which leads to problems with 
+Deepspeed, since it replaces the tensors with its own wrapper classes that contain parameters 
+only latently (parameters that are not in the shard of the GPU must first be loaded via NCCL). 
+For this we had to extend Gemnet to first perform an all-gather operation on the parameters, 
+so that these are locally available with all GPUs before using them inside the model directly.
+
+Another problem occurred with DimeNet where ZeRO did not automatically partition the model 
+parameters. Our solution was to explicitly pass all model parameters as external parameters 
+to the Deepspeed engine. This does not provide optimal partitioning of the parameters, but 
+at least lets the Zero-3 engine run.
 
 After our integration, the ZeRO optimization can be enabled for all OCP models in the Deepspeed configuration 
 file. The specification is as follows:
