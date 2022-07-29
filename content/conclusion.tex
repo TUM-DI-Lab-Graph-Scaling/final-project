@@ -23,7 +23,7 @@ almost 50\% less reserved memory or 87\% less allocated memory on the S2EF task
 In terms of runtime, however, in almost all of our evaluations we were not able to speed up 
 training as communication overhead increased when 
 nontrivial DeepSpeed features were activated. Runtime-wise, just training in half
-precision has mostly yielded the best results in our evaluations.
+precision has mostly yielded the best results.
 
 In our GemNet evaluation, stage 3 of the ZeRO optimizer which corresponds to full model parallelism on top
 of data parallelism did not outperform the simpler stages 1 and 2 neither with respect to
