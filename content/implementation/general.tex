@@ -7,9 +7,10 @@ Our goal for this project was to use the DeepSpeed engine to speed up and scale
 GNNs. The Open Catalyst Project presents the ideal 
 benchmark for our acceleration approaches since it contains several model definitions 
 for GNNs in the context of molecular simulations. Previous research has shown 
-that scaling OCP models to multiple hundreds of millions of parameters or even 
-billions of parameters leads to better accuracies but requires ever larger infrastructure
-and ever more time for training. Therefore we want to utilize 
+that scaling OCP models to multiple hundreds of millions of parameters 
+leads to better accuracies but requires ever larger infrastructure
+and ever more time for training \cite{https://doi.org/10.48550/arxiv.2203.09697}. 
+Therefore we want to utilize 
 DeepSpeed to scale beyond standard data parallelism and enable training of billion 
 parameter models.
 
