@@ -1,14 +1,14 @@
 \section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
 
-Large-scale model training on massive training data is the way to achieve top-tier 
-accuracy, but are difficult to train due to memory constraints and communication overhead 
-when scaling out to multiple devices. Much of ongoing research is currently limited to 
-training giant transformer models such as Bert or GPT-3. However, other types of machine 
-learning models also benefit from scaling up the architectures and model parameters, 
-such as the application of Graph Neural Networks (GNN) to atomic simulations. In our work, 
+Large-scale model training on massive data is the way to achieve top-tier 
+accuracy, but training of such models is difficult due to memory constraints and communication overhead 
+when scaling out to multiple devices. Much of ongoing research in scalable machine learning is 
+currently limited to  giant transformer models such as Bert or GPT-3. However, other types of 
+models benefit as well from scaling up the architectures and model parameters, 
+in particular Graph Neural Networks (GNN) to atomic simulations. In our work, 
 we use optimizations from Microsoft Deepspeed, a toolkit for efficiently training 
-large-scale models, to scale up and more efficiently train GNNs for predicting energies 
+large-scale models, to scale and efficiently train GNNs for predicting energies 
 and forces of catalysts. Our integration of Deepspeed into GNN architectures includes 
 mixed precision training, offloading of optimizer states and parameters to CPU or Non-volatile 
 memory, and most notably the Zero Redundancy Optimizer (ZeRO) to reduce the amount of 
