@@ -30,7 +30,7 @@ conventional method (i.e. try to let a neural network learn these structures on 
 however this would be very inefficient or even unfeasible for many large datasets. 
 
 For simpler structured data like sequences or images, neural
-network architectures that exploit these structures have been successful for quite some time, the 
+network architectures have been successful for quite some time, the 
 most prominent examples including Recurrent Neural Networks (RNNs) and
 Convolutional Neural Networks (CNNs) respectively. 
 
@@ -48,8 +48,8 @@ We express GNNs via the Graph Network (GN) framework introduced in
 a common language for a quite general class of graph-input functions made out of 
 individual building blocks. EGNs (Extended Graph Networks) \cite{https://doi.org/10.48550/arxiv.2203.09697}, which we will 
 introduce afterwards, are even more expressive than normal 
-GNs as they also model higher-order interactions between graph vertices (i.e. interactions 
-between 3 or more vertices, or---alternatively---between two graph edges). Particularly recent 
+GNs as they also model higher-order interactions between nodes (i.e. interactions 
+between 3 or more nodes, or---alternatively---between two edges). Particularly recent 
 GNNs for atomic simulations that make use of such higher-order interactions, as the ones we will describe 
 in subsection~\ref{subsec:atomic-simulations}, \cite*{DBLP:journals/corr/abs-2003-03123,https://doi.org/10.48550/arxiv.2106.08903}, 
 can be expressed in the language of the EGN framework.
@@ -88,16 +88,16 @@ $G' = (\uu', V', E')$ being the output of the GN block.
 The computations performed by a GN block can also be described in terms of the following phases:
 
 \begin{enumerate}[align=left]
-    \item[\textbf{Edge Update:}] The edges are updated individually based on their respective edge attribute, 
+    \item[\textbf{Edge Update:}] The edges are updated based on their respective edge attribute, 
     their source and receiver node attributes, and the graph's global attribute using the
     update function $\phi_e$.
     \item[\textbf{Edge Aggregation:}] The new edge attributes are aggregated on each node
     as well as the whole graph using the aggregation functions $\phi_{e \to v}$ and
     $\phi_{e \to u}$ respectively.
-    \item[\textbf{Node Update}:] The nodes are updated individually based on their respective
+    \item[\textbf{Node Update}:] The nodes are updated based on their respective
     node attributes, the newly aggregated messages from the incoming edges, and the graph's
     global attribute using the update function $\phi_v$.
-    \item[\textbf{Node Aggregation:}] The new node attributes are aggregated on the whole
+    \item[\textbf{Node Aggregation:}] The new node attributes are aggregated on the entire
     graph via the aggregation function $\phi_{v \to u}$.
     \item[\textbf{Global Update:}] The graph's global attribute is updated based on its
     predecessor and the newly aggregated edge and node attributes.

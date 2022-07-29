@@ -9,8 +9,8 @@ and would like to predict properties of this very molecule, e.g. its energy (at 
 current point in time or after some evolution) or the forces acting on the 
 individual atoms. Some of these properties might be directly
 computable using quantum mechanical methods---like Density Functional Theory (DFT) 
-\cite{doi:10.1021/ed5004788}. However, these methods often come
-with significant drawbacks as they might be extremely expensive from a computational 
+\cite{doi:10.1021/ed5004788}. However, quantum mechanical based methods often come
+with significant drawbacks as they are extremely expensive from a computational 
 standpoint, imposing the necessity to either optimize these conventional methods 
 as far as possible or use completely different approaches.
 
@@ -39,8 +39,8 @@ obtain the forces acting on the individual atoms indexed by $i \in \set{1, \dots
     \FF_i \: \coloneqq \: \frac{\partial E(\XX, \zz)}{\partial \xx_i} \: \in \: \R^3 \text{.}
 \]
 If we now want to simultaneously predict the energy $E$ and forces $\FF_i$
-of a molecule structure, there are two options: In so-called 
-\textit{energy-centric models}, just a global graph feature which models molecule energy
+of a molecule structure, there are two options: In \textit{energy-centric models}, 
+a global graph feature which models molecule energy
 is regarded as the GNN output and the forces are obtained by differentiating w.r.t.
 the atom locations. In contrast, \textit{force-centric models} predict both energy and forces
 directly as a global attribute and node embeddings respectively.

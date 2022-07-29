@@ -1,7 +1,7 @@
 \subsubsection{GemNet}
 \label{subsubsec:gemnet}
 
-Gasteiger et al. $\!\!$ created GemNet (\enquote{Geometric Message Passing Neural Network}) 
+Gasteiger et al. $\!\!$ also authored GemNet (\enquote{Geometric Message Passing Neural Network}) 
 \cite{https://doi.org/10.48550/arxiv.2106.08903} 
 as an improvement over DimeNet and DimeNet++ (see 
 \cite{DBLP:journals/corr/abs-2003-03123, https://doi.org/10.48550/arxiv.2011.14115} 
@@ -24,14 +24,14 @@ takes the positions $\XX$ and atomic numbers $\zz$ of a molecule
     \label{fig:gemnet-mp}
 \end{wrapfigure}
 for the distance and relative direction from $\xx_a$ to $\xx_b$ respectively.
-In GemNet, there are two graphs considered: an interaction graph and an embedding graph.
+In GemNet, two graphs are considered: an interaction graph and an embedding graph.
 The molecule's interaction graph does not change during the forward pass of the network and 
 two atoms \textit{interact} if their distance is below some 
 cutoff $c_{\text{int}}$. In addition to this interaction graph, all atom pairs 
 whose distance is below some threshold $c_{\text{emb}}$ are \textit{embedded}---and, thus, 
 edges of the embedding graph.
 
-In contrast to DimeNet, the 3- or 4-way interactions for message passing are now used 
+In contrast to DimeNet, the 3- or 4-way interactions for message passing are used 
 in a slightly different way:
 Consider pairwise different $a, b, c, d \in \set{1, \dots, n}$,
 where $(\_, a, b)$ are interacting and $(\_, c, a)$, $(\_, d, b)$ are
