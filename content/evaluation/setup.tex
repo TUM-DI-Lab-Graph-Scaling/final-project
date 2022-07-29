@@ -1,6 +1,6 @@
 \subsection{Evaluation Setup}
 
-We evaluated all models on a single machine with an AMD Epyc 7542 (128 CPU-Cores), 528 GB memory, 
+We evaluated all models on a single machine with 2 AMD Epyc 7542 (32 CPU-Cores each), 528 GB memory, 
 and 8 Nvidia RTX A6000 with 48 GB GDDR6-memory. The GPUs were not connected by NVLink, so we used 
 P2P communication through PCI for NCCL communication collectives. Practically speaking, this 
 means that we set \texttt{NCCL\_P2P\_LEVEL} to \texttt{PIX}.
@@ -25,7 +25,7 @@ CPU memory usage, GPU memory usage, as well as GPU memory reserved or allocated 
 We collected the data with a custom profling framework for PyTorch which tracks each individual phase 
 of computations, in specific the dataloading, forward pass and backward pass, to further investigate 
 internal behaviour of our applied optimizations. 
-In addition we used integrated the PyTorch profiler\footnote{\url{https://pytorch.org/docs/stable/profiler.html}}
+In addition we used the integrated PyTorch profiler\footnote{\url{https://pytorch.org/docs/stable/profiler.html}}
 to collect step-by-step performance metrics, including information about communcation collectives and 
 volume or breakdown of calls to CUDA operations. PyTorch profiler also includes plugins to 
 load and visualize the profiling data in Tensorboard, which allowed us to do ad-hoc profiling 
