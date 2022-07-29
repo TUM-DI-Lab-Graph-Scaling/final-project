@@ -10,7 +10,7 @@ into the OCP project.
 
 \subsubsection{FP16}
 
-FP16 is a floating-point number format which uses 5 bits for the exponent, 10 bits for the fraction and 1 bit for the 
+FP16\footnote{\url{https://standards.ieee.org/ieee/754/4211/}} is a floating-point number format which uses 5 bits for the exponent, 10 bits for the fraction and 1 bit for the 
 sign. This halves the used memory compared to the default single-precision floating-point format which uses 8 bits 
 for the exponent and 24 bits for the fraction. However, FP16 lowers the precision and reduces the range of numbers 
 that can be represented, making calculations less accurate and increasing the risk of overflows/underflows.
@@ -18,15 +18,15 @@ that can be represented, making calculations less accurate and increasing the ri
 PyTorch and DeepSpeed offer automatic mixed precision for gradients. Developers can define regions with context managers 
 to allow PyTorch to automatically choose the precision for GPU operations. Even though autocast worked for learnable
 parameters of the model as well as gradients, we had to convert input data and all constants defined in the models to half
-precision manually. We realized this by inferring the correct types from the DeepSpeed config which was made available 
-at runtime. Hence, with our adaptions, 
+precision manually. With our adaptions, 
 FP16 can be used by just setting the \texttt{fp16} flag in the DeepSpeed configuration.
 
 \subsubsection{BFloat16}
 
 As mentioned before, the use of FP16 leads to a higher risk of overflows and underflows. We experienced many overflows 
-of gradients when using FP16 with DeepSpeed. To avoid overflows, DeepSpeed offers support for the Bfloat16 number 
-format which allocates more bits to the exponent to extend the range of representable numbers while lowering 
+of gradients when using FP16 with DeepSpeed. To avoid overflows, DeepSpeed offers support for the Bfloat16
+\footnote{\url{https://cloud.google.com/tpu/docs/bfloat16}}
+number format which allocates more bits to the exponent to extend the range of representable numbers while lowering 
 precision.
 As with FP16, we had to include manual type casts in the OCP codebase to integrate Bfloat16 support. 
 Bfloat16 can also be enabled from the DeepSpeed configuration using the \texttt{bf16} flag.
