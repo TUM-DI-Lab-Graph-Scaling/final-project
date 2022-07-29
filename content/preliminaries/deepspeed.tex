@@ -59,4 +59,9 @@ following ways:
 that were added at a later point in time to enable offloading of model states to CPU memory 
 for very large models in order to further increase GPU memory savings. While ZeRO-Offload 
 enables offloading of optimizer states in stage 2 of ZeRO-DP, ZeRO-Infinity
-enables both offloading of model parameters and optimizer states in stage 3.
+enables both offloading of model parameters and optimizer states in stage 3. 
+
+The specific demands of parallelization strategy in modern-day large-scale model training 
+have furthermore given rise to custom extensions to DeepSpeed such as EleutherAI's DeeperSpeed
+\footnote{\url{https://github.com/EleutherAI/DeeperSpeed}} and the addition of custom 
+highly-optimized kernels.
