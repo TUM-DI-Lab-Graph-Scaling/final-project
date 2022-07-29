@@ -1,46 +1,51 @@
 \section*{Appendix}
 \addcontentsline{toc}{section}{Appendix}
 
+The above figures show the memory utilization for 
+CUDA tensors averaged over all GPUs over time. 
+Allocated memory is \textcolor{tum-dark-blue}{blue},
+while reserved memory is \textcolor{tum-orange}{orange}.
+
 \begin{figure}[H]
 
     \centering
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/cuda_memory/S0/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/cuda_memory/S0+fp16/averaged.pdf}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/cuda_memory/S1/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/cuda_memory/S1+OC/averaged.pdf}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/cuda_memory/S2+OC/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/cuda_memory/S2+OO+OC/averaged.pdf}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/cuda_memory/S3+OC/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/s2ef/cuda_memory/S3+PO+OO+OC/averaged.pdf}
     \end{subfigure}
@@ -53,42 +58,42 @@
 
     \centering
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/cuda_memory/S0/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/cuda_memory/S0+fp16/averaged.pdf}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/cuda_memory/S1/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/cuda_memory/S1+OC/averaged.pdf}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/cuda_memory/S2+OC/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/cuda_memory/S2+OO+OC/averaged.pdf}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/cuda_memory/S3+OC/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/gemnet/is2re/cuda_memory/S3+PO+OO+OC/averaged.pdf}
     \end{subfigure}
@@ -101,42 +106,80 @@
 
     \centering
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/dimenet/s2ef/cuda_memory/S0/averaged.pdf}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/dimenet/s2ef/cuda_memory/S0+fp16/averaged.pdf}
+    \end{subfigure}
+
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/dimenet/s2ef/cuda_memory/S1/averaged.pdf}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/dimenet/s2ef/cuda_memory/S1+OC/averaged.pdf}
+    \end{subfigure}
+
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/dimenet/s2ef/cuda_memory/S3+OC/averaged.pdf}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/dimenet/s2ef/cuda_memory/S3+PO+OO+OC/averaged.pdf}
+    \end{subfigure}
+
+    \caption{GPU memory consumption for DimeNet++ on the S2EF task.}
+    
+\end{figure}
+
+\begin{figure}[H]
+
+    \centering
+
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/cuda_memory/S0/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/cuda_memory/S0+fp16/averaged.pdf}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/cuda_memory/S1/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/cuda_memory/S1+OC/averaged.pdf}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/cuda_memory/S2+OC/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/cuda_memory/S2+OO+OC/averaged.pdf}
     \end{subfigure}
 
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/cuda_memory/S3+OC/averaged.pdf}
     \end{subfigure}%
     ~
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{evaluation/dimenet/is2re/cuda_memory/S3+PO+OO+OC/averaged.pdf}
     \end{subfigure}
