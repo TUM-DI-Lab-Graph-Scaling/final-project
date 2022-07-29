@@ -117,12 +117,48 @@ between the two stage 1 runtimes.
 
     \captionsetup{width=\dimexpr\textwidth-1.5cm\relax}
     \caption{Memory consumption and runtimes on the IS2RE task. 
-    Memory is in GB, runtimes in the \textit{h:m:s} format.}
+    Memory is in GB, runtimes in the \textit{h:m:s} format.
+    }
     \label{fig:gemnet-is2re}
     
 \end{figure}
 
 \subsubsection{DimeNet++}
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/dimenet/s2ef/cuda_memory/memory_comparison.pdf}
+        \label{fig:dimenet-s2ef-memory-results}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{evaluation/dimenet/s2ef/runtimes/runtimes_comparison.pdf}
+        \label{dimenet-s2ef-runtimes-results}
+    \end{subfigure}
+
+    \resizebox{0.95\textwidth}{!}{%
+    \begin{tabular}{ll|l|l|l|l|l|l|l|l|}
+    \cline{3-10}
+    & & \scriptsize \textbf{S0}    & \scriptsize \textbf{S0}+fp16 & \scriptsize \textbf{S1}             & \scriptsize \textbf{S1}+OC          & \scriptsize \textbf{S2}+OC & \begin{tabular}{@{}c@{}}\scriptsize\textbf{S2}+OO \vspace*{-0.5em} \\ \scriptsize+OC\end{tabular}      & \scriptsize \textbf{S3}+OC & \scriptsize \begin{tabular}{@{}c@{}}\scriptsize\textbf{S3}+PO \\ \scriptsize+OO+OC\end{tabular} \\ \hline \hline
+    \multicolumn{1}{|l|}{\multirow{2}{*}{memory}}   & allocated   & 3.46     & 3.47     & \textbf{0.76}     & \textbf{0.76}     & --    & --       & 1.44     & 1.0         \\ \cline{2-10} 
+    \multicolumn{1}{|l|}{}                          & reserved    & 35.82    & 33.83    & \textbf{11.87}    & \textbf{11.87}    & --    & --       & 15.59    & 15.67       \\ \hline \hline
+    \multicolumn{1}{|l|}{\multirow{5}{*}{runtimes}} & epoch       & 03:54:52 & \textbf{02:09:22} & 03:56:28 & 04:02:47 & \scriptsize OOT   & \scriptsize OOT      & 02:33:25 & 03:34:34    \\ \cline{2-10} 
+    \multicolumn{1}{|l|}{}                          & dataloading & 00:00:26 & 00:00:28 & 00:01:39 & 00:01:44 & \scriptsize OOT   & \scriptsize OOT      & \textbf{00:00:17} & 00:00:19    \\ \cline{2-10} 
+    \multicolumn{1}{|l|}{}                          & forward     & 00:40:09 & 00:24:52 & \textbf{00:19:14} & 00:19:41 & \scriptsize OOT   & \scriptsize OOT      & 00:43:02 & 00:43:50    \\ \cline{2-10} 
+    \multicolumn{1}{|l|}{}                          & backward    & 02:56:26 & 01:36:06 & \textbf{01:23:00} & 01:24:09 & \scriptsize OOT   & \scriptsize OOT      & 01:45:56 & 02:46:15    \\ \cline{2-10} 
+    \multicolumn{1}{|l|}{}                          & rest        & 00:17:49 & 00:07:54 & 02:12:33 & 02:17:11 & \scriptsize OOT   & \scriptsize OOT      & \textbf{00:04:08} & 00:04:10    \\ \hline
+    \end{tabular}}
+
+    \captionsetup{width=\dimexpr\textwidth-1.5cm\relax}
+    \caption{Memory consumption and runtimes on the IS2RE task. Memory is in GB, runtimes in the \textit{h:m:s} format.
+    \textcolor{red}{Red} runs went out of time.}
+    
+
+\end{figure}
 
 \begin{figure}[H]
     \centering
