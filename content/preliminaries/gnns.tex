@@ -8,7 +8,6 @@ datasets
 $\mathcal{D} \coloneqq \set{(\xx_i, \yy_i)}_{i=1}^n$ with $\xx_i \in \R^{d}$, $\yy_i \in \R^k$,
 where the inputs $\xx_i$ are assumed to be drawn independently from an identical 
 distribution and we want to generally predict the labels $\yy$ from $\xx$.
-
 However, for many complex structured non-Euclidean types of data, these assumptions might 
 not be the best fit. For example, just consider the two following settings:
 \begin{itemize}
@@ -27,7 +26,7 @@ conventional method (i.e. try to let a neural network learn these structures on 
 however this would be very inefficient or even unfeasible for many large datasets. 
 
 For simpler structured data like sequences or images, neural
-network architectures have been successful for quite some time, the 
+network architectures that exploit their intrinsic structure have been successful for quite some time, the 
 most prominent examples including Recurrent Neural Networks (RNNs) and
 Convolutional Neural Networks (CNNs) respectively. 
 
@@ -48,7 +47,7 @@ introduce afterwards, are even more expressive than normal
 GNs as they also model higher-order interactions between nodes (i.e. interactions 
 between 3 or more nodes, or---alternatively---between two edges). Particularly recent 
 GNNs for atomic simulations that make use of such higher-order interactions, as the ones we will describe 
-in subsection~\ref{subsec:atomic-simulations}, \cite*{DBLP:journals/corr/abs-2003-03123,https://doi.org/10.48550/arxiv.2106.08903}, 
+in Subsection~\ref{subsec:atomic-simulations}, \cite*{DBLP:journals/corr/abs-2003-03123,https://doi.org/10.48550/arxiv.2106.08903}, 
 can be expressed with EGNs.
 
 \subsubsection{Graph Networks}

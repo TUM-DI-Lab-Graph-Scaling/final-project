@@ -6,17 +6,17 @@ accuracy, but training of such models is difficult due to memory constraints and
 when scaling out to multiple devices. Much of ongoing research in scalable machine learning is 
 currently limited to  giant transformer models such as Bert or GPT-3. However, other types of 
 models benefit as well from scaling up the architectures and model parameters, 
-in particular Graph Neural Networks (GNN) to atomic simulations. In our work, 
-we use optimizations from Microsoft Deepspeed, a toolkit for efficiently training 
-large-scale models, to scale and efficiently train GNNs for predicting energies 
-and forces of catalysts. Our integration of Deepspeed into GNN architectures includes 
-mixed precision training, offloading of optimizer states and parameters to CPU or Non-volatile 
+in particular Graph Neural Networks (GNN) for atomic simulations. In our work, 
+we use optimizations from Microsoft DeepSpeed, a toolkit for efficient training 
+of large-scale models, to scale and efficiently train GNNs for predicting energies 
+and forces of catalysts. Our integration of DeepSpeed into GNN architectures includes 
+mixed precision training, offloading of optimizer states and parameters to CPU or non-volatile 
 memory, and most notably the Zero Redundancy Optimizer (ZeRO) to reduce the amount of 
 replicated states during data parallel training. We evaluated our optimizations by increasing 
 the size of the two most successful GNN architectures for atomic simulations, DimeNet 
 and GemNet, to several hundred million parameters and measuring memory usage as well as epoch 
-runtime. As dataset we used catalysts labaled with energy and forces from the OC20 dataset of 
-the Open Catalyst Project. The performed optimization of our approach show up to 
+runtime. As dataset we used catalysts labeled with energy and forces from the OC20 dataset of 
+the Open Catalyst Project. The performed optimization of our approach shows up to 
 50\% less reserved memory and 87\% less allocated memory on GemNet. However, we also observe 
 weaknesses in ZeRO such as increased communication costs and slower 
 runtimes when using offloading strategies. 

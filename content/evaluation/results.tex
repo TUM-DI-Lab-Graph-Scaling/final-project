@@ -26,66 +26,6 @@ The exact configurations and results can be seen in Figure~\ref{fig:gemnet-resul
 where \enquote{OC} stands for overlapping communication,
 \enquote{OO} for optimizer offloading and \enquote{PO} for parameter offloading.
 
-While enabling half precision training on stage 0 does significantly reduce 
-reserved memory, allocated memory is only marginally affected. Nevertheless, 
-a decrease of runtime by about 40\% (S2EF) and 41\% (IS2RE) can be observed.
-
-When comparing stage 0 with half precision to standard stage 1, a significant decrease
-both in allocated GPU memory and reserved GPU memory can be observed
-(S2EF: -67\% allocated, -23\% reserved; IS2RE: -78\% allocated, -12\% reserved).
-This drop in memory consumption has to be caused by optimizer state partitioning among
-the GPUs since this is the only difference between the configurations. 
-Both for the S2EF task and the IS2RE task, forward and backward pass 
-are marginally faster with stage 1 activated. 
-However, especially for the S2EF task, it is also clearly visible that communication overhead 
-between the GPUs rises for stage 1: The part of the total epoch runtime which
-neither belongs to one of the tracked stages (calles \enquote{rest} in 
-Figure~\ref{fig:gemnet-results}) and thus mainly 
-encompass communication, increases by 219\% (S2EF) and 58\% (IS2RE).
-
-Additionally, CPU offloading saves memory---most notable is a 58\% decrease of allocated GPU 
-memory with IS2RE when optimizer offloading is activated in stage 2. 
-Nevertheless, in all of the observed cases this came at the cost of increased runtime.
-
-Among all DeepSpeed configurations that we tested out, stage 2 with CPU offloading 
-reduced allocated memory most both on S2EF and IS2RE, while also reserving the least 
-(or almost the least) memory.
-
-Stage 3 seems to be ineffective for GemNet as neither memory footprints nor 
-runtime are improved. Likewise, communication overlapping (which we had hoped would
-reduce runtime) did not have the desired effect as can be seen from the comparison 
-between the two stage 1 runtimes.
-
-\subsubsection{DimeNet++}
-
-Similiarly to GemNet, we also evaluated DimeNet++ on S2EF with the 200k dataset and 
-IS2RE with the 100k dataset. Both tasks were trained for one epoch on 8 GPUs with 
-an effective batch size of 16 (each GPU receives 2 molecules per forward pass). 
-
-Baseline and Deepspeed configurations were identical to our GemNet evaluation. 
-With DimeNet++, as with GemNet, there is an improved runtime of 45\% (S2EF) and 40\% (IS2RE) by enabling 
-mixed-precision, but the memory savings in the reserved memory are only marginal 
-this time. Unusual behavior occurred after activating stage 1 and stage 2, as 
-the runtime deteriorated compared to the baseline. The additional runtime was 
-mainly due to very long reduce NCCL operations. Unfortunately, we could 
-not debug why these operations took significantly longer on DimeNet++ and 
-thus had a large impact on the runtime. However, it must be dependent on 
-the model architecture, since this behavior was not observed with GemNet.
-Stage 2 on the S2EF tasks even encountered NCCL timeouts during reduce operations 
-resulting in even longer runtimes. Both stage 2 runs on S2EF were aborted with an 
-out-of-time error after a threshold of 6 hours.
-
-Other results of DimeNet++ were very similiar to our observations from GemNet. 
-Stage 3 seems ineffective for the low number of GPUs. Optimizer and parameter offloading 
-leads to increased runtime as seen in the comparison of both stage 3 runs. For the S2EF 
-task, Stage 1 had the lowest memory consumption with 78\% less allocated CUDA memory and 
-almost 67\% less reserved memory than the baseline. For the IS2RE task, stage 2 with 
-optimizer offloading had the lowest memory consumption with 87\% less allocated CUDA 
-memory and 39\% less reserved memory than the baseline. In both tasks, stage 0 with 
-mixed-precision achieved the best runtime due to the tremendous communication overhead 
-of all stage 1 and 2 runs. Detailed information about the individual runs can be found
-in Figure~\ref{fig:dimenet-results}.
-
 \begin{figure}[H]
     \centering
 
@@ -145,6 +85,66 @@ in Figure~\ref{fig:dimenet-results}.
     \label{fig:gemnet-results}
     
 \end{figure}
+
+While enabling half precision training on stage 0 does significantly reduce 
+reserved memory, allocated memory is only marginally affected. Nevertheless, 
+a decrease of runtime by about 40\% (S2EF) and 41\% (IS2RE) can be observed.
+
+When comparing stage 0 with half precision to standard stage 1, a significant decrease
+both in allocated GPU memory and reserved GPU memory can be observed
+(S2EF: -67\% allocated, -23\% reserved; IS2RE: -78\% allocated, -12\% reserved).
+This drop in memory consumption has to be caused by optimizer state partitioning among
+the GPUs since this is the only difference between the configurations. 
+Both for the S2EF task and the IS2RE task, forward and backward pass 
+are marginally faster with stage 1 activated. 
+However, especially for the S2EF task, it is also clearly visible that communication overhead 
+between the GPUs rises for stage 1: The part of the total epoch runtime which
+neither belongs to one of the tracked stages (calles \enquote{rest} in 
+Figure~\ref{fig:gemnet-results}) and thus mainly 
+encompass communication, increases by 219\% (S2EF) and 58\% (IS2RE).
+
+Additionally, CPU offloading saves memory---most notable is a 58\% decrease of allocated GPU 
+memory with IS2RE when optimizer offloading is activated in stage 2. 
+Nevertheless, in all of the observed cases this came at the cost of increased runtime.
+
+Among all DeepSpeed configurations that we tested out, stage 2 with CPU offloading 
+reduced allocated memory most both on S2EF and IS2RE, while also reserving the least 
+(or almost the least) memory.
+
+Stage 3 seems to be ineffective for GemNet as neither memory footprints nor 
+runtime are improved. Likewise, communication overlapping (which we had hoped would
+reduce runtime) did not have the desired effect as can be seen from the comparison 
+between the two stage 1 runtimes.
+
+\subsubsection{DimeNet++}
+
+Similiarly to GemNet, we also evaluated DimeNet++ on S2EF with the 200k dataset and 
+IS2RE with the 100k dataset. Both tasks were trained for one epoch on 8 GPUs with 
+an effective batch size of 16 (each GPU receives 2 molecules per forward pass). 
+
+Baseline and Deepspeed configurations were identical to our GemNet evaluation. 
+With DimeNet++, as with GemNet, there is an improved runtime of 45\% (S2EF) and 40\% (IS2RE) by enabling 
+mixed-precision, but the memory savings in the reserved memory are only marginal 
+this time. Unusual behavior occurred after activating stage 1 and stage 2, as 
+the runtime deteriorated compared to the baseline. The additional runtime was 
+mainly due to very long reduce NCCL operations. Unfortunately, we could 
+not debug why these operations took significantly longer on DimeNet++ and 
+thus had a large impact on the runtime. However, it must be dependent on 
+the model architecture, since this behavior was not observed with GemNet.
+Stage 2 on the S2EF tasks even encountered NCCL timeouts during reduce operations 
+resulting in even longer runtimes. Both stage 2 runs on S2EF were aborted with an 
+out-of-time error after a threshold of 6 hours.
+
+Other results of DimeNet++ were very similiar to our observations from GemNet. 
+Stage 3 seems ineffective for the low number of GPUs. Optimizer and parameter offloading 
+leads to increased runtime as seen in the comparison of both stage 3 runs. For the S2EF 
+task, Stage 1 had the lowest memory consumption with 78\% less allocated CUDA memory and 
+almost 67\% less reserved memory than the baseline. For the IS2RE task, stage 2 with 
+optimizer offloading had the lowest memory consumption with 87\% less allocated CUDA 
+memory and 39\% less reserved memory than the baseline. In both tasks, stage 0 with 
+mixed-precision achieved the best runtime due to the tremendous communication overhead 
+of all stage 1 and 2 runs. Detailed information about the individual runs can be found
+in Figure~\ref{fig:dimenet-results}.
 
 \begin{figure}[H]
     \centering

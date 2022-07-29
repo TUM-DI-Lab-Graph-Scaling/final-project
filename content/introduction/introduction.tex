@@ -2,42 +2,42 @@
 
 \subsection{Motivation}
 
-Training large-scale models is the Formula 1 of the Machine learning research community: Large labs and corporations with 
+Training large-scale models is the Formula 1 of the machine learning research community: Large labs and corporations with 
 almost unlimited resources compete to outperform each other in model size and accuracy improvements to the decimal points. 
 Consequently, in recent years there has been a surge of more efficient and scalable methods to train deep learning models 
-in parallel on multiple GPUs or even multiple machines. Most of the methods are desinged for large language models, however 
+in parallel on multiple GPUs or even multiple machines. Most of the methods are designed for large language models, however 
 also offer general solutions to problems such as linear scalability, memory efficiency and 
-communication reduction. With graph machine learning gaining ever more prominence in physics-focussed prediciton tasks and 
+communication reduction. With graph machine learning gaining ever more prominence in physics-focused prediction tasks and 
 simulations, we adopted some of these scaling methods and applied them to machine learning models that operate on graphs. 
 
 Graphs offer a powerful way to structure connected data by elevating the relationships in-between data points. 
-Fundamentally a graph consists of a set of nodes, which are connected to each other by a set of edges. Both node 
+Fundamentally a graph consists of a set of nodes, which are connected to each other by a set of edges. Both nodes 
 and edges may contain features to further describe the entity represented by a node or the relationship between entities.
 Graphs are used in a wide range of application areas such as social analysis by representing people and their relationship 
-to each other as graphs or in the medical domain by modeling population graphs for disease prediction or using molecular graphs 
-for drug discovery. Graphs also have a long history of applications on quantum chemistry
-\ref*{10.48550/ARXIV.1704.01212}, representing molecular 
+to each other as graphs, or in the medical domain by modeling population graphs for disease prediction, or using molecular graphs 
+for drug discovery. Graphs also have a long history of applications in quantum chemistry
+\cite*{10.48550/ARXIV.1704.01212}, representing molecular 
 structures and the energy as well as forces of the structure as graphs. 
 
 In recent years, geometric deep learning, a machine learning approach to bring deep learning models 
-to the graph domain, is getting more and more popular since they archieve comparable or even better 
+to the graph domain, is getting more and more popular since they achieve comparable or even better 
 results than traditional analytical graph algorithms often at much lower computational costs. Graph Neural 
 Networks (GNNs) are currently the dominant architecture for designing geometric deep learning models, most of
 which are based on the message passing paradigm, where nodes gather features from neighbors, transform them via 
 differentiable functions and scatter to outgoing neighboring nodes. Especially for molecular predictions, 
 GNN-based architectures are orders of magnitudes faster than traditional methods from quantum chemistry. 
 Meta AI introduced the Open Catalyst Project (OCP) \cite{Chanussot_2021} in 2020 to provide unified baseline models and datasets for 
-force and energy predictions of molecular structures, more specificially Catalysts. There has been a number 
+force and energy predictions of molecular structures, more specificially catalysts. There has been a number 
 of high-quality GNN based model submissions 
 \cite*{DBLP:journals/corr/abs-2003-03123, https://doi.org/10.48550/arxiv.2106.08903, https://doi.org/10.48550/arxiv.2203.09697} to the project which we will describe further in 
-section~\ref*{subsec:atomic-simulations}.
+Section~\ref{subsec:atomic-simulations}.
 
 \subsection{Problem definition}
 
 Although GNNs allow faster prediction of the outcome of molecular simulations, they are still computationally intensive 
 to train. Meta AI used a cluster of 256 GPUs to scale out the training of the most recent top-performing GNN model 
-which contained few hundred million parameters. The training of one configuration of this model still took over 5 
-years of summed up GPU runtime. So, although GNN models have been very successful for molecular predictions, 
+which contained a few hundred millions of parameters. The training of one configuration of this model still took over 5 
+years of summed-up GPU runtime. So, although GNN models have been very successful for molecular predictions, 
 the problem remains that training, even on high-end hardware and multiple GPUs, takes a long time and has extremely 
 high memory requirements. In addition, using hyper-optimization requires many iterations with different parameters to 
 find the optimal model. Any memory and runtime savings will result in days to weeks of less training time and significantly 
@@ -46,10 +46,10 @@ reduced costs.
 Since 2020, Microsoft is developing DeepSpeed, which is designed to reduce computing costs and memory 
 requirements of large distributed models through better parallelization and minimal state replication. DeepSpeed 
 runs on top of PyTorch and thus integrates into existing model training pipelines. However, DeepSpeed was developed 
-for large transformer models and, to the best of our knowledge, never applied to large-scale training of Graph Neural Networks.
+for large transformer models and, to the best of our knowledge, never applied to large-scale training of GNNs.
 
 In our work, we forked the OCP project to integrate DeepSpeed into the training pipeline of the most widely-used 
-and successful models in energy and force predicition of catalysts. 
+and successful models in energy and force prediction of catalysts. 
 We benchmark our approach by evaluating the epoch runtime and memory usage of the GNN architectures GemNet and 
 DimeNet++ using different configurations of DeepSpeed on the OC20 dataset.
 
@@ -59,7 +59,7 @@ DimeNet++ using different configurations of DeepSpeed on the OC20 dataset.
 Our main contributions are:
 
 \begin{enumerate}
-    \item We scaled force and energy predictions in atomic simulations of catalysts with Graph Neural Networks 
+    \item We scaled force and energy predictions in atomic simulations of catalysts with GNNs 
     by integrating Microsoft DeepSpeed into the Open Catalyst Project.
     \footnote{\url{https://github.com/TUM-DI-Lab-Graph-Scaling/ocp}}
     \item We evaluated the effectiveness of DeepSpeed features, in particular the Zero Redundancy Optimizer, on 
@@ -73,7 +73,7 @@ Our main contributions are:
 Our final report is structured as follows: Section~\ref{section:preleminaries} follows with an overview of 
 important preliminary background topics of our work. Section~\ref{section:implementation} describes important 
 scaling techniques from DeepSpeed and our work to integrate them into the OCP repository. In 
-section~\ref{section:evaluation}, we provide benchmark data for our changes and evaluate them in detail. 
-Section~\ref{section:related_work} presents similiar literature to our work, while section~\ref{section:project_organization} 
-gives a brief review of our project organization. Finally, section~\ref{section:conclusion} wraps up the 
+Section~\ref{section:evaluation}, we provide benchmark data for our changes and evaluate them in detail. 
+Section~\ref{section:related_work} presents similiar literature to our work, while Section~\ref{section:project_organization} 
+gives a brief review of our project organization. Finally, Section~\ref{section:conclusion} wraps up the 
 report with a conclusion.
