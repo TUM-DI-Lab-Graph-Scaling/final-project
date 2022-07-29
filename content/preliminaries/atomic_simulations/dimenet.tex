@@ -81,16 +81,16 @@ aggregated over all interaction block outputs.
 The whole DimeNet architecture as depicted in its original paper 
 \cite{DBLP:journals/corr/abs-2003-03123} can be seen in Figure~\ref{fig:dimenet}.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[]{atomic_simulations/dimenet.pdf}
-    \caption{The original DimeNet architecture as depicted in \cite*{DBLP:journals/corr/abs-2003-03123}.}
-    \label{fig:dimenet}
-\end{figure}
-
 DimeNet++ \cite{https://doi.org/10.48550/arxiv.2011.14115} is an upgraded version of 
 DimeNet that increases the efficiency of training without impacting the quality of results. 
 These improvements include replacing the bilinear layer in the directional message passing 
 step by a simpler Hadamard product, downprojecting the embeddings into lower dimensions in
 computation-intensive parts of the model and up-project them back to the original dimensions 
 after these layers, and using less interaction layers.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[]{atomic_simulations/dimenet.pdf}
+    \caption{The original DimeNet architecture as depicted in \cite*{DBLP:journals/corr/abs-2003-03123}.}
+    \label{fig:dimenet}
+\end{figure}

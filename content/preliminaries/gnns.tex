@@ -3,14 +3,11 @@
 
 \subsection{Graph Neural Networks}
 
-In most of the contemporary supervised machine learning tasks, we are usually given 
+In most of the contemporary supervised machine learning tasks, we are given 
 datasets
 $\mathcal{D} \coloneqq \set{(\xx_i, \yy_i)}_{i=1}^n$ with $\xx_i \in \R^{d}$, $\yy_i \in \R^k$,
 where the inputs $\xx_i$ are assumed to be drawn independently from an identical 
-distribution. We want to generally predict the labels $\yy$ from $\xx$ using
-some parametric function $\fct{f_\theta}{\R^d}{\R^k}$ whose parameter $\theta$ is chosen
-by minimization of a suitable loss function. This function $f_{\theta}$ is often implemented 
-by neural networks.
+distribution and we want to generally predict the labels $\yy$ from $\xx$.
 
 However, for many complex structured non-Euclidean types of data, these assumptions might 
 not be the best fit. For example, just consider the two following settings:
@@ -18,12 +15,12 @@ not be the best fit. For example, just consider the two following settings:
     \item Suppose we are given molecule structures as input graphs $\xx_i$ and, as an 
           outcome, we want to predict the energy $\yy_i$ of the respective structures. 
           Clearly, there is no straightforward way to embed a molecule into some $\R^d$.
-    \item Suppose our inputs $\xx_i$ are certain features of users in a social network
-          and we want to predict interaction $\yy_i$ with some newly uploaded content. In this 
+    \item Suppose our inputs $\xx_i$ are features of users in a social network
+          and we want to predict interaction $\yy_i$ with some new content. In this 
           case, the iid assumption of the individual data points $(\xx_i, \yy_i)$ is 
-          completely unreasonable because users themselves might share common interests 
-          or make each other aware of the content. Therefore it would be sensible to incorporate the 
-          existing connections between the data points somehow.
+          unreasonable because users themselves might share common interests 
+          or make each other aware of the content. Therefore it would be sensible to consider the 
+          existing connections between the data points.
 \end{itemize}
 Surely, one could find some representation of the above input data and try to use some
 conventional method (i.e. try to let a neural network learn these structures on its own),
@@ -40,7 +37,7 @@ Convolutional Neural Networks (CNNs) respectively.
 Graph Neural 
 Networks (GNNs) can now be regarded as a generalization of CNNs and RNNs to general graph structures.
 More precisely, we can say that GNNs exploit the structure of the input graph(s) by incorporating
-reasonable assumptions about its predicting functions like equivariance (in the case of node prediction) or invariance (for example in the case of global predictions) with respect to permutations of the 
+reasonable assumptions about its predicting functions like equivariance (in the case of node prediction) or invariance (for global predictions) with respect to permutations of the 
 input nodes.
 
 We express GNNs via the Graph Network (GN) framework introduced in 
@@ -52,7 +49,7 @@ GNs as they also model higher-order interactions between nodes (i.e. interaction
 between 3 or more nodes, or---alternatively---between two edges). Particularly recent 
 GNNs for atomic simulations that make use of such higher-order interactions, as the ones we will describe 
 in subsection~\ref{subsec:atomic-simulations}, \cite*{DBLP:journals/corr/abs-2003-03123,https://doi.org/10.48550/arxiv.2106.08903}, 
-can be expressed in the language of the EGN framework.
+can be expressed with EGNs.
 
 \subsubsection{Graph Networks}
 \label{subsubsec:gns}
@@ -104,16 +101,14 @@ The computations performed by a GN block can also be described in terms of the f
 \end{enumerate}
 
 Furthermore, the aggregation functions have to be invariant w.r.t. permutations of the
-input nodes or edges, i.e. do not depend reordering of the inputs. In many cases,
+input nodes or edges. In many cases,
 these aggregation functions are kept simple and are just a sum or mean operation.
-
 A GN is just a sequence of such GN blocks which successively updates the input graph's
-attributes, i.e. over multiple such blocks, messages can be passed along the edges of
-a graph. Now, a GNN is simply a GN whose blocks use neural networks to implement the
+attributes. A GNN is simply a GN whose blocks use neural networks to implement the
 update functions $\phi_e$, $\phi_v$, $\phi_u$. Note that global graph prediction, 
 node prediction as well as edge prediction can be performed with a GNN as just
 the corresponding attribute of the GNN output graph (or some final transformation of it) can 
-be regarded as the network output.
+be seen as the network output.
 
 % Figure that demonstrates the five update phases of an GN block.
 \input{figures/gnns/gn_block.tex}
