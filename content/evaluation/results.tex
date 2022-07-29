@@ -56,6 +56,36 @@ runtime are improved. Likewise, communication overlapping (which we had hoped wo
 reduce runtime) did not have the desired effect as can be seen from the comparison 
 between the two stage 1 runtimes.
 
+\subsubsection{DimeNet++}
+
+Similiarly to GemNet, we also evaluated DimeNet++ on S2EF with the 200k dataset and 
+IS2RE with the 100k dataset. Both tasks were trained for one epoch on 8 GPUs with 
+an effective batch size of 16 (each GPU receives 2 molecules per forward pass). 
+
+Baseline and Deepspeed configurations were identical to our GemNet evaluation. 
+With DimeNet++, as with GemNet, there is an improved runtime of 45\% (S2EF) and 40\% (IS2RE) by enabling 
+mixed-precision, but the memory savings in the reserved memory are only marginal 
+this time. Unusual behavior occurred after activating stage 1 and stage 2, as 
+the runtime deteriorated compared to the baseline. The additional runtime was 
+mainly due to very long reduce NCCL operations. Unfortunately, we could 
+not debug why these operations took significantly longer on DimeNet++ and 
+thus had a large impact on the runtime. However, it must be dependent on 
+the model architecture, since this behavior was not observed with GemNet.
+Stage 2 on the S2EF tasks even encountered NCCL timeouts during reduce operations 
+resulting in even longer runtimes. Both stage 2 runs on S2EF were aborted with an 
+out-of-time error after a threshold of 6 hours.
+
+Other results of DimeNet++ were very similiar to our observations from GemNet. 
+Stage 3 seems ineffective for the low number of GPUs. Optimizer and parameter offloading 
+leads to increased runtime as seen in the comparison of both stage 3 runs. For the S2EF 
+task, Stage 1 had the lowest memory consumption with 78\% less allocated CUDA memory and 
+almost 67\% less reserved memory than the baseline. For the IS2RE task, stage 2 with 
+optimizer offloading had the lowest memory consumption with 87\% less allocated CUDA 
+memory and 39\% less reserved memory than the baseline. In both tasks, stage 0 with 
+mixed-precision achieved the best runtime due to the tremendous communication overhead 
+of all stage 1 and 2 runs. Detailed information about the individual runs can be found
+in Figure~\ref{fig:dimenet-results}.
+
 \begin{figure}[H]
     \centering
 
@@ -113,38 +143,6 @@ between the two stage 1 runtimes.
     \label{fig:gemnet-results}
     
 \end{figure}
-
-\newpage
-
-\subsubsection{DimeNet++}
-
-Similiar to GemNet, we also evaluated DimeNet++ on S2EF with the 200k dataset and 
-IS2RE with the 100k dataset. Both tasks were trained for one epoch on 8 GPUs with 
-an effective batch size of 16 (each GPU receives 2 molecules per forward pass). 
-
-Baseline and Deepspeed configurations were identical to our GemNet evaluation. 
-With DimeNet++, as with GemNet, there is an improved runtime of 50\% by enabling 
-mixed-precision, but the memory savings in the reserved memory are only marginal 
-this time. Unusual behavior occurred after activating stage 1 and stage 2, as 
-the runtime deteriorated compared to the baseline. The additional runtime was 
-mainly due to very long reduce NCCL operations. Unfortunately, we could 
-not debug why these operations took significantly longer on DimeNet++ and 
-thus had a large impact on the runtime. However, it must be dependent on 
-the model architecture, since this behavior was not observed with GemNet.
-stage 2 on the S2EF tasks even encountered NCCL timeouts during reduce operations 
-resulting in even longer runtimes. Both stage 2 runs on S2EF were aborted with an 
-out-of-time error after a threshold of 6 hours.
-
-Other results of DimeNet++ were very similiar to our observations from GemNet. 
-stage 3 seems ineffective for the low number of GPUs. Optimizer and parameter offloading 
-leads to increased runtime as seen in the comparison of both stage 3 runs. For the S2EF 
-task, Stage 1 had the lowest memory consumption with 60\% less allocated CUDA memory and 
-50\% less reserved memory than the baseline. For the IS2RE task, stage 2 with 
-optimizer offloading had the lowest memory consumption with 70\% less allocated CUDA 
-memory and 50\% less reserved memory than the baseline. In both tasks, stage 0 with 
-mixed-precision archieved the best runtime due to the tremendous communication overhead 
-of all stage 1 and 2 runs.
-
 
 \begin{figure}[H]
     \centering
@@ -208,6 +206,7 @@ of all stage 1 and 2 runs.
     \captionsetup{width=\dimexpr\textwidth-1.5cm\relax}
     \caption{Memory consumption and runtimes for DimeNet++. Memory is in GB, runtimes in the \textit{h:m:s} format.
     \textcolor{red}{Red} runs went out of time.}
+    \label{fig:dimenet-results}
     
 
 \end{figure}
