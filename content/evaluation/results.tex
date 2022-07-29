@@ -26,14 +26,17 @@ The exact configurations and results can be seen in Figure~\ref{fig:gemnet-s2ef}
 and Figure~\ref{fig:gemnet-is2re}, where \enquote{OC} stands for overlapping communication,
 \enquote{OO} for optimizer offloading and \enquote{PO} for parameter offloading.
 
+While enabling half precision training on stage 0 does significantly reduce 
+reserved memory, allocated memory is only marginally affected. Nevertheless, 
+a decrease of runtime by about 40\% (S2EF) and 41\% (IS2RE) can be observed.
+
 When comparing stage 0 with half precision to standard stage 1, a significant decrease
-both in allocated GPU memory and reserved GPU memory can be observed for both S2EF and IS2RE
+both in allocated GPU memory and reserved GPU memory can be observed
 (S2EF: -67\% allocated, -23\% reserved; IS2RE: -78\% allocated, -12\% reserved).
 This drop in memory consumption has to be caused by optimizer state partitioning among
 the GPUs since this is the only difference between the configurations. 
-Both for the S2EF task and the IS2RE task, forward and backward pass---excluding communication
----are marginally faster with stage 1 activated. 
-
+Both for the S2EF task and the IS2RE task, forward and backward pass 
+are marginally faster with stage 1 activated. 
 However, especially for the S2EF task, it is also clearly visible that communication overhead 
 between the GPUs rises for stage 1: The part of the total epoch runtime which
 neither belongs to one of the tracked stages (calles \enquote{rest} in 
@@ -41,8 +44,12 @@ Figure~\ref{fig:gemnet-s2ef} and Figure~\ref{fig:gemnet-is2re}) and thus mainly
 encompass communication, increases by 219\% (S2EF) and 58\% (IS2RE).
 
 Additionally, CPU offloading saves memory---most notable is a 58\% decrease of allocated GPU 
-memory with IS2RE when optimizer offloading is activated in stage 2. Nevertheless,
-in all of the observed cases this came at the cost of increased runtime.
+memory with IS2RE when optimizer offloading is activated in stage 2. 
+Nevertheless, in all of the observed cases this came at the cost of increased runtime.
+
+Among all DeepSpeed configurations that we tested out, stage 2 with CPU offloading 
+reduced allocated memory most both on S2EF and IS2RE, while also reserving the least 
+(or almost the least) memory.
 
 Stage 3 seems to be ineffective for GemNet as neither memory footprints nor 
 runtime are improved. Likewise, communication overlapping (which we had hoped would
