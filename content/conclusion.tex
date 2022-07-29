@@ -18,8 +18,8 @@ the state-of-the-art on the OCP leaderboard when our project phase began.
 
 For our GemNet setup, we observed that using DeepSpeed's ZeRO optimization 
 can significantly reduce memory footprints during training, resulting in 
-almost 50\% less reserved memory or 87\% less allocated memory on the S2EF task
-(depending on the configuration of DeepSpeed) compared to standard data parallel training. 
+almost 50\%/50\% less reserved memory or 75\%/87\% less allocated memory on the S2EF
+and IS2RE tasks respectively (depending on the configuration of DeepSpeed) compared to standard data parallel training. 
 In terms of runtime, however, in almost all of our evaluations we were not able to speed up 
 training as communication overhead increased when 
 nontrivial DeepSpeed features were activated. Runtime-wise, just training in half
@@ -34,8 +34,7 @@ were simply too small to see any memory savings.
 In contrast, our results for DimeNet++ were rather unexpected as communication
 between the processes got very slow when we activated stage 1 and 2 of ZeRO.
 We ruled out various potential problems related to our DeepSpeed configuration and
-the model itself (like the energy-centric DimeNet++ calculating second order gradients 
-in the backward pass) and suspect that this might be a problem related to the NCCL communication on our evaluation 
+the model itself and suspect that this might be a problem related to the NCCL communication on our evaluation 
 machine.
 
 Since each configuration was only trained for one epoch and not all of the OC20 data was 
@@ -47,7 +46,7 @@ In addition, it could also be very interesting to explore if the results we obta
 can be transferred to the current state-of-the-art architecture, GemNet-OC, which does not only
 consider 3- but also 4-way interactions.
 Apart from all of this, we would be curious to see some of the DeepSpeed features being
-combined with other parallization strategies in the domain of atomic simulations, like 
+combined with other parallelization strategies in the domain of atomic simulations, like 
 graph parallelism \cite{https://doi.org/10.48550/arxiv.2203.09697} which was also added to
 OCP recently during our project phase.
 

@@ -21,7 +21,7 @@ them against the two baselines. More precisely, for stage 1, we did one run with
 without overlapping communication each, while overlapping communication
 was activated throughout stage 2 and stage 3. In order to investigate potential 
 memory savings by CPU offloading, we conducted standard stage 2 and stage 3 runs as well
-as runs in which the respective maximal CPU offloading capacity was exploited.
+as runs in which the respective maximal CPU offloading ability was exploited.
 The exact configurations and results can be seen in Figure~\ref{fig:gemnet-results}, 
 where \enquote{OC} stands for overlapping communication,
 \enquote{OO} for optimizer offloading and \enquote{PO} for parameter offloading.
@@ -101,7 +101,7 @@ However, especially for the S2EF task, it is also clearly visible that communica
 between the GPUs rises for stage 1: The part of the total epoch runtime which
 neither belongs to one of the tracked stages (calles \enquote{rest} in 
 Figure~\ref{fig:gemnet-results}) and thus mainly 
-encompass communication, increases by 219\% (S2EF) and 58\% (IS2RE).
+encompasses communication, increases by 219\% (S2EF) and 58\% (IS2RE).
 
 Additionally, CPU offloading saves memory---most notable is a 58\% decrease of allocated GPU 
 memory with IS2RE when optimizer offloading is activated in stage 2. 
@@ -122,7 +122,7 @@ Similiarly to GemNet, we also evaluated DimeNet++ on S2EF with the 200k dataset 
 IS2RE with the 100k dataset. Both tasks were trained for one epoch on 8 GPUs with 
 an effective batch size of 16 (each GPU receives 2 molecules per forward pass). 
 
-Baseline and Deepspeed configurations were identical to our GemNet evaluation. 
+Baseline and DeepSpeed configurations were identical to our GemNet evaluation. 
 With DimeNet++, as with GemNet, there is an improved runtime of 45\% (S2EF) and 40\% (IS2RE) by enabling 
 mixed-precision, but the memory savings in the reserved memory are only marginal 
 this time. Unusual behavior occurred after activating stage 1 and stage 2, as 
