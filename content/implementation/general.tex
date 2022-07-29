@@ -8,12 +8,13 @@ GNNs. The Open Catalyst Project presents the ideal
 benchmark for our acceleration approaches since it contains several model definitions 
 for GNNs in the context of molecular simulations. Previous research has shown 
 that scaling OCP models to multiple hundreds of millions of parameters or even 
-billions of parameters leads to better accuracies. Therefore we want to utilize 
+billions of parameters leads to better accuracies but requires ever larger infrastructure
+and ever more time for training. Therefore we want to utilize 
 DeepSpeed to scale beyond standard data parallelism and enable training of billion 
 parameter models.
 
 We took multiple steps to integrate DeepSpeed into the OCP project, which we will 
-descript in the following section. All of our changes are available on GitHub in our 
+describe in the following section. All of our changes are available on GitHub in our 
 organization fork of OCP\footnote{\url{https://github.com/TUM-DI-Lab-Graph-Scaling/ocp}}.
 
 To start off, we initialized the DeepSpeed engine. 

@@ -20,7 +20,7 @@ the model during training. ZeRO-Offload uses a two-way partitioning scheme to
 split the graph into CPU and GPU partitionings while trying to optimize CPU 
 CPU computation overhead, communication overhead and memory savings. 
 
-Generally speaking, offloading is an scale-up approach to utilize as much 
+Generally speaking, offloading is a scale-up approach to utilize as much 
 resources on each machine as possible, including CPU cores and memory. 
 Offloading should reduce GPU memory consuption at the cost of CPU memory and 
 core utilization, while the overall runtime increases.
@@ -39,7 +39,7 @@ configuration inside of the ZeRO configuration:
 }
 \end{json}
 
-ZeRO-Infinity \cite*{DBLP:journals/corr/abs-2104-07857} further features of 
+ZeRO-Infinity \cite*{DBLP:journals/corr/abs-2104-07857} adds further features to 
 ZeRO-Offload by building on top of ZeRO-3 (Stage 3) and also introducing NVMe 
 offloading.
 
@@ -47,7 +47,7 @@ ZeRO-Infinity builds on top of the offload engine of ZeRO-Offload by also
 mapping the model to a data-flow graph as described above. However, the 
 novel infinity offload engine also allows assigning data-flow partitions 
 to NVMe memory and extends the graph by including activation memory hence 
-also allowing offloading activiation checkpoints to CPU memory or NVMe. 
+also allowing offloading activation checkpoints to CPU memory or NVMe. 
 ZeRO-Infinity also introduces the concept of memory-centric tiling for 
 working memory to split larger layers in the model into smaller tiles, 
 allowing the offload engine to further improve the partitioning scheme and 

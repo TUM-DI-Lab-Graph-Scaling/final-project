@@ -43,7 +43,7 @@ traditional Data Parallelism approach with Model parallelism. Optimizer states a
 are partitioned and synchronized as mentioned in Stage 1 and 2. The model parameter partitioning 
 works with the following principles: Each GPU is assigned a shard of parameters. When model 
 parameters outside the shard are required for the forward or backward pass, the GPU that owns 
-the shard containing the parameters shares them via broadcast. This leads to fat more communication 
+the shard containing the parameters shares them via broadcast. This leads to far more communication 
 overhead, however further reduces GPU memory requirements of the overall model.
 
 The integration of ZeRO-3 was fraught with many problems. Gemnet, for example, accesses the 

@@ -40,8 +40,9 @@ machine.
 
 Since each configuration was only trained for one epoch and not all of the OC20 data was 
 used for training due to time constraints, it would be interesting to see in the future if our results 
-also prove true for longer and more scaled-up training and if the activation of the DeepSpeed features 
-influences performance of the models in some way. 
+also prove true for longer training. It also remains yet to be evaluated whether our
+parallelization optimizations resulted in decreased model performance, as none of the two 
+models was fully trained to completion and tuned for top-performance.
 In addition, it could also be very interesting to explore if the results we obtained for our GemNet setup
 can be transferred to the current state-of-the-art architecture, GemNet-OC, which does not only
 consider 3- but also 4-way interactions.
