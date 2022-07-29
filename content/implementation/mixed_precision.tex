@@ -15,11 +15,7 @@ sign. This halves the used memory compared to the default single-precision float
 for the exponent and 24 bits for the fraction. However, FP16 lowers the precision and reduces the range of numbers 
 that can be represented, making calculations less accurate and increasing the risk of overflows/underflows.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics{figures/mixed_precision/float16.pdf}
-    \caption{FP16 floating-point number format}
-\end{figure}
+\input{figures/mixed_precision/fp16.tex}
 
 PyTorch and Deepspeed offer automatic mixed precision for gradients. Developers can regions with context managers 
 to allow PyTorch to automatically choose the precision for GPU operations. Unfortunately both autocast modules from 
@@ -40,11 +36,7 @@ of gradients when using FP16 with Deepspeed. To avoid overflows Deepspeed offers
 format which allocates more bits to the exponent to extent the range of representable numbers while lowering 
 precision.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics{figures/mixed_precision/bfloat16.pdf}
-    \caption{Bfloat16 floating-point number format}
-\end{figure}
+\input{figures/mixed_precision/bloat16.tex}
 
 As with FP16, we had to include manual type cast in the OCP codebase to integrate Bfloat16 support. 
 Bfloat16 can also be enabled from the Deepspeed configuration

@@ -1,0 +1,42 @@
+\begin{figure}[H]
+    \centering
+    \tikzset{
+        bit/.style={
+            shape=rectangle,
+            draw=tum-gray,
+            minimum width=0.4cm,
+            minimum height=0.5cm,
+            inner sep=0.5
+        }
+    }
+    \begin{tikzpicture}
+        \node[bit, fill=tum-light-green] (0) at (0,0) {\textcolor{tum-dark-green}{\tiny$\boldsymbol{0}$}};
+        \node[bit, fill=tum-lighter-blue] (1) at (0.4,0) {\textcolor{tum-dark-blue}{\tiny$\boldsymbol{0}$}};
+        \node[bit, fill=tum-lighter-blue] (2) at (0.8,0) {\textcolor{tum-dark-blue}{\tiny$\boldsymbol{1}$}};
+        \node[bit, fill=tum-lighter-blue] (3) at (1.2,0) {\textcolor{tum-dark-blue}{\tiny$\boldsymbol{0}$}};
+        \node[bit, fill=tum-lighter-blue] (4) at (1.6,0) {\textcolor{tum-dark-blue}{\tiny$\boldsymbol{1}$}};
+        \node[bit, fill=tum-lighter-blue] (5) at (2,0) {\textcolor{tum-dark-blue}{\tiny$\boldsymbol{1}$}};
+        \node[bit, fill=tum-lighter-blue] (6) at (2.4,0) {\textcolor{tum-dark-blue}{\tiny$\boldsymbol{0}$}};
+        \node[bit, fill=tum-lighter-blue] (7) at (2.8,0) {\textcolor{tum-dark-blue}{\tiny$\boldsymbol{0}$}};
+        \node[bit, fill=tum-lighter-blue] (8) at (3.2,0) {\textcolor{tum-dark-blue}{\tiny$\boldsymbol{0}$}};
+        \node[bit, fill=tum-light-orange] (9) at (3.6,0) {\textcolor{tum-orange}{\tiny$\boldsymbol{0}$}};
+        \node[bit, fill=tum-light-orange] (10) at (4,0) {\textcolor{tum-orange}{\tiny$\boldsymbol{0}$}};
+        \node[bit, fill=tum-light-orange] (11) at (4.4,0) {\textcolor{tum-orange}{\tiny$\boldsymbol{1}$}};
+        \node[bit, fill=tum-light-orange] (12) at (4.8,0) {\textcolor{tum-orange}{\tiny$\boldsymbol{1}$}};
+        \node[bit, fill=tum-light-orange] (13) at (5.2,0) {\textcolor{tum-orange}{\tiny$\boldsymbol{1}$}};
+        \node[bit, fill=tum-light-orange] (14) at (5.6,0) {\textcolor{tum-orange}{\tiny$\boldsymbol{0}$}};
+        \node[bit, fill=tum-light-orange] (15) at (6,0) {\textcolor{tum-orange}{\tiny$\boldsymbol{0}$}};
+
+        \node[bit, draw=black] (bit) at (0,0) {};
+        \node[bit, draw=black, minimum width=3.2cm] (exponent) at (1.8,0) {};
+        \node[bit, draw=black, minimum width=2.8cm] (exponent) at (4.8,0) {};
+
+        \node[] (sign) at (0,0.7) {\tiny \textbf{\textcolor{tum-dark-green}{sign}}};
+        \node[] (1bit) at (0,0.45) {\tiny \textcolor{tum-dark-green}{(1 bit)}};
+        \node[] (exponent) at (1.8,0.7) {\tiny \textbf{\textcolor{tum-dark-blue}{exponent}}};
+        \node[] (8bit) at (1.8,0.45) {\tiny \textcolor{tum-dark-blue}{(8 bits)}};
+        \node[] (fraction) at (4.8,0.7) {\tiny \textbf{\textcolor{tum-orange}{fraction}}};
+        \node[] (7bit) at (4.8,0.45) {\tiny \textcolor{tum-orange}{(7 bits)}};
+    \end{tikzpicture}
+    \caption{Bfloat16 floating-point number format.}
+\end{figure}
