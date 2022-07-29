@@ -29,12 +29,10 @@ ZeRO-Offload for Zero Stage 2 is enabled by specifing the offload optimizer
 configuration inside of the ZeRO configuration:
 
 \begin{json}
-{
-    "zero_optimization": {
-        "stage": 2,
-        "offload_optimizer": {
-            "device": "[cpu|nvme]"
-        }
+"zero_optimization": {
+    "stage": 2,
+    "offload_optimizer": {
+        "device": "[cpu|nvme]"
     }
 }
 \end{json}
@@ -63,15 +61,13 @@ offload engine can be enabled in Stage 3 using the two ZeRO configurations
 either optimizer states or entire parts of the model:
 
 \begin{json}
-{
-    "zero_optimization": {
-        "stage": 3,
-        "offload_optimizer": {
-            "device": "[cpu|nvme]"
-        },
-        "offload_param": {
-            "device": "[cpu|nvme]"
-        }
+"zero_optimization": {
+    "stage": 3,
+    "offload_optimizer": {
+        "device": "[cpu|nvme]"
+    },
+    "offload_param": {
+        "device": "[cpu|nvme]"
     }
 }
 \end{json}
