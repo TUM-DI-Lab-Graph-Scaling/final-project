@@ -5,7 +5,7 @@
 \subsection{Profiling Framework}
 \label{appendix:profiling}
 
-We implemented a custom profling framework for PyTorch to collect data for detailed runtime 
+We implemented a custom profiling framework for PyTorch to collect data for detailed runtime 
 and memory usage analysis. Our profiler contains three components:
 
 \begin{enumerate}
@@ -13,9 +13,9 @@ and memory usage analysis. Our profiler contains three components:
     processes and tracks CPU memory usage, as well as memory usage on each GPU. The monitor 
     takes snapshot at a configurable time interval (2 seconds for all our runs).
     \item \textit{Phase clocking component}: Tracks runtime of all phases during each training 
-    step, as well as total epoch time. The phases include time spend on fetching data from 
+    step, as well as total epoch time. The phases include time spent on fetching data from 
     the dataloader, forward pass, and backward pass. All phase times are tracking through clocks 
-    which are activated when the training scripts enters a specific phase and deactivated when 
+    which are activated when the training script enters a specific phase and deactivated when 
     it leaves the phase.
     \item \textit{PyTorch internal memory tracker}: Tracks allocated and reserved memory from 
     PyTorch directly. This allows the profiler to detect how much GPU memory is used only for
