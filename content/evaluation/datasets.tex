@@ -11,8 +11,8 @@ IS2RS (Initial Structure to Relaxed Structure). In our work, we focused on the f
 
 \subsubsection{Initial Structure to Relaxed Energy (IS2RE)}
 
-The Initial Structure to Relaxed Energy (IS2RE) tasks takes an initial atomic 
-structure as input and predicts the energy after relaxtion of the structure 
+The Initial Structure to Relaxed Energy (IS2RE) task takes an initial atomic 
+structure as input and predicts the energy after relaxation of the structure 
 \cite*{Chanussot_2021, https://doi.org/10.48550/arxiv.2206.08917}. 
 
 
@@ -29,8 +29,8 @@ are tracked during the S2EF task: Mean Absolute Error for the energy and forces
 (MAE), Force Cosine similarity, and energy as well as forces within a threshold 
 (EFwT). 
 
-OC20 provides three dataset scaling factors for the S2EF task: 200k, 2M 20M,  
-and all . The scaling factor determines the number of atomic structures and 
+OC20 provides three dataset scaling factors for the S2EF task: 200k, 2M, 20M,  
+and all. The scaling factor determines the number of atomic structures and 
 pre-computed energy and per-atom forces with DFT. The input structures are 
 provided as compressed trajectory files, so we had to locally uncrompress the 
 files and embedded the structures into Lightning Memory-Mapped Databases (LMBDs). 

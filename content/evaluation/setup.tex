@@ -13,7 +13,7 @@ means that we set \texttt{NCCL\_P2P\_LEVEL} to \texttt{PIX}.
     embedding size of 1536, and triplet embedding size of 384. All other hyperparameters are equal 
     to Gemnet-dT as it was configured for the OCP benchmark evaluation.
 
-    \item[\textbf{DimeNet}] Furthermore we evaluated the energy-centric DimeNet++ with the configuration 
+    \item[\textbf{DimeNet++}] Furthermore we evaluated the energy-centric DimeNet++ with the configuration 
     defined in \cite*{https://doi.org/10.48550/arxiv.2203.09697}. The model has 4 interaction blocks, a hidden 
     dimension of 2048, an output block of 1536, and triplet dimension of 256, amounting to approximately 
     216 million parameters. Again, all other hyperparameters are equal to DimeNet++ as it was configured 
@@ -24,7 +24,7 @@ For detailed analysis we gathered metrices from all our experiment runs regardin
 CPU memory usage, GPU memory usage, as well as GPU memory reserved or allocated by PyTorch directly.
 We collected the data with a custom profling framework for PyTorch which we present in more detail 
 in Appendix~\ref{appendix:profiling}.
-In addition we used the integrated PyTorch profiler\footnote{\url{https://pytorch.org/docs/stable/profiler.html}}
+In addition, we used the integrated PyTorch profiler\footnote{\url{https://pytorch.org/docs/stable/profiler.html}}
 to collect step-by-step performance metrics, including information about communcation collectives and 
 volume or breakdown of calls to CUDA operations. PyTorch profiler also includes plugins to 
 load and visualize the profiling data in Tensorboard, which allowed us to do ad-hoc profiling 

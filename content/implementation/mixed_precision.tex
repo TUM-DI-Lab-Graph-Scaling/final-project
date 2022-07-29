@@ -5,7 +5,7 @@ Mixed precision training uses lower bit floating point types for optimizer state
 reduce the memory footprint during model training. 
 
 PyTorch offers out-of-the-box support for two types of mixed precision training: Floating point with 16 bits (FP16) and 
-brain floating point with 16 bits (BFloat16) which we will introduce in the next sections and explain our integration 
+brain floating point with 16 bits (BFloat16) which we will introduce in the next subsections and explain our integration 
 into the OCP project.
 
 \subsubsection{FP16}
@@ -15,20 +15,21 @@ sign. This halves the used memory compared to the default single-precision float
 for the exponent and 24 bits for the fraction. However, FP16 lowers the precision and reduces the range of numbers 
 that can be represented, making calculations less accurate and increasing the risk of overflows/underflows.
 
-PyTorch and Deepspeed offer automatic mixed precision for gradients. Developers can regions with context managers 
-to allow PyTorch to automatically choose the precision for GPU operations. Unfortunately both autocast modules from 
-both PyTorch and Deepspeed failed to detect parameters and gradients in the OCP models when we applied the context 
-manager. Our solution was to manually cast parameters to half precision when Deepspeed is used. After our adaptions 
+PyTorch and DeepSpeed offer automatic mixed precision for gradients. Developers can define regions with context managers 
+to allow PyTorch to automatically choose the precision for GPU operations. Even though autocast worked for learnable
+parameters of the model as well as gradients, we had to convert input data and all constants defined in the models to half
+precision manually. We realized this by inferring the correct types from the DeepSpeed config which was made available 
+at runtime. Hence, with our adaptions, 
 FP16 can be used by just setting the \texttt{fp16} flag in the DeepSpeed configuration.
 
 \subsubsection{BFloat16}
 
-As mentioned before, the use of FP16 leads to a higher risk of overflows/underflows. We experienced many overflows 
-of gradients when using FP16 with Deepspeed. To avoid overflows Deepspeed offers support for the Bfloat16 number 
-format which allocates more bits to the exponent to extent the range of representable numbers while lowering 
+As mentioned before, the use of FP16 leads to a higher risk of overflows and underflows. We experienced many overflows 
+of gradients when using FP16 with DeepSpeed. To avoid overflows, DeepSpeed offers support for the Bfloat16 number 
+format which allocates more bits to the exponent to extend the range of representable numbers while lowering 
 precision.
-As with FP16, we had to include manual type cast in the OCP codebase to integrate Bfloat16 support. 
-Bfloat16 can also be enabled from the Deepspeed configuration using the \texttt{bf16} flag.
+As with FP16, we had to include manual type casts in the OCP codebase to integrate Bfloat16 support. 
+Bfloat16 can also be enabled from the DeepSpeed configuration using the \texttt{bf16} flag.
 
 \input{figures/mixed_precision/half_precision.tex}
 

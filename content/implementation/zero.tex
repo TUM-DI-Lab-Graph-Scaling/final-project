@@ -5,10 +5,10 @@ The Zero Redundancy Optimizer (ZeRO) is a scaling engine on top of data-parallel
 machine learning models. In short, ZeRO removes memory redundancies by partitioning states which 
 are used accross all processes such as the optimizer states, gradients and model parameters. 
 Since all processes only have to maintain a shard of states, ZeRO should use less memory while 
-retaining computational granularity and communication overhead compared to traditional Data 
-Parallelism.
+retaining computational granularity and communication overhead compared to traditional data 
+parallelism.
 
-Deepspeed contains three levels of ZeRO that progressively partition and distribute more and 
+DeepSpeed contains three levels of ZeRO that progressively partition and distribute more and 
 more states of the model. We will go through all stages, explain them and shortly explain our 
 integration into OCP.
 
@@ -16,12 +16,12 @@ integration into OCP.
 
 \subsubsection{Stage 1 (OS)}
 
-Stage 1 of ZeRO enables Optimizer State Partitioning. Each GPU only holds a shard of optimizer states.
+Stage 1 of ZeRO enables optimizer state partitioning. Each GPU only holds a shard of optimizer states.
 All GPUs do a normal training step over their data subset, however during the optimizer step, each 
 GPU only updates and stores optimizer states of its own shard. After the update, all GPUs synchronize 
 by an all-gather communication collective to update parameters accross all devices.
 
-Stage 1 required FP16 or Bfloat16 intergation for the OCP codebase. As mentioned in the previous 
+Stage 1 required FP16 or Bfloat16 integration for the OCP codebase. As mentioned in the previous 
 section, we encountered overflow problems with FP16, so we mainly used Bfloat16 to enable ZeRO-1.
 
 \subsubsection{Stage 2 (OS+G)}
@@ -29,33 +29,33 @@ section, we encountered overflow problems with FP16, so we mainly used Bfloat16 
 Stage 2 of ZeRO partitions both optimizer states and gradients. ZeRO-2 generally follows the following 
 execution path for each step: Each GPU holds a replica of the entire model (all parameters), however 
 only a mutually exlusive portion of the parameters are updated on each of the devices. The GPUs only store 
-the shard of gradients and optimizer states, which they need for their particular portion of parameters 
+the shard of gradients and optimizer states which they need for their particular portion of parameters 
 during the forward and backward pass. After doing the optimizer step, the GPUs update each other through 
 an \textit{all-gather} NCCL communication collective. 
 
-Stage 2 is very tighly connected to Stage 1 regarding its implementation in Deepspeed. Fortunately 
+Stage 2 is very tighly connected to Stage 1 regarding its implementation in DeepSpeed. Fortunately 
 for us, this meant that after integrating Stage 1, Stage 2 worked out-of-the-box without any problems.
 
 \subsubsection{Stage 3 (OS+G+P)}
 
 Stage 3 of ZeRO partitions optimizer states, gradients and model parameters, thus merging the 
-traditional Data Parallelism approach with Model parallelism. Optimizer states and gradients 
+traditional data parallelism approach with model parallelism. Optimizer states and gradients 
 are partitioned and synchronized as mentioned in Stage 1 and 2. The model parameter partitioning 
 works with the following principles: Each GPU is assigned a shard of parameters. When model 
 parameters outside the shard are required for the forward or backward pass, the GPU that owns 
 the shard containing the parameters shares them via broadcast. This leads to far more communication 
 overhead, however further reduces GPU memory requirements of the overall model.
 
-The integration of ZeRO-3 was fraught with many problems. Gemnet, for example, accesses the 
+The integration of ZeRO-3 was fraught with many problems. GemNet, for example, accesses the 
 parameters of the layers directly in the model definition, which leads to problems with 
-Deepspeed, since it replaces the tensors with its own wrapper classes that contain parameters 
+DeepSpeed since it replaces the tensors with its own wrapper classes that contain parameters 
 only latently (parameters that are not in the shard of the GPU must first be loaded via NCCL). 
-For this we had to extend Gemnet to first perform an all-gather operation on the parameters, 
+For this, we had to extend GemNet to first perform an all-gather operation on the parameters 
 so that these are locally available with all GPUs before using them inside the model directly.
 
 Another problem occurred with DimeNet where ZeRO did not automatically partition the model 
 parameters. Our solution was to explicitly pass all model parameters as external parameters 
-to the Deepspeed engine. This does not provide optimal partitioning of the parameters, but 
+to the DeepSpeed engine. This does not provide optimal partitioning of the parameters, but 
 at least lets the Zero-3 engine run.
 
 After our integration, the ZeRO optimization can be enabled for all OCP models in the Deepspeed configuration 
@@ -70,4 +70,4 @@ file. The specification is as follows:
 }
 \end{json}
 
-Note that the current Deepspeed implementation requires bfloat16 floating point precision to be enabled. 
+Note that the current DeepSpeed implementation requires Bfloat16 floating point precision to be enabled. 

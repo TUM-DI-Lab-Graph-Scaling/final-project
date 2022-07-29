@@ -32,15 +32,16 @@ self.model, self.optimizer, _, _ = deepspeed.initialize(
 DeepSpeed provides a model and optimizer wrapper to offer the same PyTorch API as 
 before, but performs optimizations under the hood when forward, backward and step 
 functions are invoked. Furthermore, we had to replace the original distributed 
-environment setup with DeepSpeed's distributed setup, which particulary useful for 
-DeepSpeed to spawn CPU worker processes for optimizer or parameter offloading. We 
+environment setup with DeepSpeed's distributed setup. An example of why DeepSpeed 
+needs a custom distributed environment is to spawn CPU worker processes for optimizer 
+or parameter offloading. We 
 will dive deeper into this optimization in Section~\ref{subsection:offloading}.
 
-To enable or disable specific feature of the optimizer engine, DeepSpeed is 
+To enable or disable specific features of the optimizer engine, DeepSpeed is 
 configured using an extra JSON file. We extended the previous OCP configuration 
 code to handle the DeepSpeed config as additional argument and pass it through 
 to the DeepSpeed engine at the beginning of training. This also allows us to 
-make feature specific changes to codebase, since we also parse the config and 
+make feature specific changes to the codebase, since we also parse the config and 
 make it available at runtime.
 
 An example DeepSpeed configuration file looks like this:
@@ -61,7 +62,7 @@ An example DeepSpeed configuration file looks like this:
 \end{json}
 
 In this configuration, \texttt{train\_micro\_batch\_size\_per\_gpu} refers to the 
-batch size processing by one GPU in one step. \texttt{gradient\_accumulation\_steps} 
+batch size processed by one GPU in one step. \texttt{gradient\_accumulation\_steps} 
 refers to the number of steps to accumulate gradients before averaging and applying 
 them. \texttt{train\_batch\_size} is the effective batch size per accumulation step, 
 so 
