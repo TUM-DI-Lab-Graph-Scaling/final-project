@@ -1,2 +1,52 @@
 \section{Conclusion}
 \label{section:conclusion}
+
+In this work, we scaled force and energy predictions of organic molecules on
+potential catalyst surfaces for a wide variety of recently proposed GNN architectures
+in the domain of atomic simulations. This was achieved by integrating Microsoft DeepSpeed 
+into the OCP project, facilitating the exploration and use of DeepSpeed optimizations
+for the GNN models that are part of the OCP repository. This does not
+only include GemNet and DimeNet++, but also---as of recently---the current state-of-the-art
+GemNet-OC \cite{https://doi.org/10.48550/arxiv.2204.02782}.
+Additionally, we developed a module for OCP that enables comprehensive tracking
+of memory- and runtime-related metrics. 
+
+We evaluated memory and runtime savings on scaled-up versions of GemNet-dT
+($\sim$292M parameters) and DimeNet++ ($\sim$216M parameters) which correspond to
+GemNet-XL and DimeNet++-XL \cite{https://doi.org/10.48550/arxiv.2203.09697}, 
+the state-of-the-art on the OCP leaderboard when our project phase began. 
+
+For our GemNet setup, we observed that using DeepSpeed's ZeRO optimization 
+can significantly reduce memory footprints during training, resulting in 
+almost 50\% less reserved memory or 87\% less allocated memory on the S2EF task
+(depending on the configuration of DeepSpeed) compared to standard data parallel training. 
+In terms of runtime, however, in almost all of our evaluations we were not able to speed up 
+training as communication overhead increased when 
+nontrivial DeepSpeed features were activated. Runtime-wise, just training in half
+precision has mostly yielded the best results in our evaluations.
+
+In our GemNet evaluation, stage 3 of the ZeRO optimizer which corresponds to full model parallelism on top
+of data parallelism did not outperform the simpler stages 1 and 2 neither with respect to
+memory nor runtime. We suspect that for stage 3, being originally designed for trillion-parameter
+transformer models that cannot even be stored on single GPUs, our models
+were simply too small to see any memory savings.
+
+In contrast, our results for DimeNet++ were rather unexpected as communication
+between the processes got very slow when we activated stage 1 and 2 of ZeRO.
+We ruled out various potential problems related to our DeepSpeed configuration and
+the model itself (like the energy-centric DimeNet++ calculating second order gradients 
+in the backward pass) and suspect that this might be a problem related to the NCCL communication on our evaluation 
+machine.
+
+Since each configuration was only trained for one epoch and not all of the OC20 data was 
+used for training due to time constraints, it would be interesting to see in the future if our results 
+also prove true for longer and more scaled-up training and if the activation of the DeepSpeed features 
+influences performance of the models in some way. 
+In addition, it could also be very interesting to explore if the results we obtained for our GemNet setup
+can be transferred to the current state-of-the-art architecture, GemNet-OC, which does not only
+consider 3- but 4-way interactions.
+Apart from all of this, we would be curious to see some of the DeepSpeed features being
+combined with other parallization strategies in the domain of atomic simulations, like 
+graph parallelism \cite{https://doi.org/10.48550/arxiv.2203.09697} which was also added to
+OCP recently during our project phase.
+
