@@ -22,9 +22,8 @@ means that we set \texttt{NCCL\_P2P\_LEVEL} to \texttt{PIX}.
 
 For detailed analysis we gathered metrices from all our experiment runs regarding epoch runtimes, 
 CPU memory usage, GPU memory usage, as well as GPU memory reserved or allocated by PyTorch directly.
-We collected the data with a custom profling framework for PyTorch which tracks each individual phase 
-of computations, in specific the dataloading, forward pass and backward pass, to further investigate 
-internal behaviour of our applied optimizations. 
+We collected the data with a custom profling framework for PyTorch which we present in more detail 
+in Appendix~\ref{appendix:profiling}.
 In addition we used the integrated PyTorch profiler\footnote{\url{https://pytorch.org/docs/stable/profiler.html}}
 to collect step-by-step performance metrics, including information about communcation collectives and 
 volume or breakdown of calls to CUDA operations. PyTorch profiler also includes plugins to 

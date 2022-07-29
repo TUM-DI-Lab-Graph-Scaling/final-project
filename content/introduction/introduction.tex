@@ -7,8 +7,8 @@ almost unlimited resources compete to outperform each other in model size and ac
 Consequently, in recent years there has been a surge of more efficient and scalable methods to train deep learning models 
 in parallel on multiple GPUs or even multiple machines. Most of the methods are desinged for large language models, however 
 also offer general solutions to problems such as linear scalability, memory efficiency and 
-communication reduction. We therefore adopted some of these scaling methods and applied them to machine learning models 
-that operate on graphs. 
+communication reduction. With graph machine learning gaining ever more prominence in physics-focussed prediciton tasks and 
+simulations, we adopted some of these scaling methods and applied them to machine learning models that operate on graphs. 
 
 Graphs offer a powerful way to structure connected data by elevating the relationships in-between data points. 
 Fundamentally a graph consists of a set of nodes, which are connected to each other by a set of edges. Both node 
@@ -21,12 +21,14 @@ structures and the energy as well as forces of the structure as graphs.
 In recent years, geometric deep learning, a machine learning approach to bring deep learning models 
 to the graph domain, is getting more and more popular since they archieve comparable or even better 
 results than traditional analytical graph algorithms often at much lower computational costs. Graph Neural 
-Networks (GNNs) are currently the dominant architecture for designing geomtric deep learning models and 
-are based on the message passing paradigm, where nodes gather features from neighbors, transform them via 
+Networks (GNNs) are currently the dominant architecture for designing geometric deep learning models, most of
+which are based on the message passing paradigm, where nodes gather features from neighbors, transform them via 
 differentiable functions and scatter to outgoing neighboring nodes. Especially for molecular predictions, 
 GNN-based architectures are orders of magnitudes faster than traditional methods from quantum chemistry. 
 
 \subsection{Problem definition}
+
+
 
 Molecular simulations are known to be very computationally intensive. The use of machine learning models, in particular 
 Graph Neural Networks, has been very successful and lead to a shift in predicting such simulations instead of 

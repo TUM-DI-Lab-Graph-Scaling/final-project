@@ -1,5 +1,18 @@
-\section*{Appendix}
-\addcontentsline{toc}{section}{Appendix}
+\section*{Appendices}
+\addcontentsline{toc}{section}{Appendices}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+
+\subsection{Profiling Framework}
+\label{appendix:profiling}
+
+custom profling framework for PyTorch which tracks each individual phase 
+of computations, in specific the dataloading, forward pass and backward pass,
+
+
+
+\newpage
+
+\subsection{Per-Experiment Memory Usage}
 
 The figures below show memory utilization for 
 CUDA tensors averaged over all GPUs over time. 
