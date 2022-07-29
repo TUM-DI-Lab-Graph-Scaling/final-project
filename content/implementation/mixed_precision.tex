@@ -10,10 +10,12 @@ into the OCP project.
 
 \subsubsection{FP16}
 
-FP16\footnote{\url{https://standards.ieee.org/ieee/754/4211/}} is a floating-point number format which uses 5 bits for the exponent, 10 bits for the fraction and 1 bit for the 
+FP16 is a floating-point number format which uses 5 bits for the exponent, 10 bits for the fraction and 1 bit for the 
 sign. This halves the used memory compared to the default single-precision floating-point format which uses 8 bits 
-for the exponent and 24 bits for the fraction. However, FP16 lowers the precision and reduces the range of numbers 
-that can be represented, making calculations less accurate and increasing the risk of overflows/underflows.
+for the exponent and 24 bits for the fraction. The specification of FP16 can be found in the official IEEE 754-2008 
+standard\footnote{\url{https://standards.ieee.org/ieee/754/4211/}}.
+FP16 lowers the precision and reduces the range of numbers that can be represented, making calculations less 
+accurate and increasing the risk of overflows/underflows.
 
 PyTorch and DeepSpeed offer automatic mixed precision for gradients. Developers can define regions with context managers 
 to allow PyTorch to automatically choose the precision for GPU operations. Even though autocast worked for learnable
