@@ -2,16 +2,29 @@
 
 \subsection{Motivation}
 
-\textcolor{red}{Some story about how GNNs have transformed social network analysis, recommender systems, drug discovery and of course 
-atomic simulations.}
+Training large-scale models is the Formula 1 of the Machine learning research community: Large labs and corporations with 
+almost unlimited resources compete to outperform each other in model size and accuracy improvements in the decimal points. 
+Consequently, in recent years there has been a surge of more efficient and scalable methods to train deep learning models 
+in parallel on multiple GPUs or even multiple machines. Most of the methods were desinged for large language models, however 
+the tackle more general problems of scalable machine learning such as linear scalability, memory efficiency and 
+communication reduction. We therefore adopted some of these scaling methods and applied them to machine learning models 
+that operate on graphs. 
 
-Graphs offer a powerful way to structure connected data and explore relationships between data. With data represented 
-as graphs, various methods and algorithms can be used to perform analysis and gain insights. Graphs are most commonly 
-used in the medical domain by e.g. modeling population graphs for disease prediction or drug discovery.
+Graphs offer a powerful way to structure connected data by elevating the relationships in-between data points. 
+Fundamentally a graph consists of a set of nodes, which are connected to each other by a set of edges. Both node 
+and edges may contain features to further describe the entity represented by a node or the relationship between entities.
+Graphs are used in a wide range of application areas such as social analysis by representing people and their relationship 
+to each other as graphs or in the medical domain by modeling population graphs for disease prediction or using molecular graphs 
+for drug discovery. Graphs also have a long history of applications on quantum chemistry, representing molecular 
+structures and the energy as well as forces of the structure as graphs. 
 
-In recent years, geometric deep learning has transformed the graph domain by introducing deep neural models to graph 
-structured data achieving significant performance gains in nodel-level, edge-level as well as graph predicition tasks. 
-
+In recent years, geometric deep learning, a machine learning approach to bring deep learning models 
+to the graph domain, is getting more and more popular since they archieve comparable or even better 
+results than traditional analytical graph algorithms often at much lower computational costs. Graph Neural 
+Networks (GNNs) are currently the dominant architecture for designing geomtric deep learning models and 
+are based on the message passing paradigm, where nodes gather features from neighbors, transform them via 
+differentiable functions and scatter to outgoing neighboring nodes. Especially for molecular predictions, 
+GNN-based architectures are orders of magnitudes faster than traditional methods from quantum chemistry. 
 
 \subsection{Problem definition}
 
@@ -29,7 +42,7 @@ for large transformer models and, to the best of our knowledge, never applied to
 
 In our work, we forked the OCP project to integrate DeepSpeed into the training pipeline of the most widely-used 
 and successful models in energy and force predicition of catalysts. 
-We benchmark our approach by evaluating the epoch runtime and memory usage of the GNN architectures GemN+et and 
+We benchmark our approach by evaluating the epoch runtime and memory usage of the GNN architectures GemNet and 
 DimeNet++ using different configurations of DeepSpeed on the OC20 dataset.
 
 
