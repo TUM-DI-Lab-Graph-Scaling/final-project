@@ -15,7 +15,8 @@ Fundamentally a graph consists of a set of nodes, which are connected to each ot
 and edges may contain features to further describe the entity represented by a node or the relationship between entities.
 Graphs are used in a wide range of application areas such as social analysis by representing people and their relationship 
 to each other as graphs or in the medical domain by modeling population graphs for disease prediction or using molecular graphs 
-for drug discovery. Graphs also have a long history of applications on quantum chemistry, representing molecular 
+for drug discovery. Graphs also have a long history of applications on quantum chemistry
+\ref*{10.48550/ARXIV.1704.01212}, representing molecular 
 structures and the energy as well as forces of the structure as graphs. 
 
 In recent years, geometric deep learning, a machine learning approach to bring deep learning models 
@@ -25,18 +26,22 @@ Networks (GNNs) are currently the dominant architecture for designing geometric 
 which are based on the message passing paradigm, where nodes gather features from neighbors, transform them via 
 differentiable functions and scatter to outgoing neighboring nodes. Especially for molecular predictions, 
 GNN-based architectures are orders of magnitudes faster than traditional methods from quantum chemistry. 
+Meta AI introduced the Open Catalyst Project (OCP) \cite{Chanussot_2021} in 2020 to provide unified baseline models and datasets for 
+force and energy predictions of molecular structures, more specificially Catalysts. There has been a number 
+of high-quality GNN based model submissions 
+\cite*{DBLP:journals/corr/abs-2003-03123, https://doi.org/10.48550/arxiv.2106.08903, https://doi.org/10.48550/arxiv.2203.09697} to the project which we will describe further in 
+section~\ref*{subsec:atomic-simulations}.
 
 \subsection{Problem definition}
 
 Although GNNs allow faster prediction of the outcome of molecular simulations, they are still computationally intensive 
-to train, 
-
-Molecular simulations are known to be very computationally intensive. The use of machine learning models, in particular 
-Graph Neural Networks, has been very successful and lead to a shift in predicting such simulations instead of 
-fully computing them. However, although ML models have been very successful, the problem remains that training, 
-even on high-end hardware and multiple GPUs, takes a long time and has extremely high memory requirements. In 
-addition, using hyper-optimization requires many iterations with different parameters to find the optimal model. 
-Any memory and runtime savings will result in days to weeks of less training time and significantly reduced costs.
+to train. Meta AI used a cluster of 256 GPUs to scale out the training of the most recent top-performing GNN model 
+which contained few hundred million parameters. The training of one configuration of this model still took over 5 
+years of summed up GPU runtime. So, although GNN models have been very successful for molecular predictions, 
+the problem remains that training, even on high-end hardware and multiple GPUs, takes a long time and has extremely 
+high memory requirements. In addition, using hyper-optimization requires many iterations with different parameters to 
+find the optimal model. Any memory and runtime savings will result in days to weeks of less training time and significantly 
+reduced costs.
 
 Since 2020, Microsoft is developing DeepSpeed, which is designed to reduce computing costs and memory 
 requirements of large distributed models through better parallelization and minimal state replication. DeepSpeed 
