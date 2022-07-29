@@ -3,27 +3,27 @@
 
 Scaling of machine learning models has a rich scientific research history, mainly since the field 
 represents an interesting and active collaboration between high performance computing, distributed 
-systems, and deep learning communities. So in this section we will highlight literature in the area 
+systems, and deep learning communities. In this section we will highlight literature in the area 
 of accelerating deep learning that are similar to our project or complement our work.
 
 A. Sriram et al. \cite*{https://doi.org/10.48550/arxiv.2203.09697} from Meta FAIR propose a very 
 different approach to scaling Message Parsing Graph Neural Networks for atomic simulations, wherein 
 the automata structures are internally partitioned across multiple GPUs. In their approach, known 
-as graph parallelism, the higher-order interactions, represented in the graph as triplets 
-(two connected edges with associated angles of the connected atoms), are partitioned so that 
-each GPU receives a subset of the triplet and updates and aggregates them locally. The 
+as \textit{graph parallelism}, the highest-order 
+interactions---which are triplets in their work---are partitioned so that 
+each GPU receives a subset of the triplets and updates and aggregates them locally. The 
 triplet messages are then gathered on all GPUs, allowing subsequent edge and node-level layers 
-to be computed as before. Using Graph Parallelism, the authors scaled up Dimenet++ and Gemnet, 
-referring to their large models as Dimenet++-XL and Gemnet-XL. Gemnet-XL, containing close to 300 
+to be computed as before. Using graph parallelism, the authors scaled up DimeNet++ and GemNet, 
+referring to their large models as DimeNet++-XL and GemNet-XL. GemNet-XL, containing close to 300 
 million model parameters, is the largest known model fully trained on OC20 for the OCP benchmark 
 to date, and was also at the top of the leaderboard for both IS2RE and S2EF until the release of 
 Gemnet-OC. 
 
-For more general porpose Graph Neural Network architectures like Graph Attention Networks 
+For more general purpose Graph Neural Network architectures like Graph Attention Networks 
 \cite*{10.48550/ARXIV.1710.10903} or GraphSAGE \cite*{10.48550/ARXIV.1706.02216}, sampling 
-is mostly used to avoid neighborhood explosions when building the Message Flow Graphs. To also 
-allow training on large-scale graphs, both popular Geometric Deep Learning frameworks PyTorch 
-Geomtric (PyG) \cite*{10.48550/ARXIV.1903.02428} and Deep Graph Library (DGL) 
+is mostly used to avoid neighborhood explosions when building the message flow graphs. To also 
+allow training on large-scale graphs, both popular geometric deep learning frameworks PyTorch 
+Geometric (PyG) \cite*{10.48550/ARXIV.1903.02428} and Deep Graph Library (DGL) 
 \cite*{10.48550/ARXIV.1909.01315} offer support for scale-out strategies. For PyG, there is 
 Torch Quiver\footnote{\url{https://github.com/quiver-team/torch-quiver}}, which optimizes and 
 scales single-node multi-GPU training. In DGL, multi-GPU training and optimizations are directly 
@@ -31,20 +31,20 @@ integrated into the codebase. In first iterations of our project, we evaluated b
 on Pytorch Geometric and DGL. In short, Torch Quiver is unfortunately very poorly maintained 
 and currently not useable from our point of view. DGL offers great support for multi-GPU and 
 our tests were very positive, however most atomic simulations models are implemented on top 
-of Pytorch Geomtric. Consequently, we decided against DGL because the effort to reimplement 
-Dimenet, Gemnet, and Gemnet-OC in DGL would have been too costly. 
+of PyTorch Geometric. Consequently, we decided against DGL because the effort of reimplementing 
+DimeNet, GemNet, and GemNet-OC in DGL would have been too costly. 
 
 Moving away from atomic simulation and Graph Neural Network specific optimizations, several 
-toolkits several toolkits for more memory-efficient training of large models have developed 
-in recent years, either complementary or as alternatives to Deepspeed. Fairseq \cite*{ott2019fairseq}, 
+toolkits for more memory-efficient training of large models have been developed 
+in recent years, either complementary or as alternatives to DeepSpeed. \textit{Fairseq} \cite*{ott2019fairseq}, 
 developed by Meta AI, was originally developed to allow smaller labs and developers to 
-fine-tune pre-trained language models. Nowadays the toolkit also includes support for mixed 
-precisiont training, parameter offloading to CPU and multi-GPU optimizations such as parameter and 
-optimizer state sharding. A direct competitor to Deepspeed is FairScale \cite*{FairScale2021}. 
+fine-tune pre-trained language models. Nowadays, the toolkit also includes support for mixed 
+precision training, parameter offloading to CPU, and multi-GPU optimizations such as parameter and 
+optimizer state sharding. A direct competitor to DeepSpeed is \textit{FairScale} \cite*{FairScale2021}. 
 FairScale is also developed by Meta AI and contains optimizations similar to Zero-1, Zero-2 and 
 Zero-3, combined with features for CPU offloading, FP16, and activation checkpointing. Another 
-alternative to Deepspeed is the Fully Sharded Data Parallel (FSDP)\footnote{\url{https://pytorch.org/blog/introducing-pytorch-fully-sharded-data-parallel-api/}} 
-module newly introduced in PyTorch 1.11. FSDP is a native integration of a subset of Deepspeed 
+alternative to DeepSpeed is the \textit{Fully Sharded Data Parallel} (FSDP)\footnote{\url{https://pytorch.org/blog/introducing-pytorch-fully-sharded-data-parallel-api/}} 
+module newly introduced in PyTorch 1.11. FSDP is a native integration of a subset of DeepSpeed 
 and FairScale features directly into PyTorch without the need to install external modules. 
 The implementation of FSDP heavily borrows from FairScale while bringing a more intuitive and 
 streamlined API for developers.
